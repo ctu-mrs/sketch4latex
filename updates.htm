@@ -1,0 +1,166 @@
+<html>
+<head>
+<title>Sketch Update Log</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body>
+<h1>Sketch Update Log</h1>
+<ul>
+<li>Version 0.3 (build 7, Fri Feb 24 21:22:17 2012) Fri Feb 24 21:27:03 2012:
+<br>&nbsp;&nbsp;  Added asin() and acos() to built-in functions.</li>
+<li>Version 0.3 (build 2, Sun Feb  6 13:50:26 2011) Sun Feb  6 13:50:39 2011:
+<br>&nbsp;&nbsp;  Fixed a typo in the manual - extra {} in description of special arg options.
+<br>&nbsp;&nbsp;  Used a more recent version of indent to clean up macro confusion. Back to K&R style.  
+</li>
+<li>Version 0.3 (build 1, Sat Jan 29 21:39:53 2011) Sat Jan 29 22:05:01 2011:
+<br>&nbsp;&nbsp;  Added new special argument substitution options.  Thanks to Don for the suggestion.
+<br>&nbsp;&nbsp;  Fixed a bug where duplicate error messages could be emitted for bad special args.
+</li>
+<li>Version 0.2 (build 187, Fri Dec 17 23:57:13 2010) Sat Dec 18 12:21:11 2010:
+<br>&nbsp;&nbsp;  Fixed bug where over/underlay polygons did not receive fillstyle=solid automatically
+<br>&nbsp;&nbsp;    as do polygons with lay=in.  All polygon fills are how handled similarly.
+</li>
+<li>Version 0.2 (build 183, Mon Aug  9 23:18:38 2010) Mon Aug  9 23:23:11 2010:
+<br>&nbsp;&nbsp;  Fixed one more case where [lay=under] and [lay=over] object order was reversed with
+<br>&nbsp;&nbsp;    respect to the input: simple blocks.
+</li>
+<li>Version 0.2 (build 171, Sat Jul 24 11:55:43 2010) Sat Jul 24 12:19:41 2010:
+<br>&nbsp;&nbsp;  Attempt to ensure the order of objects with [lay=under] and [lay=over] is preserved
+<br>&nbsp;&nbsp;    from input file to output.  Request from Alex.  Tested only on simple examples. 
+</li>
+<li>Version 0.2 (build 170, Sat Jun 12 21:26:01 2010) Sat Jun 12 21:28:24 2010:
+<br>&nbsp;&nbsp;  Mac/linux build compatibility release. No changes to sketch code.  The only mods
+<br>&nbsp;&nbsp;    are to doc make facility.  Making the manual is effectively the test suite, so 
+<br>&nbsp;&nbsp;    this is worthwhile.
+<br>&nbsp;&nbsp;  Verified correct build under OS X Snow Leopard.  Probably fine under other OS X 
+<br>&nbsp;&nbsp;    versions. Note: XCode development environment provides compiler. See Apple 
+<br>&nbsp;&nbsp;    web site for free download.
+<br>&nbsp;&nbsp;  Update to makefile so that 'make' and 'make docs' work fine under OS X. 'make docs' 
+<br>&nbsp;&nbsp;    should also now work fine with linux and Cygwin, too.  
+<br>&nbsp;&nbsp;  Required to build docs under OS X and linux:
+<br>&nbsp;&nbsp;    TeXLive installation -  For Mac, this is MacTeX.  It's a >1GB download.  Yikes! 
+<br>&nbsp;&nbsp;      Other TeXs are likely to work fine except that some drawings may require more 
+<br>&nbsp;&nbsp;      than default memory size. This normally means adding command line flags or ini 
+<br>&nbsp;&nbsp;      file entries to make TeX internal arrays bigger.  See local TeX documentation.
+<br>&nbsp;&nbsp;    epstool - Sources build with a simple 'make' and the binary can be copied to 
+<br>&nbsp;&nbsp;      /usr/local/bin 
+<br>&nbsp;&nbsp;    with sudo.
+<br>&nbsp;&nbsp;  Cheers, Mac and linux users of sketch!
+</li>
+<li>Version 0.2 (build 169, Sat Jun 12 17:23:12 2010) Sat Jun 12 17:31:20 2010:
+<br>&nbsp;&nbsp;  Added double=... option for TikZ.
+<br>&nbsp;&nbsp;  Fixed undefined behavior if input directive is an absolute path.
+<br>&nbsp;&nbsp;  Added Dave Bremner's contribution to make.pl for building the manual on linux.
+</li>
+<li>Version 0.2 (build 161, Tue Sep  8 23:35:27 2009) Tue Sep  8 23:42:48 2009:
+<br>&nbsp;&nbsp;  Added information about direct transform literals to the manual. No code changes.
+</li>
+<li>Version 0.2 (build 160, Sun Aug  9 16:13:10 2009) Sun Aug  9 16:20:03 2009:
+<br>&nbsp;&nbsp;  Disabled warnings about unused symbols in include (input directive) files.
+<br>&nbsp;&nbsp;  Suggested by David Bremner. Examples now run without fuss.
+</li>
+<li>Version 0.2 (build 159, Sun May 10 00:49:32 2009) Sun May 10 00:50:03 2009:
+<br>&nbsp;&nbsp;  Fixed bug in cmdline.c: -V1.15 worked, but -V 1.15 didn't.
+</li>
+<li>Version 0.2 (build 158, Sat May  2 19:48:10 2009) Sat May  2 20:13:41 2009:
+<br>&nbsp;&nbsp;  Fixed bug where a vector literal form [a,b] (no spaces) was scanned as 
+<br>&nbsp;&nbsp;  a concatenated option token, causing a syntax error.
+<br>&nbsp;&nbsp;  Added an explanation of concatenated options to Getting Started in the manual
+<br>&nbsp;&nbsp;  (explanation in the Input Language section remains).
+<br>&nbsp;&nbsp;  Updated TikZ -T template to use 'line join' rather than just join (KMF contribution).
+<br>&nbsp;&nbsp;  Changed PSTricks version option to include TikZ.  Currently only emits remark 
+<br>&nbsp;&nbsp;  that snakes library warning for 2.0 and later can be safely ignored.
+</li>
+<li>Version 0.2 (build 142, Sun Apr  5 12:54:05 2009) Sat Apr 11 21:44:36 2009:
+<br>&nbsp;&nbsp;  Fix corrupted distribution binary.  No code changes.
+</li>
+<li>Version 0.2 (build 142, Sun Apr  5 12:54:05 2009) Sun Apr  5 13:10:54 2009:
+<br>&nbsp;&nbsp;  Changed web page and manual to refer to Google group.  No code changes.
+</li>
+<li>Version 0.2 (build 141, Mon Sep  8 23:10:06 2008) Wed Dec 10 22:28:44 2008:
+<br>&nbsp;&nbsp;  No changes to sketch.
+<br>&nbsp;&nbsp;  Fixed manual build script because newer tool chain handles EPS bounding boxes
+<br>&nbsp;&nbsp;  differently. The utility epstool is now required for the manual build.
+</li>
+<li>Version 0.2 (build 141, Mon Sep  8 23:10:06 2008) Mon Sep  8 23:16:10 2008:
+<br>&nbsp;&nbsp;  Fixed copying of [lay=over|under], which was requiring O(N^2) space and time
+<br>&nbsp;&nbsp;  for N over\under objects.  Now we're O(N)!  Thanks to Sola Aina for pointing
+<br>&nbsp;&nbsp;  out this problem.
+</li>
+<li>Version 0.2 (build 136, Sat Aug  9 01:55:09 2008) Tue Aug 19 22:13:29 2008:
+<br>&nbsp;&nbsp;  Changed web page to mention new fixes.  Added TikZ output code listing.
+</li>
+<li>Version 0.2 (build 130, Fri Aug  8 21:30:03 2008) Fri Aug  8 21:41:02 2008:
+<br>&nbsp;&nbsp;  Alas, Herbert Voss's linejoin option in PST V1.20 broke Sketch graphical quality!
+<br>&nbsp;&nbsp;  So we must replace pstverb{1 setlinejoin} in PSTricks output with psset{linejoin=1}.
+<br>&nbsp;&nbsp;  Also added -V option for backward compatibility with older PSTricks versions.
+<br>&nbsp;&nbsp;  Updated manual to reflect all of this.
+</li>
+<li>Version 0.2 (build 90, Tue Jul 15 00:28:08 2008) Tue Jul 15 00:30:49 2008:
+<br>&nbsp;&nbsp;  Changed manual.* to sketch.* to avoid info dir clash. Added @dircategory 
+<br>&nbsp;&nbsp;  and @direntry for compatibility with install-info.  Contributed by Dmitry Dzhus.
+</li>
+<li>Version 0.2 (build 89, Mon May  5 12:20:05 2008) Mon May  5 12:49:27 2008:
+<br>&nbsp;&nbsp;  Fixed lay=in and added support for dotsize in TikZ.  Suggestion of Giovanni Pizzi.
+</li>
+<li>Version 0.2 (build 84, Tue Apr 22 20:17:04 2008) Tue Apr 22 20:24:33 2008:
+<br>&nbsp;&nbsp;  Cause -v or -Tx option always to ignore all input - files and stdin.
+</li>
+<li>Version 0.2 (build 75, Mon Apr 21 22:45:11 2008) Mon Apr 21 22:45:27 2008:
+<br>&nbsp;&nbsp;  Switch all computations to double precision for better dynamic range.  
+</li>
+<li>Version 0.2 (build 65, Mon Apr 21 22:14:51 2008) Mon Apr 21 22:15:38 2008:
+<br>&nbsp;&nbsp;  Bug fix: Extent finder had variables uninitialized.  If random stuff has
+<br>&nbsp;&nbsp;  been missing from your sketch output, this is the build for you!  Thanks
+<br>&nbsp;&nbsp;  David Bremner.  
+</li>
+<li>Version 0.2 (build 60, Thu Apr 10 13:13:26 2008) Thu Apr 10 13:21:35 2008:
+<br>&nbsp;&nbsp;  Added pstricks-add to -T templates for transparency support.  
+</li>
+<li>Version 0.2 (build 59, Sun Mar 16 13:30:57 2008) Sun Mar 16 13:43:01 2008:
+<br>&nbsp;&nbsp;  Added "transpalpha" to split options for PSTricks at suggestion of maxi.
+<br>&nbsp;&nbsp;  Manual updated, but a nice transparent example drawing ought to be added.  
+</li>
+<li>Version 0.2 (build 57, Thu Mar  6 22:39:13 2008) Sun Mar  9 22:11:46 2008:
+<br>&nbsp;&nbsp;  Added ConTeXt support as per suggestion of Jesse Alma and updated web page.  
+</li>
+<li>Version 0.2 (build 27, Tue Sep 25 00:23:31 2007) Tue Sep 25 00:23:43 2007:
+<br>&nbsp;&nbsp;  Added concatentate multiple option references as per suggestion of kmf.  
+</li>
+<li>Version 0.2 (build 18, Sun Sep 23 00:30:20 2007) Sun Sep 23 00:34:03 2007:
+<br>&nbsp;&nbsp;  Changed copyright to GPL.
+<br>&nbsp;&nbsp;  Distribution builds now have "d" version suffix.
+</li>
+<li>Version 0.2 (build 16, Sun Mar  4 14:56:52 2007) Sun Mar  4 23:06:08 2007:
+<br>&nbsp;&nbsp;  Fixed makefile to work in distribution (rather than development) environment.  
+</li>
+<li>Version 0.2 (build 9, Thu Feb  8 22:06:23 2007) Sun Feb 11 14:50:09 2007:
+<br>&nbsp;&nbsp;  Added "fill style=..." and "line style=..." pseudo options for TikZ (idea of KMF).  
+<br>&nbsp;&nbsp;  Fixed seg fault on certain syntax errors within option strings.  
+</li>
+<li>Version 0.2 (build 8, Tue Feb  6 19:25:59 2007) Tue Feb  6 19:26:07 2007:
+<br>&nbsp;&nbsp;  Fixed option processing bug.  Thanks to Kjell Magne Fauske!
+</li>
+<li>Version 0.2 (build 7, Mon Feb  5 23:27:30 2007) Tue Feb  6 19:24:34 2007:
+<br>&nbsp;&nbsp;  Added TikZ support.
+<br>&nbsp;&nbsp;  Added -v (version info) and -h (option help) command line options.
+<br>&nbsp;&nbsp;  Updated documents.  
+</li>
+<li>Version 0.1 (build 310, Fri Jun 24 14:05:28 2005) Wed Jan 31 22:06:48 2007:
+<br>&nbsp;&nbsp;  Test build in new environment.
+</li>
+<li>Version 0.1 (build 282, Tue May 17 12:16:05 2005) Tue May 17 12:28:50 2005:
+<br>&nbsp;&nbsp;  Added -t and -T options (document template); adjusted manual
+<br>&nbsp;&nbsp;  Made exponentiation work on transforms for all integers; adjusted manual
+<br>&nbsp;&nbsp;  Fixed empty option bracket output on some PSTricks commands
+</li>
+<li>Version 0.1 (build 254, Thu May 12 04:16:43 2005) Thu May 12 04:17:15 2005:
+<br>&nbsp;&nbsp;  Rebuild to incorporate this update log.
+</li>
+<li>Version 0.1 (build 253, Thu May 12 01:28:29 2005) Thu May 12 04:06:22 2005:
+<br>&nbsp;&nbsp;  Fixed lay option problems.
+<br>&nbsp;&nbsp;  Fixed picturebox bounding box computation.
+<br>&nbsp;&nbsp;  Added the technical drawing section to the manual.
+</li>
+</ul>
+</body>

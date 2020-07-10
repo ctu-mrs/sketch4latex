@@ -1,0 +1,6 @@
+@comment Produced by makever.pl.  Don't edit.
+@set VER_MAJOR 0
+@set VER_MINOR 3
+@set VER_BUILD 7
+@set UPDATED Friday, July 10, 2020
+@set VERSION @value{VER_MAJOR}.@value{VER_MINOR} (build @value{VER_BUILD})

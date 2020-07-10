@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+<title>Limits on error detection - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Caveats.html#Caveats" title="Caveats">
+<link rel="prev" href="Caveats.html#Caveats" title="Caveats">
+<link rel="next" href="Clipping.html#Clipping" title="Clipping">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Limits-on-error-detection"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Clipping.html#Clipping">Clipping</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Caveats.html#Caveats">Caveats</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Caveats.html#Caveats">Caveats</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h4 class="subsection">4.4.1 Limits on <code>sketch</code> error detection</h4>
+
+<p><code>Sketch</code> catches many kinds of errors, but not all. For example,
+options that sketch does not recognize, even incorrect ones, are
+quietly copied to <code>PSTricks</code> commands in the output.  It is also
+unfortunately easy to produce <code>sketch</code> inputs that lead to no
+picture at all (improper vertex ordering causes everything to be
+culled), to pictures that are too big or too small for <code>PSTricks</code>
+to draw (due to limits of TeX math), and pictures that look nothing
+like what was intended.  A picture with one of these problems can be
+difficult to &ldquo;debug.&rdquo;  We offer the following suggestions.
+     <ul>
+<li>Follow the suggested incremental development method described in
+<a href="Overview.html#Overview">Overview</a>. 
+<li>Always maintain one or two back-versions of a drawing so that it is
+easy to fall back to a known-good increment. 
+<li>When using <code>perspective</code>, ensure all finally transformed objects
+satisfy z&lt;0 and, in fact, do not come very close to the origin
+at all. 
+<li>Temporarily use <code>cull=false</code> to see where vertex ordering
+problems lie. 
+<li>Use temporary changes of color of one or more objects to ensure that
+your understanding of the scene geometry is correct. 
+<li>If <code>PSTricks</code> complains about something, inspect the output
+directly for clues. 
+</ul>
+
+   </body></html>
+

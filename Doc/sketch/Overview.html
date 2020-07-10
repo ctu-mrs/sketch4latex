@@ -1,0 +1,253 @@
+<html lang="en">
+<head>
+<title>Overview - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Building-a-drawing.html#Building-a-drawing" title="Building a drawing">
+<link rel="prev" href="Building-a-drawing.html#Building-a-drawing" title="Building a drawing">
+<link rel="next" href="A-technical-drawing.html#A-technical-drawing" title="A technical drawing">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Overview"></a>Next:&nbsp;<a rel="next" accesskey="n" href="A-technical-drawing.html#A-technical-drawing">A technical drawing</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Building-a-drawing.html#Building-a-drawing">Building a drawing</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Building-a-drawing.html#Building-a-drawing">Building a drawing</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">4.1 Overview</h3>
+
+<p>As an overview, let's develop a diagram that shows how a perspective
+projection transform
+<a name="index-perspective-projection-407"></a><a name="index-transform-408"></a><a name="index-projection_002c-perspective-409"></a>works.  We'll start with the traditional reference object
+used in computer graphics textbooks, a house-shaped prism.  Begin
+by defining the points of the house.  Rather than defining the faces
+of the house as polygons and transforming those, we are going to
+transform the points themselves with <code>sketch</code> arithmetic so that
+we have names for the transformed points later. 
+<a name="index-def-410"></a>
+<pre class="verbatim">
+  % right side (outside to right)
+  def R1 (1,1,1) def R2 (1,-1,1) def R3 (1,-1,-1) def R4 (1,1,-1)
+  def R5 (1,1.5,0)
+
+  % left side (outside to right--backward)
+  def W  [2,0,0]
+  def L1 (R1)-[W] def L2 (R2)-[W] def L3 (R3)-[W] def L4 (R4)-[W]
+  def L5 (R5)-[W]
+</pre>
+To add a door to the house, we use a polygon slightly in
+front of the foremost face of the house.
+<pre class="verbatim">
+  % door
+  def e .01
+  def D1 (0,-1,1+e) def D2 (.5,-1,1+e) def D3 (.5,0,1+e) def D4 (0,0,1+e)
+</pre>
+Now let's create a new set of points that are a to-be-determined
+transform of the originals.
+<pre class="verbatim">
+  def hp scale(1) % house positioner
+  def pR1 [[hp]]*(R1) def pR2 [[hp]]*(R2) def pR3 [[hp]]*(R3)
+  def pR4 [[hp]]*(R4) def pR5 [[hp]]*(R5)
+  def pL1 [[hp]]*(L1) def pL2 [[hp]]*(L2) def pL3 [[hp]]*(L3)
+  def pL4 [[hp]]*(L4) def pL5 [[hp]]*(L5)
+  def pD1 [[hp]]*(D1) def pD2 [[hp]]*(D2) def pD3 [[hp]]*(D3)
+  def pD4 [[hp]]*(D4) 
+</pre>
+Note the use of a <dfn>transform definition</dfn>
+<a name="index-transform-definition-411"></a><a name="index-definition_002c-transform-412"></a><a name="index-_005b_005bfoo_005d_005d_0040r_007b_002c-transform-reference_007d-413"></a>and
+<dfn>transform references</dfn>. 
+<a name="index-transform-reference-414"></a><a name="index-reference_002c-transform-415"></a><a name="index-_005b_005bfoo_005d_005d_0040r_007b_002c-transform-reference_007d-416"></a>Now define the seven polygonal faces of the house and the door using
+the transformed points as vertices.  Be careful with vertex order! 
+<a name="index-polygon-vertex-order-417"></a><a name="index-order_002c-polygon-vertex-418"></a><a name="index-fillcolor-419"></a><a name="index-def-420"></a><a name="index-polygon-421"></a><a name="index-_0040_007b-_0040_007d_0040r_007b_002c-block-drawable_007d-422"></a>
+<pre class="verbatim">
+  def rgt polygon (pR1)(pR2)(pR3)(pR4)(pR5)
+  def lft polygon (pL5)(pL4)(pL3)(pL2)(pL1)
+  def frt polygon (pR2)(pR1)(pL1)(pL2)
+  def bck polygon (pR4)(pR3)(pL3)(pL4)
+  def tfr polygon (pR1)(pR5)(pL5)(pL1)
+  def tbk polygon (pR5)(pR4)(pL4)(pL5)
+  def bot polygon (pR2)(pL2)(pL3)(pR3)
+  def door polygon[fillcolor=brown] (pD1)(pD2)(pD3)(pD4)
+  def house { {rgt}{lft}{frt}{bck}{tfr}{tbk}{bot}{door} }
+</pre>
+Time for a sanity check.  Add the line
+<a name="index-_0040_007bfoo_0040_007d_0040r_007b_002c-drawable-reference_007d-423"></a><a name="index-reference_002c-drawable-424"></a>
+<pre class="verbatim">
+  {house}
+</pre>
+and this is what we get.
+
+<div align="center"><img src="ex130.png" alt="ex130.png"></div>
+
+<p class="noindent">This is correct, but does not reveal very much.  Common errors are
+misplaced vertices and polygons missing entirely due to incorrect
+vertex order. 
+<a name="index-polygon-vertex-order-425"></a><a name="index-order_002c-polygon-vertex-426"></a>To rule these out, let's inspect all sides of the
+house. This is not hard. Merely replace the reference
+<tt>{house}</tt> with a <code>repeat</code>. See <a href="Repeats.html#Repeats">Repeats</a>. 
+<a name="index-_0040_007bfoo_0040_007d_0040r_007b_002c-drawable-reference_007d-427"></a><a name="index-reference_002c-drawable-428"></a><a name="index-repeat-429"></a><a name="index-rotate-430"></a><a name="index-translate-431"></a>
+<pre class="verbatim">
+  repeat { 13, rotate(30, [1,2,3]), translate([3,0,0]) } {house}
+</pre>
+<div align="center"><img src="ex140.png" alt="ex140.png"></div>
+
+<p class="noindent">Again things look correct.  Note that the hidden surface algorithm
+handles intersecting polygons correctly where some copies of the house
+overlap.
+
+   <p>Let's lay out the geometry of perspective projection of the house onto
+a plane with rays passing through the origin.  Begin by positioning the
+house twelve units back on the negative z-axis and adding a set
+of coordinate axes.  To move the house we need only change the &ldquo;house
+positioning&rdquo; transform defined earlier. 
+<a name="index-def-432"></a><a name="index-rotate-433"></a><a name="index-translate-434"></a><a name="index-arrows-435"></a><a name="index-linewidth-436"></a><a name="index-linecolor-437"></a><a name="index-linestyle-438"></a><a name="index-special-439"></a><a name="index-line-440"></a>
+<pre class="verbatim">
+  def hp rotate(-40, [0,1,0]) then translate([0,0,-12])
+  def axes {
+    def sz 1
+    line [arrows=&lt;->] (sz,0,0)(O)(0,sz,0)
+    line [arrows=->]  (O)(0,0,sz)
+    line [linewidth=.2pt,linecolor=blue,linestyle=dashed] (O)(0,0,-10)
+    special |\uput[r]#1{$x$}\uput[u]#2{$y$}\uput[l]#3{$z$}|
+      (sz,0,0)(0,sz,0)(0,0,sz)
+  }
+</pre>
+
+   <p>Time for another test.  Let's build a real view transform,
+creating a <dfn>virtual camera</dfn>
+<a name="index-virtual-camera-441"></a>to look at the scene we are constructing.  Replace the <code>repeat</code>
+with
+<pre class="verbatim">
+  def eye (10,4,10)
+  def look_at (0,0,-5)
+  put { view((eye), (look_at)) } { {house}{axes} }
+</pre>
+The <dfn>view transform</dfn> repositions the scene so that the point
+<code>eye</code> is at the origin and the direction from <code>eye</code> to
+<code>look_at</code> is the negative z-axis.  This requires a
+rotation and a translation that are all packed into the constructor
+<code>view</code>.
+
+<div align="center"><img src="ex150.png" alt="ex150.png"></div>
+
+<p class="noindent">This is starting to look good!  Add the projection plane half way
+between the origin and the house at z=-5.  We'll try
+the angle argument feature of <code>special</code> to position a label.
+<pre class="verbatim">
+  def p 5 % projection distance (plane at z=-p)
+  def projection_plane {
+    def sz 1.5
+    polygon (-sz,-sz,-p)(sz,-sz,-p)(sz,sz,-p)(-sz,sz,-p)
+    special |\rput[b]#1-2#3{\footnotesize\sf projection plane}| 
+      (-sz,-sz,-p)(sz,-sz,-p)(0,-sz+.1,-p)
+  }
+</pre>
+Add <tt>{projection_plane}</tt> to the list of objects in the
+<code>put</code> above.
+
+<div align="center"><img src="ex160.png" alt="ex160.png"></div>
+
+   <p class="indent">The way we constructed the points of the house now makes it easy to
+draw rays of projection.  We'll cast one ray from every visible vertex
+of the house and define options so the appearance of
+all rays can be changed at the same time.
+<pre class="verbatim">
+  def projection_rays {
+    def rayopt [linewidth=.3pt,linecolor=lightgray]
+    line [rayopt](O)(pR1) line [rayopt](O)(pR2) line[rayopt](O)(pR3)
+    line [rayopt](O)(pR4) line [rayopt](O)(pR5)
+    line [rayopt](O)(pL1) line [rayopt](O)(pL2) line[rayopt](O)(pL5)
+    line [rayopt](O)(pD1) line [rayopt](O)(pD2) 
+    line [rayopt](O)(pD3) line [rayopt](O)(pD4) 
+  }
+</pre>
+The result is shown here.
+
+<div align="center"><img src="ex170.png" alt="ex170.png"></div>
+
+<p class="noindent">The rays pierce the projection plane at the corresponding points on
+the perspective image we are trying to draw.  Albrecht D&uuml;rer and his
+Renaissance contemporaries had the same idea in the early 1500's.
+
+<div align="center"><img src="duerer.png" alt="duerer.png"></div>
+
+   <p>All that's left is to find a way to connect the points of the house
+on the projection plane.  We could pull out a good computer graphics
+text, find the necessary matrix, and enter it ourselves as a
+transform literal.  See <a href="Transform-literals.html#Transform-literals">Transform literals</a>. That work is
+already done, however.  We can use the <code>project(p)</code> constructor.
+
+   <p>There are still some details that require care.  Projection will
+flatten whatever is transformed onto the plane z=-p.  Therefore
+any part of the house could disappear behind the projection plane (the
+hidden surface algorithm orders objects at the same depth
+arbitrarily).  The door may also disappear behind the front of the
+house.  To make sure everything remains visible, we'll place the house
+a tiny bit in front of the projection plane and a second copy of the
+door in front of the house.
+<pre class="verbatim">
+  def projection {
+    % e is a small number defined above
+    put { project(p) then translate([0,0,1*e]) } {house}
+    put { project(p) then translate([0,0,2*e]) } {door}
+  }
+</pre>
+
+<div align="center"><img src="ex180.png" alt="ex180.png"></div>
+
+   <p>If you have studied and understand all this, you are well on the way
+to success with <code>sketch</code>.  Not shown are the 20 or so iterations
+that were required to find a reasonable viewing angle and house
+position, etc.  Nonetheless, this drawing was completed in about an
+hour.  While a GUI tool may have been a little faster, it is unlikely
+that a new drawing, itself a perspective projection of the scene,
+could be generated with two more minutes' work!  Just change the view
+transform to
+<pre class="verbatim">
+  put { view((eye), (look_at)) then perspective(9) } { ...
+</pre>
+and produce this.
+
+<div align="center"><img src="ex190.png" alt="ex190.png"></div>
+
+   </body></html>
+

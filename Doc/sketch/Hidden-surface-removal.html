@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+<title>Hidden surface removal - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Caveats.html#Caveats" title="Caveats">
+<link rel="prev" href="Clipping.html#Clipping" title="Clipping">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Hidden-surface-removal"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="Clipping.html#Clipping">Clipping</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Caveats.html#Caveats">Caveats</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h4 class="subsection">4.4.3 Hidden surface removal and polygon splitting</h4>
+
+<p><code>Sketch</code> uses the <dfn>depth sort algorithm</dfn>
+<a name="index-depth-sort-501"></a><a name="index-hidden-surface-algorithm-502"></a>for hidden surface removal.  This is a very old technique due to
+Newell.<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>  It is
+generally regarded as too slow for real time graphics, but it is
+ideal for our purpose where speed is not very important.<a rel="footnote" href="#fn-2" name="fnd-2"><sup>2</sup></a>
+
+   <p>The depth sort algorithm merely sorts objects on a key of increasing
+z-coordinate, equivalent to decreasing depth.  Objects are then
+drawn in the sorted sequence so that those at the rear of the scene
+are overwritten by those closer to the viewer. Since this is also
+how oil painters practice their art, depth sort is sometimes called
+&ldquo;the painter's algorithm.&rdquo;
+
+   <p>In some cases it is impossible to strictly order polygons according to
+depth.  Moreover, even if a correct depth ordering exists, the
+computation needed to find it may be too complex and slow.  In these
+cases, <code>sketch</code> splits
+<a name="index-splitting_002c-line-and-surface-503"></a>one or more polygons into pieces.  The
+expectation is that the new, smaller polygons will be simpler to
+order.  <code>Sketch</code> uses a <acronym title="binary space partition">BSP</acronym> (binary space partition)
+<a name="index-binary-space-partition-504"></a><a name="index-BSP_002c-binary-space-partition-505"></a>to handle the splitting operation.
+
+<ul class="menu">
+<li><a accesskey="1" href="Statistics.html#Statistics">Statistics</a>:                   Performance numbers on depth sort. 
+<li><a accesskey="2" href="Bugs-and-anomalies.html#Bugs-and-anomalies">Bugs and anomalies</a>:           Imperfections in this implementation. 
+</ul>
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> Newell, M.E., R.G. Newell, and T.L. Sancha, A
+solution to the hidden surface problem. <i>Proceedings of the ACM
+annual conference - Volume 1</i>, page 443&ndash;450, ACM Press, 1972.</p>
+
+   <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> We
+have run <code>sketch</code> on the famous Stanford Bunny, which consists
+of nearly 70,000 triangles.  Run time was about 6 seconds. 
+Most of this was spent writing the output file rather than in the
+hidden surface algorithm.  LaTeX took much longer to process the
+resulting <code>PSTricks</code> code.  The obvious conclusion is that the
+speed of the depth sort algorithm is not a worry.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

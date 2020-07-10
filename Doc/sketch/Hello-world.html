@@ -1,0 +1,123 @@
+<html lang="en">
+<head>
+<title>Hello world - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction-by-example.html#Introduction-by-example" title="Introduction by example">
+<link rel="prev" href="Introduction-by-example.html#Introduction-by-example" title="Introduction by example">
+<link rel="next" href="Drawing-options.html#Drawing-options" title="Drawing options">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Hello-world"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Drawing-options.html#Drawing-options">Drawing options</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Introduction-by-example.html#Introduction-by-example">Introduction by example</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction-by-example.html#Introduction-by-example">Introduction by example</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">2.1 Hello world</h3>
+
+<p>The <code>sketch</code> program above is nearly the simplest one possible,
+the equivalent of a &ldquo;hello world&rdquo;
+<a name="index-hello-world-5"></a><a name="index-program_002c-hello-world-6"></a>program you might find at the start of a programming language text. 
+If it is saved in the file <span class="file">simple.sk</span>, then the command
+<a name="index-command-line_002c-_0040code_007bsketch_007d-7"></a><a name="index-running-_0040code_007bsketch_007d-8"></a>
+<pre class="verbatim">
+  sketch simple.sk -o simple.tex
+</pre>
+creates a file <span class="file">simple.tex</span> containing <code>PSTricks</code> commands to
+draw these objects on paper.  The contents of <span class="file">simple.tex</span>
+look like this.
+<pre class="verbatim">
+  \begin{pspicture}(-1,-1)(2,2)
+  \pstVerb{1 setlinejoin}
+  \psline(-1,-1)(.333,.333)
+  \pspolygon[fillstyle=solid,fillcolor=white](0,0)(1,0)(0,1)
+  \psline(.333,.333)(2,2)
+  \end{pspicture}
+</pre>
+The hidden surface algorithm
+<a name="index-hidden-surface-algorithm-9"></a>of <code>sketch</code> has split
+<a name="index-splitting_002c-line-and-surface-10"></a>the line into
+two pieces and ordered the three resulting objects so that the correct
+portion of the line is hidden.
+
+   <p>If you've noticed that the projection we are using seems equivalent to
+erasing the z-coordinate of the three-dimensional input points,
+pat yourself on the back.  You are correct.  This is called a
+<dfn>parallel projection</dfn>. 
+<a name="index-parallel-projection-11"></a><a name="index-projection_002c-parallel-12"></a>The z-coordinate axis is pointing straight out of the paper at
+us, while the x- and y-axes point to the right and up as
+usual.
+
+   <p>The resulting picture file can be included in a LaTeX document with
+<tt>\input{simple}</tt>.  Alternately, adding the command line option
+<span class="option">-T</span><a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+<a name="index-command-line-option-13"></a><a name="index-option_002c-command-line-14"></a>causes the <code>pspicture</code> to be wrapped in a short
+but complete document, ready to run though LaTeX. 
+<a name="index-document-template-15"></a><a name="index-template_002c-document-16"></a>In a finished, typeset document, the picture looks like this.  (The
+axes have been added in light gray.)
+
+<div align="center"><img src="ex020.png" alt="ex020.png"></div>
+
+<p class="noindent">It is important to know that only the &ldquo;outside&rdquo;
+<a name="index-outside-of-a-polygon-17"></a><a name="index-polygon_002c-outside-of-18"></a>of a polygon is
+normally drawn.  The <dfn>outside</dfn> is where the vertices given in the
+<code>polygon</code>
+<a name="index-polygon-19"></a>command appear in <em>counter-clockwise</em>
+<a name="index-counter_002dclockwise-polygon-vertex-order-20"></a><a name="index-polygon-vertex-order-21"></a><a name="index-order_002c-polygon-vertex-22"></a>order.  Thus, if the command above had been
+<pre class="verbatim">
+  polygon(0,1,0)(1,0,0)(0,0,1)
+</pre>
+the polygon would not appear in the picture at all.  It would have
+been <dfn>culled</dfn>
+<a name="index-culling-23"></a>from the scene.  This culling behavior may seem
+strange, but stay tuned.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> Or for European users of A4 size paper,
+<span class="option">-Te</span>.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

@@ -1,0 +1,671 @@
+<html lang="en">
+<head>
+<title>Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage
+
+<ul class="index-cp" compact>
+<li><a href="A-technical-drawing.html#index-affine-arithmetic-459">affine arithmetic</a>: <a href="A-technical-drawing.html#A-technical-drawing">A technical drawing</a></li>
+<li><a href="Affine-arithmetic.html#index-affine-arithmetic-151">affine arithmetic</a>: <a href="Affine-arithmetic.html#Affine-arithmetic">Affine arithmetic</a></li>
+<li><a href="Forms-of-definitions.html#index-alternatives_002c-definition-344">alternatives, definition</a>: <a href="Forms-of-definitions.html#Forms-of-definitions">Forms of definitions</a></li>
+<li><a href="Special-objects.html#index-argument_002c-special-51">argument, special</a>: <a href="Special-objects.html#Special-objects">Special objects</a></li>
+<li><a href="Specials.html#index-argument_002c-special-279">argument, special</a>: <a href="Specials.html#Specials">Specials</a></li>
+<li><a href="Two_002doperand-_0028binary_0029-forms.html#index-associativity_002c-operator-232">associativity, operator</a>: <a href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">Two-operand (binary) forms</a></li>
+<li><a href="Object-transforms.html#index-axis_002c-rotation-82">axis, rotation</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Drawing-a-solid.html#index-back-face-43">back face</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Picture-box.html#index-baseline-fraction-387">baseline fraction</a>: <a href="Picture-box.html#Picture-box">Picture box</a></li>
+<li><a href="Two_002doperand-_0028binary_0029-forms.html#index-binary-form-217">binary form</a>: <a href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">Two-operand (binary) forms</a></li>
+<li><a href="Command-line.html#index-binary-space-partition-512">binary space partition</a>: <a href="Command-line.html#Command-line">Command line</a></li>
+<li><a href="Hidden-surface-removal.html#index-binary-space-partition-504">binary space partition</a>: <a href="Hidden-surface-removal.html#Hidden-surface-removal">Hidden surface removal</a></li>
+<li><a href="Statistics.html#index-binary-space-partition-506">binary space partition</a>: <a href="Statistics.html#Statistics">Statistics</a></li>
+<li><a href="Swept-blocks.html#index-block-322">block</a>: <a href="Swept-blocks.html#Swept-blocks">Swept blocks</a></li>
+<li><a href="Blocks.html#index-block-330">block</a>: <a href="Blocks.html#Blocks">Blocks</a></li>
+<li><a href="Object-transforms.html#index-block-70">block</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Swept-blocks.html#index-block-sweep-321">block sweep</a>: <a href="Swept-blocks.html#Swept-blocks">Swept blocks</a></li>
+<li><a href="Swept-polygons.html#index-body-polygon-314">body polygon</a>: <a href="Swept-polygons.html#Swept-polygons">Swept polygons</a></li>
+<li><a href="Swept-lines.html#index-body-polygon-298">body polygon</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Internal-options.html#index-body-polygon-266">body polygon</a>: <a href="Internal-options.html#Internal-options">Internal options</a></li>
+<li><a href="Picture-box.html#index-bounding-box-388">bounding box</a>: <a href="Picture-box.html#Picture-box">Picture box</a></li>
+<li><a href="Command-line.html#index-BSP_002c-binary-space-partition-513">BSP, binary space partition</a>: <a href="Command-line.html#Command-line">Command line</a></li>
+<li><a href="Hidden-surface-removal.html#index-BSP_002c-binary-space-partition-505">BSP, binary space partition</a>: <a href="Hidden-surface-removal.html#Hidden-surface-removal">Hidden surface removal</a></li>
+<li><a href="Camera.html#index-camera-382">camera</a>: <a href="Camera.html#Camera">Camera</a></li>
+<li><a href="Object-transforms.html#index-center-of-rotation-59">center of rotation</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Nested-sweeps.html#index-center-of-rotation-121">center of rotation</a>: <a href="Nested-sweeps.html#Nested-sweeps">Nested sweeps</a></li>
+<li><a href="A-technical-drawing.html#index-centroid-474">centroid</a>: <a href="A-technical-drawing.html#A-technical-drawing">A technical drawing</a></li>
+<li><a href="Clipping.html#index-clipping-500">clipping</a>: <a href="Clipping.html#Clipping">Clipping</a></li>
+<li><a href="Picture-box.html#index-clipping-391">clipping</a>: <a href="Picture-box.html#Picture-box">Picture box</a></li>
+<li><a href="Swept-lines.html#index-closure-tag_002c-_0040code_007b_003c_003e_007d-306">closure tag, <code>&lt;&gt;</code></a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Swept-points.html#index-closure-tag_002c-_0040code_007b_003c_003e_007d-289">closure tag, <code>&lt;&gt;</code></a>: <a href="Swept-points.html#Swept-points">Swept points</a></li>
+<li><a href="Sweeps.html#index-closure-tag_002c-_0040code_007b_003c_003e_007d-285">closure tag, <code>&lt;&gt;</code></a>: <a href="Sweeps.html#Sweeps">Sweeps</a></li>
+<li><a href="Polyline-sweeps-with-closure.html#index-closure-tag_002c-_0040code_007b_003c_003e_007d-137">closure tag, <code>&lt;&gt;</code></a>: <a href="Polyline-sweeps-with-closure.html#Polyline-sweeps-with-closure">Polyline sweeps with closure</a></li>
+<li><a href="Sweep-face-splitting.html#index-closure-tag_002c-_0040code_007b_003c_003e_007d-329">closure tag, <code>&lt;&gt;</code></a>: <a href="Sweep-face-splitting.html#Sweep-face-splitting">Sweep face splitting</a></li>
+<li><a href="Point-sweeps.html#index-closure-tag_002c-_0040code_007b_003c_003e_007d-101">closure tag, <code>&lt;&gt;</code></a>: <a href="Point-sweeps.html#Point-sweeps">Point sweeps</a></li>
+<li><a href="Hello-world.html#index-command-line-option-13">command line option</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Command-line.html#index-command-line-options-511">command line options</a>: <a href="Command-line.html#Command-line">Command line</a></li>
+<li><a href="Hello-world.html#index-command-line_002c-_0040code_007bsketch_007d-7">command line, <code>sketch</code></a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Command-line.html#index-command-line_002c-_0040code_007bsketch_007d-509">command line, <code>sketch</code></a>: <a href="Command-line.html#Command-line">Command line</a></li>
+<li><a href="Drawing-a-solid.html#index-comments-40">comments</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Language-basics.html#index-comments-166">comments</a>: <a href="Language-basics.html#Language-basics">Language basics</a></li>
+<li><a href="Transform-literals.html#index-constructor-181">constructor</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Introduction-by-example.html#index-coordinate-system_002c-right_002dhanded-3">coordinate system, right-handed</a>: <a href="Introduction-by-example.html#Introduction-by-example">Introduction by example</a></li>
+<li><a href="Hello-world.html#index-counter_002dclockwise-polygon-vertex-order-20">counter-clockwise polygon vertex order</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Swept-lines.html#index-culling-302">culling</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Drawing-a-solid.html#index-culling-42">culling</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Hello-world.html#index-culling-23">culling</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Drawing-a-solid.html#index-culling-44">culling</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Language-basics.html#index-declarative-language-163">declarative language</a>: <a href="Language-basics.html#Language-basics">Language basics</a></li>
+<li><a href="Drawing-a-solid.html#index-definition-33">definition</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Definitions.html#index-definition-338">definition</a>: <a href="Definitions.html#Definitions">Definitions</a></li>
+<li><a href="Forms-of-definitions.html#index-definition-with-alternatives-343">definition with alternatives</a>: <a href="Forms-of-definitions.html#Forms-of-definitions">Forms of definitions</a></li>
+<li><a href="Object-transforms.html#index-definition_002c-drawable-75">definition, drawable</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Polyline-sweeps-with-closure.html#index-definition_002c-options-147">definition, options</a>: <a href="Polyline-sweeps-with-closure.html#Polyline-sweeps-with-closure">Polyline sweeps with closure</a></li>
+<li><a href="Drawing-a-solid.html#index-definition_002c-point-35">definition, point</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Swept-objects.html#index-definition_002c-scalar-97">definition, scalar</a>: <a href="Swept-objects.html#Swept-objects">Swept objects</a></li>
+<li><a href="Forms-of-definitions.html#index-definition_002c-simple-342">definition, simple</a>: <a href="Forms-of-definitions.html#Forms-of-definitions">Forms of definitions</a></li>
+<li><a href="Command-line.html#index-definition_002c-tag-517">definition, tag</a>: <a href="Command-line.html#Command-line">Command line</a></li>
+<li><a href="Forms-of-definitions.html#index-definition_002c-tag-346">definition, tag</a>: <a href="Forms-of-definitions.html#Forms-of-definitions">Forms of definitions</a></li>
+<li><a href="Definitions.html#index-definition_002c-tag-339">definition, tag</a>: <a href="Definitions.html#Definitions">Definitions</a></li>
+<li><a href="Overview.html#index-definition_002c-transform-412">definition, transform</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Polyline-sweeps.html#index-definition_002c-vector-117">definition, vector</a>: <a href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a></li>
+<li><a href="Hidden-surface-removal.html#index-depth-sort-501">depth sort</a>: <a href="Hidden-surface-removal.html#Hidden-surface-removal">Hidden surface removal</a></li>
+<li><a href="Internal-options.html#index-depth-sort-265">depth sort</a>: <a href="Internal-options.html#Internal-options">Internal options</a></li>
+<li><a href="Bugs-and-anomalies.html#index-depth-sort-508">depth sort</a>: <a href="Bugs-and-anomalies.html#Bugs-and-anomalies">Bugs and anomalies</a></li>
+<li><a href="Transform-literals.html#index-direct-transform-211">direct transform</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Command-line.html#index-document-template-514">document template</a>: <a href="Command-line.html#Command-line">Command line</a></li>
+<li><a href="Hello-world.html#index-document-template-15">document template</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Object-transforms.html#index-drawable-74">drawable</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Drawables.html#index-drawable-269">drawable</a>: <a href="Drawables.html#Drawables">Drawables</a></li>
+<li><a href="Object-transforms.html#index-drawable-definition-76">drawable definition</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Forms-of-references.html#index-drawable-reference-361">drawable reference</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Swept-lines.html#index-end-polygon-307">end polygon</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Swept-polygons.html#index-end-polygon-316">end polygon</a>: <a href="Swept-polygons.html#Swept-polygons">Swept polygons</a></li>
+<li><a href="Drawing-a-solid.html#index-faces-29">faces</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Polyline-sweeps.html#index-faces-108">faces</a>: <a href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a></li>
+<li><a href="Language-basics.html#index-file_002c-include-168">file, include</a>: <a href="Language-basics.html#Language-basics">Language basics</a></li>
+<li><a href="Language-basics.html#index-file_002c-input-160">file, input</a>: <a href="Language-basics.html#Language-basics">Language basics</a></li>
+<li><a href="Frame.html#index-frame-box-392">frame box</a>: <a href="Frame.html#Frame">Frame</a></li>
+<li><a href="Drawing-options.html#index-global-options-27">global options</a>: <a href="Drawing-options.html#Drawing-options">Drawing options</a></li>
+<li><a href="Global-options.html#index-global-options-375">global options</a>: <a href="Global-options.html#Global-options">Global options</a></li>
+<li><a href="Polyline-sweeps.html#index-helix-115">helix</a>: <a href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a></li>
+<li><a href="Drawing-a-solid.html#index-helix-46">helix</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Hello-world.html#index-hello-world-5">hello world</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="A-technical-drawing.html#index-hidden-surface-algorithm-449">hidden surface algorithm</a>: <a href="A-technical-drawing.html#A-technical-drawing">A technical drawing</a></li>
+<li><a href="Hello-world.html#index-hidden-surface-algorithm-9">hidden surface algorithm</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Transform-literals.html#index-hidden-surface-algorithm-203">hidden surface algorithm</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Special-objects.html#index-hidden-surface-algorithm-57">hidden surface algorithm</a>: <a href="Special-objects.html#Special-objects">Special objects</a></li>
+<li><a href="Hidden-surface-removal.html#index-hidden-surface-algorithm-502">hidden surface algorithm</a>: <a href="Hidden-surface-removal.html#Hidden-surface-removal">Hidden surface removal</a></li>
+<li><a href="A-hierarchical-model.html#index-hierarchical-model-475">hierarchical model</a>: <a href="A-hierarchical-model.html#A-hierarchical-model">A hierarchical model</a></li>
+<li><a href="Identifiers.html#index-identifiers-170">identifiers</a>: <a href="Identifiers.html#Identifiers">Identifiers</a></li>
+<li><a href="Language-basics.html#index-include-file-167">include file</a>: <a href="Language-basics.html#Language-basics">Language basics</a></li>
+<li><a href="Language-basics.html#index-input-file-159">input file</a>: <a href="Language-basics.html#Language-basics">Language basics</a></li>
+<li><a href="Special-objects.html#index-internal-option-54">internal option</a>: <a href="Special-objects.html#Special-objects">Special objects</a></li>
+<li><a href="Global-options.html#index-internal-options-378">internal options</a>: <a href="Global-options.html#Global-options">Global options</a></li>
+<li><a href="Internal-options.html#index-internal-options-261">internal options</a>: <a href="Internal-options.html#Internal-options">Internal options</a></li>
+<li><a href="Key-and-reserved-words.html#index-keywords-171">keywords</a>: <a href="Key-and-reserved-words.html#Key-and-reserved-words">Key and reserved words</a></li>
+<li><a href="Special-objects.html#index-labels-47">labels</a>: <a href="Special-objects.html#Special-objects">Special objects</a></li>
+<li><a href="Language-basics.html#index-language_002c-declarative-164">language, declarative</a>: <a href="Language-basics.html#Language-basics">Language basics</a></li>
+<li><a href="Language.html#index-language_002c-output-399">language, output</a>: <a href="Language.html#Language">Language</a></li>
+<li><a href="Language-basics.html#index-language_002c-scene-description-162">language, scene description</a>: <a href="Language-basics.html#Language-basics">Language basics</a></li>
+<li><a href="Blocks.html#index-lexical-scope-332">lexical scope</a>: <a href="Blocks.html#Blocks">Blocks</a></li>
+<li><a href="Object-transforms.html#index-lexical-scope-72">lexical scope</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Swept-lines.html#index-line-sweep-295">line sweep</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="A-technical-drawing.html#index-line-sweep-448">line sweep</a>: <a href="A-technical-drawing.html#A-technical-drawing">A technical drawing</a></li>
+<li><a href="Polyline-sweeps.html#index-line-sweep-105">line sweep</a>: <a href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a></li>
+<li><a href="Point-and-vector-literals.html#index-literal_002c-point-176">literal, point</a>: <a href="Point-and-vector-literals.html#Point-and-vector-literals">Point and vector literals</a></li>
+<li><a href="Scalar-literals.html#index-literal_002c-scalar-174">literal, scalar</a>: <a href="Scalar-literals.html#Scalar-literals">Scalar literals</a></li>
+<li><a href="Transform-literals.html#index-literal_002c-transform-180">literal, transform</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Point-and-vector-literals.html#index-literal_002c-vector-178">literal, vector</a>: <a href="Point-and-vector-literals.html#Point-and-vector-literals">Point and vector literals</a></li>
+<li><a href="Nested-sweeps.html#index-nesting_002c-swept-object-128">nesting, swept object</a>: <a href="Nested-sweeps.html#Nested-sweeps">Nested sweeps</a></li>
+<li><a href="Unary-forms.html#index-one_002doperand-form-239">one-operand form</a>: <a href="Unary-forms.html#Unary-forms">Unary forms</a></li>
+<li><a href="Two_002doperand-_0028binary_0029-forms.html#index-operator-associativity-231">operator associativity</a>: <a href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">Two-operand (binary) forms</a></li>
+<li><a href="Two_002doperand-_0028binary_0029-forms.html#index-operator-precedence-230">operator precedence</a>: <a href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">Two-operand (binary) forms</a></li>
+<li><a href="Drawing-options.html#index-option-24">option</a>: <a href="Drawing-options.html#Drawing-options">Drawing options</a></li>
+<li><a href="Hello-world.html#index-option_002c-command-line-14">option, command line</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Special-objects.html#index-option_002c-internal-55">option, internal</a>: <a href="Special-objects.html#Special-objects">Special objects</a></li>
+<li><a href="Options.html#index-options-250">options</a>: <a href="Options.html#Options">Options</a></li>
+<li><a href="Polyline-sweeps-with-closure.html#index-options-definition-148">options definition</a>: <a href="Polyline-sweeps-with-closure.html#Polyline-sweeps-with-closure">Polyline sweeps with closure</a></li>
+<li><a href="Forms-of-references.html#index-options-multiple-reference-367">options multiple reference</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Forms-of-references.html#index-options-reference-364">options reference</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Command-line.html#index-options_002c-command-line-510">options, command line</a>: <a href="Command-line.html#Command-line">Command line</a></li>
+<li><a href="Drawing-options.html#index-options_002c-global-26">options, global</a>: <a href="Drawing-options.html#Drawing-options">Drawing options</a></li>
+<li><a href="Global-options.html#index-options_002c-global-374">options, global</a>: <a href="Global-options.html#Global-options">Global options</a></li>
+<li><a href="Internal-options.html#index-options_002c-internal-260">options, internal</a>: <a href="Internal-options.html#Internal-options">Internal options</a></li>
+<li><a href="Global-options.html#index-options_002c-internal-377">options, internal</a>: <a href="Global-options.html#Global-options">Global options</a></li>
+<li><a href="Polygon-sweeps.html#index-options_002c-sweep-135">options, sweep</a>: <a href="Polygon-sweeps.html#Polygon-sweeps">Polygon sweeps</a></li>
+<li><a href="Swept-points.html#index-options_002c-sweep-293">options, sweep</a>: <a href="Swept-points.html#Swept-points">Swept points</a></li>
+<li><a href="Swept-lines.html#index-options_002c-sweep-303">options, sweep</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Polyline-sweeps.html#index-options_002c-sweep-116">options, sweep</a>: <a href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a></li>
+<li><a href="Swept-lines.html#index-options_002c-sweep-312">options, sweep</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Polygon-sweeps.html#index-options_002c-swept-object-134">options, swept object</a>: <a href="Polygon-sweeps.html#Polygon-sweeps">Polygon sweeps</a></li>
+<li><a href="Swept-lines.html#index-options_002c-swept-object-304">options, swept object</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Polyline-sweeps-with-closure.html#index-options_002c-swept-object-146">options, swept object</a>: <a href="Polyline-sweeps-with-closure.html#Polyline-sweeps-with-closure">Polyline sweeps with closure</a></li>
+<li><a href="Swept-lines.html#index-options_002c-swept-object-311">options, swept object</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Overview.html#index-order_002c-polygon-vertex-426">order, polygon vertex</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Swept-polygons.html#index-order_002c-polygon-vertex-319">order, polygon vertex</a>: <a href="Swept-polygons.html#Swept-polygons">Swept polygons</a></li>
+<li><a href="Hello-world.html#index-order_002c-polygon-vertex-22">order, polygon vertex</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Swept-lines.html#index-order_002c-polygon-vertex-301">order, polygon vertex</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Language.html#index-output-language-400">output language</a>: <a href="Language.html#Language">Language</a></li>
+<li><a href="Hello-world.html#index-outside-of-a-polygon-17">outside of a polygon</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Picture-box.html#index-parallel-projection-389">parallel projection</a>: <a href="Picture-box.html#Picture-box">Picture box</a></li>
+<li><a href="Transform-literals.html#index-parallel-projection-195">parallel projection</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Hello-world.html#index-parallel-projection-11">parallel projection</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Two_002doperand-_0028binary_0029-forms.html#index-parentheses-233">parentheses</a>: <a href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">Two-operand (binary) forms</a></li>
+<li><a href="Overview.html#index-perspective-projection-407">perspective projection</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Transform-literals.html#index-perspective-projection-198">perspective projection</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Picture-box.html#index-picture-box-384">picture box</a>: <a href="Picture-box.html#Picture-box">Picture box</a></li>
+<li><a href="Polygons.html#index-planarity-of-polygons-275">planarity of polygons</a>: <a href="Polygons.html#Polygons">Polygons</a></li>
+<li><a href="Sweep-face-splitting.html#index-planarity-of-polygons-327">planarity of polygons</a>: <a href="Sweep-face-splitting.html#Sweep-face-splitting">Sweep face splitting</a></li>
+<li><a href="Drawing-a-solid.html#index-point-definition-36">point definition</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Swept-points.html#index-point-list-290">point list</a>: <a href="Swept-points.html#Swept-points">Swept points</a></li>
+<li><a href="Point-and-vector-literals.html#index-point-literal-175">point literal</a>: <a href="Point-and-vector-literals.html#Point-and-vector-literals">Point and vector literals</a></li>
+<li><a href="Forms-of-references.html#index-point-reference-352">point reference</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Swept-objects.html#index-point-sweep-95">point sweep</a>: <a href="Swept-objects.html#Swept-objects">Swept objects</a></li>
+<li><a href="Swept-points.html#index-point-sweep-287">point sweep</a>: <a href="Swept-points.html#Swept-points">Swept points</a></li>
+<li><a href="Polygon-sweeps.html#index-polygon-sweep-132">polygon sweep</a>: <a href="Polygon-sweeps.html#Polygon-sweeps">Polygon sweeps</a></li>
+<li><a href="Swept-polygons.html#index-polygon-sweep-313">polygon sweep</a>: <a href="Swept-polygons.html#Swept-polygons">Swept polygons</a></li>
+<li><a href="A-hierarchical-model.html#index-polygon-sweep-499">polygon sweep</a>: <a href="A-hierarchical-model.html#A-hierarchical-model">A hierarchical model</a></li>
+<li><a href="Swept-lines.html#index-polygon-vertex-order-300">polygon vertex order</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Swept-polygons.html#index-polygon-vertex-order-318">polygon vertex order</a>: <a href="Swept-polygons.html#Swept-polygons">Swept polygons</a></li>
+<li><a href="Overview.html#index-polygon-vertex-order-425">polygon vertex order</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Swept-lines.html#index-polygon-vertex-order-309">polygon vertex order</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Hello-world.html#index-polygon-vertex-order-21">polygon vertex order</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Overview.html#index-polygon-vertex-order-417">polygon vertex order</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Swept-polygons.html#index-polygon_002c-body-315">polygon, body</a>: <a href="Swept-polygons.html#Swept-polygons">Swept polygons</a></li>
+<li><a href="Swept-lines.html#index-polygon_002c-body-299">polygon, body</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Internal-options.html#index-polygon_002c-body-267">polygon, body</a>: <a href="Internal-options.html#Internal-options">Internal options</a></li>
+<li><a href="Swept-polygons.html#index-polygon_002c-end-317">polygon, end</a>: <a href="Swept-polygons.html#Swept-polygons">Swept polygons</a></li>
+<li><a href="Swept-lines.html#index-polygon_002c-end-308">polygon, end</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="Hello-world.html#index-polygon_002c-outside-of-18">polygon, outside of</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Polygons.html#index-polygon_002c-planar-274">polygon, planar</a>: <a href="Polygons.html#Polygons">Polygons</a></li>
+<li><a href="Sweep-face-splitting.html#index-polygon_002c-planar-326">polygon, planar</a>: <a href="Sweep-face-splitting.html#Sweep-face-splitting">Sweep face splitting</a></li>
+<li><a href="Two_002doperand-_0028binary_0029-forms.html#index-precedence_002c-operator-229">precedence, operator</a>: <a href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">Two-operand (binary) forms</a></li>
+<li><a href="Hello-world.html#index-program_002c-hello-world-6">program, hello world</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Picture-box.html#index-projection_002c-parallel-390">projection, parallel</a>: <a href="Picture-box.html#Picture-box">Picture box</a></li>
+<li><a href="Hello-world.html#index-projection_002c-parallel-12">projection, parallel</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Transform-literals.html#index-projection_002c-parallel-196">projection, parallel</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Overview.html#index-projection_002c-perspective-409">projection, perspective</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Transform-literals.html#index-projection_002c-perspective-202">projection, perspective</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="TikZ_002fPGF-user_002ddefined-styles.html#index-pseudo_002doptions-251">pseudo-options</a>: <a href="TikZ_002fPGF-user_002ddefined-styles.html#TikZ_002fPGF-user_002ddefined-styles">TikZ/PGF user-defined styles</a></li>
+<li><a href="Frame.html#index-_0040code_007bpsframebox_007d-394"><code>psframebox</code></a>: <a href="Frame.html#Frame">Frame</a></li>
+<li><a href="Picture-box.html#index-_0040code_007bpspicture_007d-386"><code>pspicture</code></a>: <a href="Picture-box.html#Picture-box">Picture box</a></li>
+<li><a href="About-sketch.html#index-PSTricks-1">PSTricks</a>: <a href="About-sketch.html#About-sketch">About sketch</a></li>
+<li><a href="Special-objects.html#index-quoting_002c-special-50">quoting, special</a>: <a href="Special-objects.html#Special-objects">Special objects</a></li>
+<li><a href="Specials.html#index-quoting_002c-special-277">quoting, special</a>: <a href="Specials.html#Specials">Specials</a></li>
+<li><a href="Overview.html#index-reference_002c-drawable-424">reference, drawable</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Object-transforms.html#index-reference_002c-drawable-78">reference, drawable</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Forms-of-references.html#index-reference_002c-drawable-362">reference, drawable</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Overview.html#index-reference_002c-drawable-428">reference, drawable</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Forms-of-references.html#index-reference_002c-multiple-options-368">reference, multiple options</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Forms-of-references.html#index-reference_002c-options-365">reference, options</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Polyline-sweeps-with-closure.html#index-reference_002c-options-149">reference, options</a>: <a href="Polyline-sweeps-with-closure.html#Polyline-sweeps-with-closure">Polyline sweeps with closure</a></li>
+<li><a href="Forms-of-references.html#index-reference_002c-point-353">reference, point</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Drawing-a-solid.html#index-reference_002c-point-37">reference, point</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Swept-objects.html#index-reference_002c-scalar-99">reference, scalar</a>: <a href="Swept-objects.html#Swept-objects">Swept objects</a></li>
+<li><a href="Forms-of-references.html#index-reference_002c-scalar-351">reference, scalar</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Forms-of-definitions.html#index-reference_002c-tag-348">reference, tag</a>: <a href="Forms-of-definitions.html#Forms-of-definitions">Forms of definitions</a></li>
+<li><a href="Forms-of-references.html#index-reference_002c-tag-371">reference, tag</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Overview.html#index-reference_002c-transform-415">reference, transform</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Forms-of-references.html#index-reference_002c-transform-359">reference, transform</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Polyline-sweeps.html#index-reference_002c-vector-119">reference, vector</a>: <a href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a></li>
+<li><a href="Forms-of-references.html#index-reference_002c-vector-356">reference, vector</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Repeats.html#index-repeated-object-335">repeated object</a>: <a href="Repeats.html#Repeats">Repeats</a></li>
+<li><a href="Key-and-reserved-words.html#index-reserved-words-172">reserved words</a>: <a href="Key-and-reserved-words.html#Key-and-reserved-words">Key and reserved words</a></li>
+<li><a href="Object-transforms.html#index-right-hand-rule-83">right hand rule</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Introduction-by-example.html#index-right_002dhand-coordinate-system-4">right-hand coordinate system</a>: <a href="Introduction-by-example.html#Introduction-by-example">Introduction by example</a></li>
+<li><a href="Object-transforms.html#index-rotation-81">rotation</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="A-hierarchical-model.html#index-rotation-transform-496">rotation transform</a>: <a href="A-hierarchical-model.html#A-hierarchical-model">A hierarchical model</a></li>
+<li><a href="Transform-literals.html#index-rotation-transform-183">rotation transform</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="A-hierarchical-model.html#index-rotation-transform-494">rotation transform</a>: <a href="A-hierarchical-model.html#A-hierarchical-model">A hierarchical model</a></li>
+<li><a href="Object-transforms.html#index-rotation_002c-center-of-60">rotation, center of</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Nested-sweeps.html#index-rotation_002c-center-of-122">rotation, center of</a>: <a href="Nested-sweeps.html#Nested-sweeps">Nested sweeps</a></li>
+<li><a href="Hello-world.html#index-running-_0040code_007bsketch_007d-8">running <code>sketch</code></a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Swept-objects.html#index-scalar-definition-98">scalar definition</a>: <a href="Swept-objects.html#Swept-objects">Swept objects</a></li>
+<li><a href="Scalar-literals.html#index-scalar-literal-173">scalar literal</a>: <a href="Scalar-literals.html#Scalar-literals">Scalar literals</a></li>
+<li><a href="Forms-of-references.html#index-scalar-reference-350">scalar reference</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Transform-literals.html#index-scale-transform-189">scale transform</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Building-a-drawing.html#index-scene-description-language-406">scene description language</a>: <a href="Building-a-drawing.html#Building-a-drawing">Building a drawing</a></li>
+<li><a href="Language-basics.html#index-scene-description-language-161">scene description language</a>: <a href="Language-basics.html#Language-basics">Language basics</a></li>
+<li><a href="Object-transforms.html#index-scope_002c-identifier-73">scope, identifier</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Blocks.html#index-scope_002c-identifier-333">scope, identifier</a>: <a href="Blocks.html#Blocks">Blocks</a></li>
+<li><a href="Forms-of-definitions.html#index-simple-definition-341">simple definition</a>: <a href="Forms-of-definitions.html#Forms-of-definitions">Forms of definitions</a></li>
+<li><a href="Drawing-a-solid.html#index-solid-28">solid</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Specials.html#index-special-argument-substitution-278">special argument substitution</a>: <a href="Specials.html#Specials">Specials</a></li>
+<li><a href="Special-objects.html#index-special-argument-substitution-53">special argument substitution</a>: <a href="Special-objects.html#Special-objects">Special objects</a></li>
+<li><a href="Special-objects.html#index-special-object-49">special object</a>: <a href="Special-objects.html#Special-objects">Special objects</a></li>
+<li><a href="A-technical-drawing.html#index-special-objects-458">special objects</a>: <a href="A-technical-drawing.html#A-technical-drawing">A technical drawing</a></li>
+<li><a href="Hidden-surface-removal.html#index-splitting_002c-line-and-surface-503">splitting, line and surface</a>: <a href="Hidden-surface-removal.html#Hidden-surface-removal">Hidden surface removal</a></li>
+<li><a href="Hello-world.html#index-splitting_002c-line-and-surface-10">splitting, line and surface</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Special-objects.html#index-substitution_002c-special-52">substitution, special</a>: <a href="Special-objects.html#Special-objects">Special objects</a></li>
+<li><a href="Polyline-sweeps.html#index-surface-107">surface</a>: <a href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a></li>
+<li><a href="Swept-objects.html#index-sweep-92">sweep</a>: <a href="Swept-objects.html#Swept-objects">Swept objects</a></li>
+<li><a href="Swept-blocks.html#index-swept-bock-320">swept bock</a>: <a href="Swept-blocks.html#Swept-blocks">Swept blocks</a></li>
+<li><a href="Polyline-sweeps.html#index-swept-line-106">swept line</a>: <a href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a></li>
+<li><a href="Swept-lines.html#index-swept-line-294">swept line</a>: <a href="Swept-lines.html#Swept-lines">Swept lines</a></li>
+<li><a href="A-technical-drawing.html#index-swept-line-447">swept line</a>: <a href="A-technical-drawing.html#A-technical-drawing">A technical drawing</a></li>
+<li><a href="Swept-objects.html#index-swept-object-91">swept object</a>: <a href="Swept-objects.html#Swept-objects">Swept objects</a></li>
+<li><a href="Sweeps.html#index-swept-object-282">swept object</a>: <a href="Sweeps.html#Sweeps">Sweeps</a></li>
+<li><a href="Swept-points.html#index-swept-point-286">swept point</a>: <a href="Swept-points.html#Swept-points">Swept points</a></li>
+<li><a href="Swept-objects.html#index-swept-point-96">swept point</a>: <a href="Swept-objects.html#Swept-objects">Swept objects</a></li>
+<li><a href="A-hierarchical-model.html#index-swept-polygon-498">swept polygon</a>: <a href="A-hierarchical-model.html#A-hierarchical-model">A hierarchical model</a></li>
+<li><a href="Polygon-sweeps.html#index-swept-polygon-133">swept polygon</a>: <a href="Polygon-sweeps.html#Polygon-sweeps">Polygon sweeps</a></li>
+<li><a href="Definitions.html#index-tag-definition-340">tag definition</a>: <a href="Definitions.html#Definitions">Definitions</a></li>
+<li><a href="Command-line.html#index-tag-definition-516">tag definition</a>: <a href="Command-line.html#Command-line">Command line</a></li>
+<li><a href="Forms-of-definitions.html#index-tag-definition-345">tag definition</a>: <a href="Forms-of-definitions.html#Forms-of-definitions">Forms of definitions</a></li>
+<li><a href="Forms-of-definitions.html#index-tag-reference-347">tag reference</a>: <a href="Forms-of-definitions.html#Forms-of-definitions">Forms of definitions</a></li>
+<li><a href="Forms-of-references.html#index-tag-reference-370">tag reference</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Command-line.html#index-template_002c-document-515">template, document</a>: <a href="Command-line.html#Command-line">Command line</a></li>
+<li><a href="Hello-world.html#index-template_002c-document-16">template, document</a>: <a href="Hello-world.html#Hello-world">Hello world</a></li>
+<li><a href="Drawing-a-solid.html#index-tetrahedron-30">tetrahedron</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Two_002doperand-_0028binary_0029-forms.html#index-tick-operator-_0028_0040code_007b_0027_007d_0029-227">tick operator (<code>'</code>)</a>: <a href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">Two-operand (binary) forms</a></li>
+<li><a href="Affine-arithmetic.html#index-tick-operator-_0028_0040code_007b_0027_007d_0029-157">tick operator (<code>'</code>)</a>: <a href="Affine-arithmetic.html#Affine-arithmetic">Affine arithmetic</a></li>
+<li><a href="About-sketch.html#index-TikZ_002fPGF-2">TikZ/PGF</a>: <a href="About-sketch.html#About-sketch">About sketch</a></li>
+<li><a href="Nested-sweeps.html#index-toroid-123">toroid</a>: <a href="Nested-sweeps.html#Nested-sweeps">Nested sweeps</a></li>
+<li><a href="Repeats.html#index-transform-336">transform</a>: <a href="Repeats.html#Repeats">Repeats</a></li>
+<li><a href="Overview.html#index-transform-408">transform</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Sweeps.html#index-transform-283">transform</a>: <a href="Sweeps.html#Sweeps">Sweeps</a></li>
+<li><a href="Two_002doperand-_0028binary_0029-forms.html#index-transform-224">transform</a>: <a href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">Two-operand (binary) forms</a></li>
+<li><a href="Object-transforms.html#index-transform-58">transform</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Overview.html#index-transform-definition-411">transform definition</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Transform-literals.html#index-transform-literal-179">transform literal</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Forms-of-references.html#index-transform-reference-358">transform reference</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Overview.html#index-transform-reference-414">transform reference</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Transform-literals.html#index-transform_002c-direct-216">transform, direct</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="A-hierarchical-model.html#index-transform_002c-rotation-493">transform, rotation</a>: <a href="A-hierarchical-model.html#A-hierarchical-model">A hierarchical model</a></li>
+<li><a href="Transform-literals.html#index-transform_002c-rotation-184">transform, rotation</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="A-hierarchical-model.html#index-transform_002c-rotation-497">transform, rotation</a>: <a href="A-hierarchical-model.html#A-hierarchical-model">A hierarchical model</a></li>
+<li><a href="Transform-literals.html#index-transform_002c-scale-190">transform, scale</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Object-transforms.html#index-transform_002c-translation-86">transform, translation</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Transform-literals.html#index-transform_002c-translation-187">transform, translation</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="A-hierarchical-model.html#index-transform_002c-translation-489">transform, translation</a>: <a href="A-hierarchical-model.html#A-hierarchical-model">A hierarchical model</a></li>
+<li><a href="Transform-literals.html#index-transform_002c-view-209">transform, view</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Transform-literals.html#index-translation-transform-186">translation transform</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="A-hierarchical-model.html#index-translation-transform-488">translation transform</a>: <a href="A-hierarchical-model.html#A-hierarchical-model">A hierarchical model</a></li>
+<li><a href="Object-transforms.html#index-translation-transform-85">translation transform</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Transparency.html#index-transparency-255">transparency</a>: <a href="Transparency.html#Transparency">Transparency</a></li>
+<li><a href="Two_002doperand-_0028binary_0029-forms.html#index-two_002doperand-form-218">two-operand form</a>: <a href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">Two-operand (binary) forms</a></li>
+<li><a href="Unary-forms.html#index-unary-form-238">unary form</a>: <a href="Unary-forms.html#Unary-forms">Unary forms</a></li>
+<li><a href="Object-transforms.html#index-vector-87">vector</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+<li><a href="Polyline-sweeps.html#index-vector-definition-118">vector definition</a>: <a href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a></li>
+<li><a href="Point-and-vector-literals.html#index-vector-literal-177">vector literal</a>: <a href="Point-and-vector-literals.html#Point-and-vector-literals">Point and vector literals</a></li>
+<li><a href="Forms-of-references.html#index-vector-reference-355">vector reference</a>: <a href="Forms-of-references.html#Forms-of-references">Forms of references</a></li>
+<li><a href="Transform-literals.html#index-view-transform-205">view transform</a>: <a href="Transform-literals.html#Transform-literals">Transform literals</a></li>
+<li><a href="Overview.html#index-virtual-camera-441">virtual camera</a>: <a href="Overview.html#Overview">Overview</a></li>
+<li><a href="Language-basics.html#index-white-space-165">white space</a>: <a href="Language-basics.html#Language-basics">Language basics</a></li>
+<li><a href="Drawing-a-solid.html#index-white-space-41">white space</a>: <a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a></li>
+<li><a href="Object-transforms.html#index-white-space-77">white space</a>: <a href="Object-transforms.html#Object-transforms">Object transforms</a></li>
+   </ul>">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<h1 class="settitle">Sketch</h1>
+<div class="contents">
+<h2>Table of Contents</h2>
+<ul>
+<li><a name="toc_Top" href="index.html#Top">Sketch</a>
+<li><a name="toc_About-sketch" href="About-sketch.html#About-sketch">1 About sketch</a>
+<ul>
+<li><a href="Reporting-bugs.html#Reporting-bugs">1.1 Reporting bugs and recommending improvements.</a>
+<li><a href="Contributions.html#Contributions">1.2 Contributions</a>
+</li></ul>
+<li><a name="toc_Introduction-by-example" href="Introduction-by-example.html#Introduction-by-example">2 Introduction by example</a>
+<ul>
+<li><a href="Hello-world.html#Hello-world">2.1 Hello world</a>
+<li><a href="Drawing-options.html#Drawing-options">2.2 Options</a>
+<li><a href="Drawing-a-solid.html#Drawing-a-solid">2.3 Drawing a solid</a>
+<li><a href="Special-objects.html#Special-objects">2.4 Special objects</a>
+<li><a href="Object-transforms.html#Object-transforms">2.5 Transforms</a>
+<li><a href="Repeated-objects.html#Repeated-objects">2.6 Repeated objects</a>
+<li><a href="Swept-objects.html#Swept-objects">2.7 Swept objects</a>
+<ul>
+<li><a href="Point-sweeps.html#Point-sweeps">2.7.1 Point sweeps</a>
+<li><a href="Polyline-sweeps.html#Polyline-sweeps">2.7.2 Polyline sweeps</a>
+<li><a href="Nested-sweeps.html#Nested-sweeps">2.7.3 Nested sweeps</a>
+<li><a href="Polygon-sweeps.html#Polygon-sweeps">2.7.4 Polygon sweeps</a>
+<li><a href="Polyline-sweeps-with-closure.html#Polyline-sweeps-with-closure">2.7.5 Polyline sweeps with closure</a>
+<li><a href="Affine-arithmetic.html#Affine-arithmetic">2.7.6 Affine arithmetic</a>
+<li><a href="More-to-learn.html#More-to-learn">2.7.7 More to learn</a>
+</li></ul>
+</li></ul>
+<li><a name="toc_Input-language" href="Input-language.html#Input-language">3 Input language</a>
+<ul>
+<li><a href="Language-basics.html#Language-basics">3.1 Basics</a>
+<ul>
+<li><a href="Identifiers.html#Identifiers">3.1.1 Identifiers</a>
+<li><a href="Key-and-reserved-words.html#Key-and-reserved-words">3.1.2 Key and reserved words</a>
+<li><a href="Literals.html#Literals">3.1.3 Literals</a>
+<ul>
+<li><a href="Scalar-literals.html#Scalar-literals">3.1.3.1 Scalar literals</a>
+<li><a href="Point-and-vector-literals.html#Point-and-vector-literals">3.1.3.2 Point and vector literals</a>
+<li><a href="Transform-literals.html#Transform-literals">3.1.3.3 Transform literals</a>
+</li></ul>
+<li><a href="Arithmetic.html#Arithmetic">3.1.4 Arithmetic expressions</a>
+<ul>
+<li><a href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">3.1.4.1 Two-operand (binary) forms and precedence</a>
+<li><a href="Unary-forms.html#Unary-forms">3.1.4.2 Unary forms</a>
+</li></ul>
+<li><a href="Options.html#Options">3.1.5 Options</a>
+<ul>
+<li><a href="PSTricks-options.html#PSTricks-options">3.1.5.1 <code>PSTricks</code> options</a>
+<li><a href="TikZ_002fPGF-options.html#TikZ_002fPGF-options">3.1.5.2 <code>TikZ/PGF</code> options</a>
+<li><a href="Dots-in-TikZ_002fPGF.html#Dots-in-TikZ_002fPGF">3.1.5.3 Dots in <code>TikZ/PGF</code></a>
+<li><a href="TikZ_002fPGF-user_002ddefined-styles.html#TikZ_002fPGF-user_002ddefined-styles">3.1.5.4 <code>TikZ/PGF</code> user-defined styles</a>
+<li><a href="Transparency.html#Transparency">3.1.5.5 Transparency</a>
+<li><a href="Internal-options.html#Internal-options">3.1.5.6 Internal options</a>
+</li></ul>
+<li><a href="Internal-options.html#Internal-options">3.1.6 Point lists</a>
+</li></ul>
+<li><a href="Drawables.html#Drawables">3.2 Drawables</a>
+<ul>
+<li><a href="Dots.html#Dots">3.2.1 Dots</a>
+<li><a href="Lines.html#Lines">3.2.2 Lines</a>
+<li><a href="Curves.html#Curves">3.2.3 Curves</a>
+<li><a href="Polygons.html#Polygons">3.2.4 Polygons</a>
+<li><a href="Specials.html#Specials">3.2.5 Specials</a>
+<li><a href="Sweeps.html#Sweeps">3.2.6 Sweeps</a>
+<ul>
+<li><a href="Swept-points.html#Swept-points">3.2.6.1 Swept points</a>
+<li><a href="Swept-lines.html#Swept-lines">3.2.6.2 Swept lines</a>
+<li><a href="Swept-polygons.html#Swept-polygons">3.2.6.3 Swept polygons</a>
+<li><a href="Swept-blocks.html#Swept-blocks">3.2.6.4 Swept blocks</a>
+<li><a href="Sweep-face-splitting.html#Sweep-face-splitting">3.2.6.5 Sweep face splitting</a>
+</li></ul>
+<li><a href="Blocks.html#Blocks">3.2.7 Blocks</a>
+<li><a href="Repeats.html#Repeats">3.2.8 Repeats</a>
+<li><a href="Puts.html#Puts">3.2.9 Puts</a>
+</li></ul>
+<li><a href="Definitions.html#Definitions">3.3 Definitions</a>
+<ul>
+<li><a href="Forms-of-definitions.html#Forms-of-definitions">3.3.1 Forms of definitions</a>
+<li><a href="Forms-of-references.html#Forms-of-references">3.3.2 Forms of references</a>
+</li></ul>
+<li><a href="Global-environment.html#Global-environment">3.4 Global environment</a>
+<ul>
+<li><a href="Global-options.html#Global-options">3.4.1 Global options</a>
+<li><a href="Camera.html#Camera">3.4.2 Camera</a>
+<li><a href="Picture-box.html#Picture-box">3.4.3 Picture box</a>
+<li><a href="Frame.html#Frame">3.4.4 Frame</a>
+<li><a href="Language.html#Language">3.4.5 Language</a>
+</li></ul>
+</li></ul>
+<li><a name="toc_Building-a-drawing" href="Building-a-drawing.html#Building-a-drawing">4 Building a drawing</a>
+<ul>
+<li><a href="Overview.html#Overview">4.1 Overview</a>
+<li><a href="A-technical-drawing.html#A-technical-drawing">4.2 A technical drawing</a>
+<li><a href="A-hierarchical-model.html#A-hierarchical-model">4.3 A hierarchical model</a>
+<li><a href="Caveats.html#Caveats">4.4 Caveats</a>
+<ul>
+<li><a href="Limits-on-error-detection.html#Limits-on-error-detection">4.4.1 Limits on <code>sketch</code> error detection</a>
+<li><a href="Clipping.html#Clipping">4.4.2 Clipping</a>
+<li><a href="Hidden-surface-removal.html#Hidden-surface-removal">4.4.3 Hidden surface removal and polygon splitting</a>
+<ul>
+<li><a href="Statistics.html#Statistics">4.4.3.1 Statistics</a>
+<li><a href="Bugs-and-anomalies.html#Bugs-and-anomalies">4.4.3.2 Bugs and anomalies</a>
+</li></ul>
+</li></ul>
+</li></ul>
+<li><a name="toc_Command-line" href="Command-line.html#Command-line">5 Command line</a>
+<li><a name="toc_Installing-sketch" href="Installing-sketch.html#Installing-sketch">6 Building and installing <code>sketch</code></a>
+<li><a name="toc_Index-of-syntax" href="Index-of-syntax.html#Index-of-syntax">Index of syntax</a>
+<li><a name="toc_Index" href="Index.html#Index">Index of concepts</a>
+</li></ul>
+</div>
+
+
+
+<div class="node">
+<p>
+<a name="Top"></a>Next:&nbsp;<a rel="next" accesskey="n" href="About-sketch.html#About-sketch">About sketch</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="../index.html#dir">(dir)</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="../index.html#dir">(dir)</a>
+<hr><br>
+</div>
+
+<h2 class="unnumbered">Sketch</h2>
+
+<p>Copyright &copy; 2005 to 2012 Eugene K. Ressler.
+
+   <p>This manual is for <code>sketch</code>, version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+<code>PSTricks</code> or <code>PGF/TikZ</code> code suitable for use with the
+TeX document processing system.
+
+   <p><code>Sketch</code> is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+   <p>Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+   <p>You should have received a copy of the GNU General Public License
+along with <code>sketch</code>; see the file COPYING.txt.  If not, see
+<tt>http://www.gnu.org/copyleft</tt>.
+
+<ul class="menu">
+<li><a accesskey="1" href="About-sketch.html#About-sketch">About sketch</a>:                 Why sketch exists and what it does. 
+<li><a accesskey="2" href="Introduction-by-example.html#Introduction-by-example">Introduction by example</a>:      Most features shown as working code. 
+<li><a accesskey="3" href="Input-language.html#Input-language">Input language</a>:               Syntax and semantics of <code>sketch</code> commands. 
+<li><a accesskey="4" href="Building-a-drawing.html#Building-a-drawing">Building a drawing</a>:           How to use <code>sketch</code> productively. 
+<li><a accesskey="5" href="Command-line.html#Command-line">Command line</a>:                 Options and their usage. 
+<li><a accesskey="6" href="Installing-sketch.html#Installing-sketch">Installing sketch</a>:            Building and installing from sources. 
+<li><a accesskey="7" href="Index-of-syntax.html#Index-of-syntax">Index of syntax</a>
+<li><a accesskey="8" href="Index.html#Index">Index</a>
+
+</li></ul>
+<p>--- The Detailed Node Listing ---
+
+<p>About sketch
+
+</p>
+<ul class="menu">
+<li><a accesskey="9" href="Reporting-bugs.html#Reporting-bugs">Reporting bugs</a>:               Let use know what's wrong! 
+<li><a href="Contributions.html#Contributions">Contributions</a>:                How you can help....
+
+</li></ul>
+<p>Introduction by example
+
+</p>
+<ul class="menu">
+<li><a href="Hello-world.html#Hello-world">Hello world</a>:                  Simplest possible <code>sketch</code> program. 
+<li><a href="Drawing-options.html#Drawing-options">Drawing options</a>:              Controlling object appearance. 
+<li><a href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a>:              Drawing an object with 3d appearance. 
+<li><a href="Special-objects.html#Special-objects">Special objects</a>:              Laying TeX over, in, or under drawings. 
+<li><a href="Object-transforms.html#Object-transforms">Object transforms</a>:            Rotate, translate, scale, and others. 
+<li><a href="Repeated-objects.html#Repeated-objects">Repeated objects</a>:             Making transformed copies. 
+<li><a href="Swept-objects.html#Swept-objects">Swept objects</a>:                Sweeping objects in space to make new shapes.
+
+</li></ul>
+<p>Swept objects
+
+</p>
+<ul class="menu">
+<li><a href="Point-sweeps.html#Point-sweeps">Point sweeps</a>:                 Swept points make lines and polygons. 
+<li><a href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a>:              Swept lines make surfaces. 
+<li><a href="Nested-sweeps.html#Nested-sweeps">Nested sweeps</a>:                Swept sweeps are useful! 
+<li><a href="Polygon-sweeps.html#Polygon-sweeps">Polygon sweeps</a>:               Swept polygons make solids... 
+<li><a href="Polyline-sweeps-with-closure.html#Polyline-sweeps-with-closure">Polyline sweeps with closure</a>:   and so do closed polyline sweeps. 
+<li><a href="Affine-arithmetic.html#Affine-arithmetic">Affine arithmetic</a>:            Sketch useful math expression. 
+<li><a href="More-to-learn.html#More-to-learn">More to learn</a>:                Check out the Mobius strip!
+
+</li></ul>
+<p>Input language
+
+</p>
+<ul class="menu">
+<li><a href="Language-basics.html#Language-basics">Language basics</a>:              Case, space, comments, include files. 
+<li><a href="Drawables.html#Drawables">Drawables</a>:                    Things that can be drawn. 
+<li><a href="Definitions.html#Definitions">Definitions</a>:                  Giving things names. 
+<li><a href="Global-environment.html#Global-environment">Global environment</a>:           Affect the entire drawing.
+
+</li></ul>
+<p>Basics
+
+</p>
+<ul class="menu">
+<li><a href="Identifiers.html#Identifiers">Identifiers</a>:                  Names for things. 
+<li><a href="Key-and-reserved-words.html#Key-and-reserved-words">Key and reserved words</a>:       Names you shouldn't use. 
+<li><a href="Literals.html#Literals">Literals</a>:                     Constants and constructors. 
+<li><a href="Arithmetic.html#Arithmetic">Arithmetic</a>:                   Rules for expressions. 
+<li><a href="Options.html#Options">Options</a>:                      Modifying object appearance.
+
+</li></ul>
+<p>Literals
+
+</p>
+<ul class="menu">
+<li><a href="Scalar-literals.html#Scalar-literals">Scalar literals</a>:              Just the numbers. 
+<li><a href="Point-and-vector-literals.html#Point-and-vector-literals">Point and vector literals</a>:    3d quantities. 
+<li><a href="Transform-literals.html#Transform-literals">Transform literals</a>:           Matrix form.
+
+</li></ul>
+<p>Arithmetic expressions
+
+</p>
+<ul class="menu">
+<li><a href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">Two-operand (binary) forms</a>:   A op B
+<li><a href="Unary-forms.html#Unary-forms">Unary forms</a>:                  op A (and others)
+
+</li></ul>
+<p>Options
+
+</p>
+<ul class="menu">
+<li><a href="PSTricks-options.html#PSTricks-options">PSTricks options</a>:             Options inherited from <code>PSTricks</code>. 
+<li><a href="TikZ_002fPGF-options.html#TikZ_002fPGF-options">TikZ/PGF options</a>:             Options inherited from <code>TikZ/PGF</code>. 
+<li><a href="Dots-in-TikZ_002fPGF.html#Dots-in-TikZ_002fPGF">Dots in TikZ/PGF</a>:             Sketch uses <code>TikZ/PGF</code> circles for dots. 
+<li><a href="TikZ_002fPGF-user_002ddefined-styles.html#TikZ_002fPGF-user_002ddefined-styles">TikZ/PGF user-defined styles</a>:   Support for <code>TikZ/PGF</code> named, user-defined styles. 
+<li><a href="Transparency.html#Transparency">Transparency</a>:                 See-through polygons. 
+<li><a href="Internal-options.html#Internal-options">Internal options</a>:             Options used by <code>sketch</code>.
+
+</li></ul>
+<p>Point lists
+
+</p>
+<ul class="menu">
+<li><a href="Drawables.html#Drawables">Drawables</a>:                    Things that are drawn. 
+<li><a href="Definitions.html#Definitions">Definitions</a>:                  Things with names.
+
+</li></ul>
+<p>Drawables
+
+</p>
+<ul class="menu">
+<li><a href="Dots.html#Dots">Dots</a>:                         Draw dots. 
+<li><a href="Lines.html#Lines">Lines</a>:                        Draw polylines. 
+<li><a href="Curves.html#Curves">Curves</a>:                       Draw curves. 
+<li><a href="Polygons.html#Polygons">Polygons</a>:                     Draw polygons. 
+<li><a href="Specials.html#Specials">Specials</a>:                     Embed raw LaTeX and <code>PSTricks</code>. 
+<li><a href="Sweeps.html#Sweeps">Sweeps</a>:                       Draw sweeps of dots and polylines. 
+<li><a href="Blocks.html#Blocks">Blocks</a>:                       Group other drawables. 
+<li><a href="Repeats.html#Repeats">Repeats</a>:                      Draw transformed copies of objects. 
+<li><a href="Puts.html#Puts">Puts</a>:                         Draw one object transformed.
+
+</li></ul>
+<p>Sweeps
+
+</p>
+<ul class="menu">
+<li><a href="Swept-points.html#Swept-points">Swept points</a>:                 Swept points make lines or polygons. 
+<li><a href="Swept-lines.html#Swept-lines">Swept lines</a>:                  Swept lines make open or closed surfaces. 
+<li><a href="Swept-polygons.html#Swept-polygons">Swept polygons</a>:               Swept polygons make closed surfaces. 
+<li><a href="Swept-blocks.html#Swept-blocks">Swept blocks</a>:                 Swept block == block of sweeps. 
+<li><a href="Sweep-face-splitting.html#Sweep-face-splitting">Sweep face splitting</a>:         Fixing warped faces with triangles.
+
+</li></ul>
+<p>Definitions
+
+</p>
+<ul class="menu">
+<li><a href="Forms-of-definitions.html#Forms-of-definitions">Forms of definitions</a>:         Different defs for different purposes. 
+<li><a href="Forms-of-references.html#Forms-of-references">Forms of references</a>:          How references denote types.
+
+</li></ul>
+<p>Global environment
+
+</p>
+<ul class="menu">
+<li><a href="Global-options.html#Global-options">Global options</a>:               Attributes of the entire drawing. 
+<li><a href="Camera.html#Camera">Camera</a>:                       A final camera transformation of the scene. 
+<li><a href="Picture-box.html#Picture-box">Picture box</a>:                  Setting the bounding box and 2d clipping. 
+<li><a href="Frame.html#Frame">Frame</a>:                        Adding a box around the drawing. 
+<li><a href="Language.html#Language">Language</a>:                     Setting the output language.
+
+</li></ul>
+<p>Building a drawing
+
+</p>
+<ul class="menu">
+<li><a href="Overview.html#Overview">Overview</a>:                     Building a substantial drawing. 
+<li><a href="A-technical-drawing.html#A-technical-drawing">A technical drawing</a>:          An example with fine placement. 
+<li><a href="A-hierarchical-model.html#A-hierarchical-model">A hierarchical model</a>:         An example with sweeps and puts. 
+<li><a href="Caveats.html#Caveats">Caveats</a>:                      Where trouble can occur.
+
+</li></ul>
+<p>Caveats
+
+</p>
+<ul class="menu">
+<li><a href="Limits-on-error-detection.html#Limits-on-error-detection">Limits on error detection</a>:    What sketch doesn't do. 
+<li><a href="Clipping.html#Clipping">Clipping</a>:                     No clipping at present. 
+<li><a href="Hidden-surface-removal.html#Hidden-surface-removal">Hidden surface removal</a>:       Imperfections to fix.
+
+</li></ul>
+<p>Hidden surface removal and polygon splitting
+
+</p>
+<ul class="menu">
+<li><a href="Statistics.html#Statistics">Statistics</a>:                   Performance numbers on depth sort. 
+<li><a href="Bugs-and-anomalies.html#Bugs-and-anomalies">Bugs and anomalies</a>:           Imperfections in this implementation.
+
+   </ul>
+
+   <div class="node">
+<p>
+<a name="Index"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="Index-of-syntax.html#Index-of-syntax">Index of syntax</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h2 class="unnumbered">Index of concepts</h2>
+
+</body></html>
+

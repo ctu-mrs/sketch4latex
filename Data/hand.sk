@@ -1,0 +1,387 @@
+%
+% Very simple model of my hand
+%
+% Gene Ressler
+%
+% In particular, this completely ignores the carpal joints.
+%
+% Try this with various options to sketch.
+%
+% -D fist   \
+% -D ok      > none or one of these
+% -D spread /
+%
+% -D topview   \
+% -D frontview  > none or one of these
+% -D sideview  /
+%
+% -D repeated 
+%
+% I am not responsible for modifications to draw
+% obscene gestures.
+
+% parameterization of model
+
+% for fingers, 0 is thumb, 1 is index, 
+%   2 is middle, 3 is ring, 4 is little
+
+% lateral angle between fingers
+def spread_rot              
+  <fist> 0
+  <ok> 5
+  <spread>10
+  <> 0
+% and between thumb and index finger
+def spread_rot_0 
+  <fist> 40
+  <ok> 55
+  <spread> 55
+  <> 25
+
+% rotations of finger parts
+% distal is the finger tip
+% middle is below that
+% meta is the knuckle
+def distal_0_rot           
+  <fist> 60
+  <ok> 45
+  <> -10
+def middle_0_rot           
+  <fist> 50
+  <ok> 40
+  <spread> 0
+  <> 10
+def meta_0_rot 
+  <fist> 40
+  <ok> 35
+  <> 0
+
+def distal_1_rot 
+  <fist> 90
+  <ok> 54
+  <> 0
+def meta_1_rot 
+  <fist> 90
+  <ok> 60
+  <> 0
+
+def distal_2_rot
+  <fist> 90
+  <ok> 30
+  <> 0
+def meta_2_rot
+  <fist> 90
+  <ok> 35
+  <> 0
+
+def distal_3_rot
+  <fist> 90
+  <ok> 30
+  <> 0
+def meta_3_rot
+  <fist> 90
+  <ok> 30
+  <> 0
+
+def distal_4_rot 
+  <fist> 90
+  <ok> 30
+  <> 0
+def meta_4_rot 
+  <fist> 90
+  <ok> 25
+  <> 0
+
+% end parameters
+
+% useful stuff
+def O (0,0,0)
+def I [1,0,0]
+def J [0,1,0]
+def K [0,0,1]
+
+% dependent rotations 
+% fingers have the last two joints wired together
+def middle_1_rot distal_1_rot
+def middle_2_rot distal_2_rot
+def middle_3_rot distal_3_rot
+def middle_4_rot distal_4_rot
+
+% proportions 
+def proximal_rad           .6
+def distal_rad             .5
+def distal_len            1.8
+def joint_rad              .6
+def joint_gap              .7
+def middle_ratio	  1.8
+def proximal_distal_ratio  proximal_rad / distal_rad
+
+% primitive segment of a finger is a truncated cone
+def segment {
+  def n_faces 8
+  sweep { n_faces<>, rotate(360 / n_faces, [J]) } 
+    line(proximal_rad, 0)(distal_rad, distal_len)
+}
+
+% spheres to connect segments at joints
+def joint_sphere {
+  def n_joint_faces 8
+  sweep [fillcolor=lightgray] { n_joint_faces, rotate(360 / n_joint_faces, [J]) }
+    sweep { n_joint_faces, rotate(180 / n_joint_faces) } 
+      (0, -joint_rad)
+}
+
+% following is five separate definitions for five fingers
+% with parameters, this would be much shorter!
+
+def distal_0 {
+  put { translate(joint_gap * joint_rad * [J]) 
+        then rotate(distal_0_rot, [I]) 
+        then translate((distal_len + joint_gap * joint_rad) * [J]) }
+    {segment}
+  put { rotate(distal_0_rot / 2, [I])
+        then translate((distal_len + joint_gap * joint_rad) * [J]) } 
+    {joint_sphere}
+  put { scale( [J] + proximal_distal_ratio * ([I]+[K]) ) }
+    {segment}
+}  
+
+def finger_0 {
+  put { translate(joint_gap * joint_rad * [J])
+        then rotate(middle_0_rot, [I])
+        then translate((middle_ratio * distal_len + joint_gap * joint_rad) * [J]) }
+    {distal_0}
+  put { scale(proximal_distal_ratio)
+        then rotate(middle_0_rot / 2, [I])
+        then translate((middle_ratio * distal_len + joint_gap * joint_rad) * [J]) } 
+    {joint_sphere}
+  put { scale( middle_ratio * [J] + proximal_distal_ratio^2 * ([I]+[K]) ) }
+    {segment}
+}
+
+def distal_1 {
+  put { translate(joint_gap * joint_rad * [J]) 
+        then rotate(distal_1_rot, [I]) 
+        then translate((distal_len + joint_gap * joint_rad) * [J]) }
+    {segment}
+  put { rotate(distal_1_rot / 2, [I])
+        then translate((distal_len + joint_gap * joint_rad) * [J]) } 
+    {joint_sphere}
+  put { scale( [J] + proximal_distal_ratio * ([I]+[K]) ) }
+    {segment}
+}  
+
+def finger_1 {
+  put { translate(joint_gap * joint_rad * [J])
+        then rotate(middle_1_rot, [I])
+        then translate((middle_ratio * distal_len + joint_gap * joint_rad) * [J]) }
+    {distal_1}
+  put { scale(proximal_distal_ratio)
+        then rotate(middle_1_rot / 2, [I])
+        then translate((middle_ratio * distal_len + joint_gap * joint_rad) * [J]) } 
+    {joint_sphere}
+  put { scale( middle_ratio * [J] + proximal_distal_ratio^2 * ([I]+[K]) ) }
+    {segment}
+}
+
+def distal_2 {
+  put { translate(joint_gap * joint_rad * [J]) 
+        then rotate(distal_2_rot, [I]) 
+        then translate((distal_len + joint_gap * joint_rad) * [J]) }
+    {segment}
+  put { rotate(distal_2_rot / 2, [I])
+        then translate((distal_len + joint_gap * joint_rad) * [J]) } 
+    {joint_sphere}
+  put { scale( [J] + proximal_distal_ratio * ([I]+[K]) ) }
+    {segment}
+}  
+
+def finger_2 {
+  put { translate(joint_gap * joint_rad * [J])
+        then rotate(middle_2_rot, [I])
+        then translate((middle_ratio * distal_len + joint_gap * joint_rad) * [J]) }
+    {distal_2}
+  put { scale(proximal_distal_ratio)
+        then rotate(middle_2_rot / 2, [I])
+        then translate((middle_ratio * distal_len + joint_gap * joint_rad) * [J]) } 
+    {joint_sphere}
+  put { scale( middle_ratio * [J] + proximal_distal_ratio^2 * ([I]+[K]) ) }
+    {segment}
+}
+
+def distal_3 {
+  put { translate(joint_gap * joint_rad * [J]) 
+        then rotate(distal_3_rot, [I]) 
+        then translate((distal_len + joint_gap * joint_rad) * [J]) }
+    {segment}
+  put { rotate(distal_3_rot / 2, [I])
+        then translate((distal_len + joint_gap * joint_rad) * [J]) } 
+    {joint_sphere}
+  put { scale( [J] + proximal_distal_ratio * ([I]+[K]) ) }
+    {segment}
+}  
+
+def finger_3 {
+  put { translate(joint_gap * joint_rad * [J])
+        then rotate(middle_3_rot, [I])
+        then translate((middle_ratio * distal_len + joint_gap * joint_rad) * [J]) }
+    {distal_3}
+  put { scale(proximal_distal_ratio)
+        then rotate(middle_3_rot / 2, [I])
+        then translate((middle_ratio * distal_len + joint_gap * joint_rad) * [J]) } 
+    {joint_sphere}
+  put { scale( middle_ratio * [J] + proximal_distal_ratio^2 * ([I]+[K]) ) }
+    {segment}
+}
+
+def distal_4 {
+  put { translate(joint_gap * joint_rad * [J]) 
+        then rotate(distal_4_rot, [I]) 
+        then translate((distal_len + joint_gap * joint_rad) * [J]) }
+    {segment}
+  put { rotate(distal_4_rot / 2, [I])
+        then translate((distal_len + joint_gap * joint_rad) * [J]) } 
+    {joint_sphere}
+  put { scale( [J] + proximal_distal_ratio * ([I]+[K]) ) }
+    {segment}
+}  
+
+def finger_4 {
+  put { translate(joint_gap * joint_rad * [J])
+        then rotate(middle_4_rot, [I])
+        then translate((middle_ratio * distal_len + joint_gap * joint_rad) * [J]) }
+    {distal_4}
+  put { scale(proximal_distal_ratio)
+        then rotate(middle_4_rot / 2, [I])
+        then translate((middle_ratio * distal_len + joint_gap * joint_rad) * [J]) } 
+    {joint_sphere}
+  put { scale( middle_ratio * [J] + proximal_distal_ratio^2 * ([I]+[K]) ) }
+    {segment}
+}
+
+% points on the palm of the hand
+def proximal_0_loc (1.8,-5.5,0)
+def proximal_1_loc (1.8,.1,0)
+def proximal_2_loc (O)
+def proximal_3_loc (-1.8,-.2,0)
+def proximal_4_loc (-3.6,-.5,0)
+def h5 (proximal_4_loc) + [-.6,-.2]
+def h6 (h5) + [1,-5]
+def h8 (proximal_0_loc) + [.75,-.5]
+def h7 (h8) + [-.6,-.8]
+def h6a (h6) + .6 * ((h7) - (h6))
+def h9 (h8) + [-1.9,1]
+def h10 (proximal_1_loc) + [.85,-.3]
+
+def hand {
+
+  % thumb has an extra rotation for opposable-ness!
+  def opposition_rot rotate(-50, [J])
+  def thk_scale_0 1.2
+  put { scale([thk_scale_0,.9,thk_scale_0]) % this distorts a little; oh well
+        then translate((joint_gap * joint_rad) * [J])
+        then [[opposition_rot]]
+	then rotate(meta_0_rot, [I])
+        then rotate(-spread_rot_0, [K])
+        then translate((proximal_0_loc) - (O)) } 
+    {finger_0}
+
+  put { scale(thk_scale_0 * proximal_distal_ratio^2)
+        then [[opposition_rot]]
+        then rotate(meta_0_rot / 2, [I])
+        then rotate(-spread_rot_0, [K])
+        then translate((proximal_0_loc) - (O)) } 
+    {joint_sphere}
+
+  % index finger
+  def scale_1 .85
+  put { scale(scale_1) 
+        then translate((joint_gap * joint_rad) * [J])
+	then rotate(meta_1_rot, [I])
+        then rotate(-spread_rot, [K])
+        then translate((proximal_1_loc) - (O)) } 
+    {finger_1}
+
+  put { scale(scale_1 * proximal_distal_ratio^2)
+        then rotate(meta_1_rot / 2, [I])
+        then rotate(-spread_rot, [K])
+        then translate((proximal_1_loc) - (O)) } 
+    {joint_sphere}
+
+  % middle finger
+  put { % no scale then
+        translate((joint_gap * joint_rad) * [J])
+	then rotate(meta_2_rot, [I])
+        % no spread rotation
+        then translate((proximal_2_loc) - (O)) } 
+    {finger_2}
+
+  put { scale(proximal_distal_ratio^2)
+        then rotate(meta_2_rot / 2, [I])
+        then rotate(-spread_rot, [K])
+        then translate((proximal_2_loc) - (O)) } 
+    {joint_sphere}
+
+  % ring finger
+  def scale_3 .85
+  put { scale(scale_3) 
+        then translate((joint_gap * joint_rad) * [J])
+	then rotate(meta_3_rot, [I])
+        then rotate(spread_rot, [K])
+        then translate((proximal_3_loc) - (O)) } 
+    {finger_3}
+
+  put { scale(scale_3 * proximal_distal_ratio^2)
+        then rotate(meta_3_rot / 2, [I])
+        then rotate(-spread_rot, [K])
+        then translate((proximal_3_loc) - (O)) } 
+    {joint_sphere}
+
+  % little finger
+  def scale_4 .7
+  put { scale(scale_4) 
+        then translate((joint_gap * joint_rad) * [J])
+	then rotate(meta_4_rot, [I])
+        then rotate(2 * spread_rot, [K])
+        then translate((proximal_4_loc) - (O)) } 
+    {finger_4}
+
+  put { scale(scale_4 * proximal_distal_ratio^2)
+        then rotate(meta_4_rot / 2, [I])
+        then rotate(-spread_rot, [K])
+        then translate((proximal_4_loc) - (O)) } 
+    {joint_sphere}
+
+  % palm is built by sweeping a polygon through a small
+  % angle in order to make it thicker at the wrist
+  put { translate(joint_gap * joint_rad * -[J]) } % drop polytope to expose knuckles
+    sweep { 1, rotate(6, (0,15,0), [I]) }
+      put { rotate(-3, (0,15,0), [I]) } {
+        % need two polygons for convexity; the desired shape is concave at the thumb
+        polygon(proximal_1_loc)(proximal_2_loc)(proximal_3_loc)(proximal_4_loc)
+               (h5)(h6)(h6a)(h9)(h10)
+        polygon(h6a)(h7)(h8)(h9)
+      }
+}
+
+% a few views
+def viewxf 
+ <frontview> view((0,0,10))
+ <sideview>  view((10,0,0))
+ <topview>   view((0,10,0), (O), -[K])
+ <>          view((4,3,10))
+
+% either a single copy or a repeat to show different angles
+def scene 
+  <repeated>
+    put { [[viewxf]] then scale(.25) }  {
+      def N 4
+      repeat { N, rotate(270/N, [3,2,1]), translate(14*[I]) } {hand}
+    }
+  <> put { [[viewxf]] then scale(.3) } {hand}
+
+{scene}
+
+global {
+  set [linewidth=.3pt]
+}

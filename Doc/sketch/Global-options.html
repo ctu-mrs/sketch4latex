@@ -1,0 +1,73 @@
+<html lang="en">
+<head>
+<title>Global options - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Global-environment.html#Global-environment" title="Global environment">
+<link rel="prev" href="Global-environment.html#Global-environment" title="Global environment">
+<link rel="next" href="Camera.html#Camera" title="Camera">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Global-options"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Camera.html#Camera">Camera</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Global-environment.html#Global-environment">Global environment</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Global-environment.html#Global-environment">Global environment</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h4 class="subsection">3.4.1 Global options</h4>
+
+<p><a name="index-options_002c-global-374"></a><a name="index-global-options-375"></a><a name="index-set-376"></a><strong>Syntax:</strong>
+<pre class="example">     set [ <var>options</var> ]
+</pre>
+   <p class="noindent">The contents of <var>options</var>, except for <code>sketch</code> internal
+options, are copied as-is to a <tt>\psset</tt> that appears before
+anything else in the output file.  This is a good place to set
+<code>unit</code>, a default <code>linewidth</code>, etc.
+
+   <p>Internal options
+<a name="index-options_002c-internal-377"></a><a name="index-internal-options-378"></a>work on all objects where they make sense. 
+This includes
+<a name="index-cull-379"></a><a name="index-split-380"></a><a name="index-lay-381"></a><code>cull</code> and <code>split</code> (but not <code>lay</code>). 
+See <a href="Internal-options.html#Internal-options">Internal options</a>.
+
+   </body></html>
+

@@ -1,0 +1,341 @@
+def x000 {
+  def O (0,0,0)
+  def I [1,0,0]
+  def J [0,1,0]
+  def K [0,0,1]
+  def eye (18,12,10)
+  put { view( (eye) ) 
+        then perspective(|(eye)-(O)|) 
+        then scale(3/8) } {
+  def R 3
+  def N 16
+  def degrees_per_seg 15
+  def pitch 1/7
+  def darc degrees_per_seg / 360 * 2 * 3.14159 * R
+  def dy darc * pitch
+  def n_segs 114
+  line[linecolor=red,linewidth=2pt](0,-1,0)(0, n_segs * dy + 1, 0)
+  sweep { n_segs, rotate( degrees_per_seg, (O), [J] ) then translate([0, dy, 0]) }
+    put { translate([R,0,0]) then rotate(atan2(dy, darc), (O), [I]) }
+      sweep[fillcolor=lightgray] { N<>, rotate(360/N, (O), [K]) } (1,0)
+
+  }
+}
+
+def x010 {
+  put { view((5,4,8)) } {
+    def L 1.5
+    line[arrows=<->](L,0,0)(0,0,0)(0,L,0)
+    line[arrows=->](0,0,0)(0,0,L)
+    special|\uput[r]#1{$x$}
+            \uput[u]#2{$y$}
+            \uput[l]#3{$z$}|
+      (L,0,0) % 1
+      (0,L,0) % 2
+      (0,0,L) % 3
+  }
+}
+
+def x020 {
+  polygon(0,0,1)(1,0,0)(0,1,0)
+  line(-1,-1,-1)(2,2,2)
+  special|\psline[linecolor=lightgray]{<->}#1#2#3
+         \pscircle*[linecolor=lightgray,fillcolor=lightgray]#2{2pt}
+         \pscircle[linecolor=lightgray]#2{4pt}|
+    [lay=under](0,2,0)(0,0,0)(2,0,0)
+}
+
+def x030 {
+  polygon[fillcolor=lightgray,linewidth=3pt](0,0,1)(1,0,0)(0,1,0)
+  line[linestyle=dotted](-1,-1,-1)(2,2,2)
+}
+
+def x040 {
+  % vertices of the tetrahedron
+  def p1 (0,0,1)
+  def p2 (1,0,0)
+  def p3 (0,1,0)
+  def p4 (-.3,-.5,-.8)
+
+  % faces of the tetrahedron.
+  polygon(p1)(p2)(p3) % original front polygon
+  polygon(p1)(p4)(p2) % bottom
+  polygon(p1)(p3)(p4) % left
+  polygon(p3)(p2)(p4) % rear
+
+  % line to pierce the tetrahedron
+  line[linecolor=red](-1,-1,-1)(2,2,2)
+}
+
+def x042 {
+  % vertices of the tetrahedron
+  def p1 (0,0,1)
+  def p2 (1,0,0)
+  def p3 (0,1,0)
+  def p4 (-.3,-.5,-.8)
+
+  % faces of the tetrahedron.
+  polygon(p1)(p2)(p3) % original front polygon
+  polygon(p1)(p4)(p2) % bottom
+  polygon(p1)(p3)(p4) % left
+  polygon(p3)(p2)(p4) % rear
+
+  % line to pierce the tetrahedron
+  line[linecolor=red](-1,-1,-1)(2,2,2)
+
+  % labels
+  special |\footnotesize
+           \uput{2pt}[ur]#1{$P1$}\uput[r]#2{$P2$}
+           \uput[u]#3{$P3$}\uput[d]#4{$P4$}|
+    (p1)(p2)(p3)(p4)
+}
+
+def x045 {
+  def O (0,0,0)
+  def K [0,0,1]
+  def n_segs 60
+  def degrees_per_seg 20
+  def pitch 3
+  put { view((20,7,4)) then perspective(22) } {
+  sweep[cull=false] { n_segs, rotate(10, (O), [K]) then translate(pitch * degrees_per_seg / 360 * [K]) } line[cull=false](-1,0)(1,0)
+  put { translate([0,2.5,0]) }
+    sweep[cull=true]  { n_segs, rotate(10, (O), [K]) then translate(pitch * degrees_per_seg / 360 * [K]) } line[cull=false](-1,0)(1,0)
+  }
+}
+
+def x050 {
+
+  def pierced_tetrahedron {
+    def p1 (0,0,1) def p2 (1,0,0)
+    def p3 (0,1,0) def p4 (-.3,-.5,-.8)
+    % faces of the tetrahedron.
+    polygon(p1)(p2)(p3)                      % original
+    polygon(p1)(p4)(p2)                      % bottom
+    polygon(p1)(p3)(p4)                      % left
+    polygon[fillcolor=lightgray](p3)(p2)(p4) % rear
+    line[linecolor=red](-1,-1,-1)(2,2,2)
+  }
+
+  {pierced_tetrahedron}  % tetrahedron in original position
+
+  put { rotate(90, (0,0,0), [1,0,0]) % copy in new position
+        then translate([2.5,0,0]) } {pierced_tetrahedron}
+}
+
+def x060 {
+  
+  def pierced_tetrahedron {
+    def p1 (0,0,1) def p2 (1,0,0)
+    def p3 (0,1,0) def p4 (-.3,-.5,-.8)
+    % faces of the tetrahedron.
+    polygon(p1)(p2)(p3)                      % original
+    polygon(p1)(p4)(p2)                      % bottom
+    polygon(p1)(p3)(p4)                      % left
+    polygon[fillcolor=lightgray](p3)(p2)(p4) % rear
+    line[linecolor=red](-1,-1,-1)(2,2,2)
+  }
+
+  repeat { 7, rotate(15, (0,0,0), [1,0,0]) % copy in new position
+              then translate([1.8,0,0]) } {pierced_tetrahedron}
+}
+
+def x070 {
+  def n_segs 8
+  sweep { n_segs, rotate(180 / n_segs, [0,0,1]) } (1,0,0)
+}
+
+def x080 {
+  def n_segs 8
+  sweep { n_segs<>, rotate(180 / n_segs, [0,0,1]) } (1,0,0)
+}
+
+% toroid
+def x090 {
+  put { view((4,5,10)) } {
+    def n_toroid_segs 20
+    def n_circle_segs 16
+    def r_minor 1
+    def r_major 1.5
+    sweep { n_toroid_segs, rotate(360 / n_toroid_segs, [0,1,0]) }
+      sweep { n_circle_segs, rotate(360 / n_circle_segs, (r_major,0,0)) } 
+        (r_major + r_minor, 0)
+    def al 1.5
+    line[linecolor=red,arrows=->](0,0,0)(r_major + r_minor + al,0,0)
+    line[linecolor=red,arrows=->](0,0,0)(0,r_minor + al,0)
+    line[linecolor=red,arrows=->](0,0,0)(0,0,r_major + r_minor + al)
+    special|\uput[r]#1{$x$}
+            \uput[u]#2{$y$}
+            \uput[dl]#3{$z$}|(r_major + r_minor + al,0,0)(0,r_minor + al,0)(0,0,r_major + r_minor + al)
+  }
+}
+
+% triangle with normal
+def x100 {
+  def p1 (1,0,0)
+  def p2 (0,0.5,0)
+  def p3 (-0.5,-1,2)
+  def O (0,0,0)
+  def N unit( ((p3) - (p2)) * ((p1) - (p2)) )
+  def n1 ((p1) - (O) + (p2) - (O) + (p3) - (O)) / 3 + (O)
+  def n2 (n1)+[N]
+  polygon(p1)(p2)(p3)
+  line[arrows=*->](n1)(n2)
+}
+
+% views of cylinder
+def x110 {
+  def n_cyl_segs 20
+  def n_views 5
+  def I [1,0,0]
+  repeat { n_views, rotate(180/n_views, [I]) then translate([I] * 2.1) } 
+    sweep[fillcolor=lightgray]{ n_cyl_segs<>, rotate(360/n_cyl_segs, [0,1,0]) } 
+      line[fillcolor=white](1,-1)(1,1)
+}
+
+% mobius strip
+def x120 {
+  put { view ((3,5,10)) } {
+
+  def R 4
+  def N 64
+  def T .3
+  sweep[cull=false] { 
+    N, 
+    rotate(180/N, (R,0,0)), 
+    rotate(360/N, [0,1,0])
+  } line(R - 1,-T)(R + 1,-T)(R + 1,T)(R - 1,T)(R - 1,-T)
+
+  }
+}
+
+def x130_200 {
+  % useful common defs
+  def O (0,0,0)
+
+  % right side (outside to right)
+  def ht 2 % height of peak of house
+  def R1 (1,1,1) def R2 (1,-1,1) def R3 (1,-1,-1) def R4 (1,1,-1)
+  def R5 (1,ht,0) 
+
+  % left side (outside to right--backward)
+  def W  [2,0,0]
+  def L1 (R1)-[W] def L2 (R2)-[W] def L3 (R3)-[W] def L4 (R4)-[W]
+  def L5 (R5)-[W]
+
+  % door
+  def e .01
+  def D1 (0,-1,1+e) def D2 (.5,-1,1+e) def D3 (.5,0,1+e) def D4 (0,0,1+e)
+
+  def hp <ex130> scale(1)
+         <ex140> scale(1)
+         <> rotate(-40, [0,1,0]) then translate([0,0,-12]) % house positioner
+  def pR1 [[hp]]*(R1) def pR2 [[hp]]*(R2) def pR3 [[hp]]*(R3)
+  def pR4 [[hp]]*(R4) def pR5 [[hp]]*(R5)
+  def pL1 [[hp]]*(L1) def pL2 [[hp]]*(L2) def pL3 [[hp]]*(L3)
+  def pL4 [[hp]]*(L4) def pL5 [[hp]]*(L5)
+  def pD1 [[hp]]*(D1) def pD2 [[hp]]*(D2) def pD3 [[hp]]*(D3)
+  def pD4 [[hp]]*(D4) 
+
+  % house
+  def rgt polygon (pR1)(pR2)(pR3)(pR4)(pR5)
+  def lft polygon (pL5)(pL4)(pL3)(pL2)(pL1)
+  def frt polygon (pR2)(pR1)(pL1)(pL2)
+  def bck polygon (pR4)(pR3)(pL3)(pL4)
+  def tfr polygon (pR1)(pR5)(pL5)(pL1)
+  def tbk polygon (pR5)(pR4)(pL4)(pL5)
+  def bot polygon (pR2)(pL2)(pL3)(pR3)
+  def door polygon[fillcolor=brown] (pD1)(pD2)(pD3)(pD4)
+  def house { {rgt}{lft}{frt}{bck}{tfr}{tbk}{bot}{door} }
+
+  % perspective system
+  def axes {
+    def sz 1
+    line [arrows=<->] (sz,0,0)(O)(0,sz,0)
+    line [arrows=->]  (O)(0,0,sz)
+    line [linewidth=.2pt,linecolor=blue,linestyle=dashed] (O)(0,0,-12)
+    special |\uput[r]#1{$x$}\uput[u]#2{$y$}\uput[l]#3{$z$}|
+      (sz,0,0)(0,sz,0)(0,0,sz)
+  }
+  def p 5 % projection distance (plane at z=-p)
+  def projection_plane {
+    def sz 1.5
+    polygon (-sz,-sz,-p)(sz,-sz,-p)(sz,sz,-p)(-sz,sz,-p)
+    special |\rput[b]#1-2#3{\footnotesize\sf projection plane}|
+      [lay=over](-sz,-sz,-p)(sz,-sz,-p)(0,-sz+.1,-p)
+  }
+  def projection_rays {
+    def ray [linewidth=.3pt,linecolor=lightgray]
+    % right
+    line [ray](O)(pR1) line [ray](O)(pR2) line[ray](O)(pR3)
+    line [ray](O)(pR4) line [ray](O)(pR5)
+    % left
+    line [ray](O)(pL1) line [ray](O)(pL2) line[ray](O)(pL5)
+    %door
+    line [ray](O)(pD1) line [ray](O)(pD2) 
+    line [ray](O)(pD3) line [ray](O)(pD4)
+  }
+  def projection {
+    put { project(p) then translate([0,0,e])   } {house}
+    put { project(p) then translate([0,0,2*e]) } {door}
+  }
+  def eye (5,2,2.5)
+  def look_at (0,0,-5)
+  def all 
+    <ex130> 
+      {house}
+    <ex140>
+        put { scale(.3) } repeat { 13, rotate(30, [1,2,3]), translate([3,0,0]) } {house}
+    <ex150> 
+      put { view((eye), (look_at)) } {
+        {house}
+        {axes}
+      }
+    <ex160> 
+      put { view((eye), (look_at)) } {
+        {house}
+        {axes}
+        {projection_plane}
+      }
+    <ex170> 
+      put { view((eye), (look_at)) } {
+        {house}
+        {axes}
+        {projection_plane}
+        {projection_rays}
+      }
+    <ex180> 
+      put { view((eye), (look_at)) } {
+        {house}
+        {axes}
+        {projection_plane}
+        {projection_rays}
+        {projection}
+      }
+    <ex190> 
+      put { view((eye), (look_at)) then perspective(9)} {
+        {house}
+        {axes}
+        {projection_plane}
+        {projection_rays}
+        {projection}
+      }
+    <> {house}
+  {all}
+}
+
+def x210 { input {hand.sk} }
+def x220 { def fist <> input {hand.sk} }
+def x230 { def ok <> input {hand.sk} }
+def x240 { def spread <> input {hand.sk} }
+def x250 { input {truncatedcone.sk} }
+def x260 { def labeled <> input {truncatedcone.sk} }
+
+def tomake 
+  input{tags.sk}
+  <> special|No case was selected!|
+
+{tomake}
+
+global {
+  set [linewidth=.3pt]
+}

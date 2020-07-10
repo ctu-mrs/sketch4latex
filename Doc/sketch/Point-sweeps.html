@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+<title>Point sweeps - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Swept-objects.html#Swept-objects" title="Swept objects">
+<link rel="prev" href="Swept-objects.html#Swept-objects" title="Swept objects">
+<link rel="next" href="Polyline-sweeps.html#Polyline-sweeps" title="Polyline sweeps">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Point-sweeps"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Swept-objects.html#Swept-objects">Swept objects</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Swept-objects.html#Swept-objects">Swept objects</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h4 class="subsection">2.7.1 Point sweeps</h4>
+
+<p>Sweeping a point makes a one-dimensional path, which is a polyline. 
+Since we have swept with a rotation, the result is a circular arc. 
+Here is what it looks like.
+
+<div align="center"><img src="ex070.png" alt="ex070.png"></div>
+
+   <p>This is the first example we have seen of <code>sketch</code> arithmetic. 
+The expression <tt>180 / n_segs</tt> causes the eight rotations to add
+to 180.  If you're paying attention, you'll have already noted that
+there are <em>nine</em> points, producing eight line segments.
+
+   <p>You can cause the swept point to generate a single polygon rather than
+a polyline by using the <dfn>closure tag</dfn> <tt>&lt;></tt>
+<a name="index-_003c_003e_0040r_007b_002c-closure-tag_007d-100"></a><a name="index-closure-tag_002c-_0040code_007b_003c_003e_007d-101"></a>after the number
+of swept objects. Code and result follow
+<a name="index-def-102"></a><a name="index-rotate-103"></a><a name="index-sweep-104"></a>
+<pre class="verbatim">
+  def n_segs 8
+  sweep { n_segs&lt;>, rotate(180 / n_segs, (0,0,0), [0,0,1]) } (1,0,0)
+</pre>
+<div align="center"><img src="ex080.png" alt="ex080.png"></div>
+
+</body></html>
+

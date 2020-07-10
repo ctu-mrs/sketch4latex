@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+<title>Installing sketch - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Command-line.html#Command-line" title="Command line">
+<link rel="next" href="Index-of-syntax.html#Index-of-syntax" title="Index of syntax">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Installing-sketch"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Index-of-syntax.html#Index-of-syntax">Index of syntax</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Command-line.html#Command-line">Command line</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h2 class="chapter">6 Building and installing <code>sketch</code></h2>
+
+<p><code>Sketch</code> is so small that compiling by brute force is probably
+best.  The following command ought to do the trick on any
+systems where <code>gcc</code> is installed.  Make sure to first change
+current directories to the place where you have unpacked the sources.
+<pre class="example">     gcc *.c -o sketch.exe -lm
+</pre>
+   <p class="noindent">The <span class="samp">.exe</span> at the end is necessary for Windows systems.  Drop it
+if your system is some version of Unix.  Other C compilers ought
+to work as just as well.  For example,
+<pre class="example">     cl *.c -o sketch.exe
+</pre>
+   <p class="noindent">is the correct command for many versions of MS Visual C.  In the
+latest versions, Microsoft has deprecated the <code>-o</code> option and, by
+default, does not define the <code>__STDC__</code> macro.  This causes
+problems with some versions of <code>flex</code>, <code>bison</code>, <code>lex</code>,
+and <code>yacc</code>, which are used to create the <code>sketch</code> scanner
+and parser.  It's nearly always possible to find a set of options that
+compiles with no errors or warnings, and this means <code>sketch</code> is
+<em>very</em> likely to work correctly.  For example, the Visual C++
+2005 Express Edition compiler (available free of charge from the
+Microsoft web site), <code>flex</code> version 2.5.4, and <code>bison</code>
+version 2.1 build error-free with
+<pre class="example">     cl -DYY_NEVER_INTERACTIVE=1 -Za -Ox -Fesketch.exe *.c
+</pre>
+   <p>For purists, there is also a <code>makefile</code> compatible with GNU
+<code>make</code> and <code>gcc</code>. The command
+<pre class="example">     make
+</pre>
+   <p class="noindent">will build the executable, including the rebuilding of the scanner and
+parser with <code>flex</code> and <code>bison</code> if you have changed
+<span class="file">sketch.l</span> or <code>sketch.y</code> respectively.
+
+   <p>While not essential, building the manual is an excellent test of your
+<code>sketch</code> installation.  To build this document in all its myriad
+forms (assuming you have the necessary conversion programs on your
+system), use
+<pre class="example">     make docs
+</pre>
+   <p class="noindent">The possibilities are listed in this following table.
+   <p><table summary=""><tr align="left"><th valign="top">Format </th><th valign="top">Converter </th><th valign="top">Pictures </th><th valign="top">Description
+<br></th></tr><tr align="left"><td valign="top">manual.info
+  </td><td valign="top">makeinfo       </td><td valign="top"><span class="file">.txt</span> </td><td valign="top"><acronym>GNU</acronym> Info. 
+<br></td></tr><tr align="left"><td valign="top">manual.dvi
+  </td><td valign="top">texi2dvi       </td><td valign="top"><span class="file">.eps</span> </td><td valign="top">TeX typeset output. 
+<br></td></tr><tr align="left"><td valign="top">manual.ps
+  </td><td valign="top">texi2dvi,dvips </td><td valign="top"><span class="file">.eps</span> </td><td valign="top">Postscript. 
+<br></td></tr><tr align="left"><td valign="top">manual.pdf
+  </td><td valign="top">texi2dvi       </td><td valign="top"><span class="file">.pdf</span> </td><td valign="top">Adobe PDF. 
+<br></td></tr><tr align="left"><td valign="top">manual.html
+  </td><td valign="top">makeinfo       </td><td valign="top"><span class="file">.png</span> </td><td valign="top">A single web page. 
+<br></td></tr><tr align="left"><td valign="top">manual/index.html
+  </td><td valign="top">makeinfo       </td><td valign="top"><span class="file">.png</span> </td><td valign="top">Linked web pages, one per node.
+   <br></td></tr></table>
+All the required tools are included in the standard <code>TeX Live</code>
+distribution except that an additional open source program
+<code>epstool</code> is needed to refine the Encapsulated Postscript
+bounding boxes of <code>sketch</code>-generated figures in the manual.  This
+tool is available in binary form for Windows, and it builds easily
+with a simple <code>make</code> under linux or Cygwin installations that
+have development tools installed or under <code>Mac OS X</code> with
+<code>XCode</code> installed.
+
+   </body></html>
+

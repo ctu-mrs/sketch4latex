@@ -1,0 +1,14 @@
+Sketch 
+(c) 2005, 2006, 2007 Eugene K. Ressler
+
+Sketch is a simple system for producing line drawings of 
+three-dimensional objects and scenes. It began as a way to make 
+illustrations for a textbook after we could find no suitable tool 
+for this purpose. Existing scene processors emphasized GUIs and/or 
+photo-realism, both un-useful to us. We wanted to produce finely 
+wrought, mathematically-based illustrations with no extraneous 
+detail and be able to easily overlay TeX math and text. The input 
+language is reminiscent of PSTricks, so will be easy to learn for 
+current PSTricks users.  It generates either PSTricks or TikZ/PGF
+code as output.  See http://www.frontiernet.net/~eugene.ressler .
+

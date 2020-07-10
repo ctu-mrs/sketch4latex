@@ -1,0 +1,123 @@
+<html lang="en">
+<head>
+<title>Special objects - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction-by-example.html#Introduction-by-example" title="Introduction by example">
+<link rel="prev" href="Drawing-a-solid.html#Drawing-a-solid" title="Drawing a solid">
+<link rel="next" href="Object-transforms.html#Object-transforms" title="Object transforms">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Special-objects"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Object-transforms.html#Object-transforms">Object transforms</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction-by-example.html#Introduction-by-example">Introduction by example</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">2.4 Special objects</h3>
+
+<p>We can add labels
+<a name="index-labels-47"></a>to a drawing by using <tt>special</tt>
+<a name="index-special-48"></a><a name="index-special-object-49"></a>objects, which provide a way to embed raw LaTeX and <code>PSTricks</code>
+code.  Adding this to the tetrahedron does the trick.
+<pre class="verbatim">
+  special |\footnotesize
+           \uput{2pt}[ur]#1{$P1$}
+           \uput[r]#2{$P2$}
+           \uput[u]#3{$P3$}
+           \uput[d]#4{$P4$}|
+    (p1)(p2)(p3)(p4)
+</pre>
+Here is the result.
+
+<div align="center"><img src="ex042.png" alt="ex042.png"></div>
+
+   <p>There are several details to note here.  First, the quoting convention
+<a name="index-quoting_002c-special-50"></a>for the raw code is similar to the LaTeX <tt>\verb</tt> command.  The
+first non-white space character following <tt>special</tt> is
+understood to be the quote character,
+in this case <span class="samp">|</span>.  The raw
+text continues until this character recurs.
+
+   <p>Second, the argument references
+<a name="index-argument_002c-special-51"></a><tt>#1</tt>, <tt>#2</tt>, <tt>#3</tt>, and <tt>#4</tt> refer to point,
+vector, or scalar values in the list that follow.  This is similar to
+TeX macro syntax.  The transformed and two-dimensional projections
+of these three-dimensional points are substituted
+<a name="index-substitution_002c-special-52"></a><a name="index-special-argument-substitution-53"></a>in the final output.  An argument reference of the form <tt>#1-2</tt>
+is replaced with the angle in degrees of the two-dimensional vector
+that connects the projections of the two respective argument points,
+here <tt>#1</tt> and <tt>#2</tt>.  The substituted angle is enclosed
+in curly braces <code>{ }</code>.  When <code>TikZ/PGF</code> output is being
+generated, the angle is rounded to the nearest degree because
+non-integer angles are not allowed by <code>TikZ/PGF</code> primitives.
+
+   <p>As of Version 0.3 of <code>sketch</code>, special arguments may be scalars
+or vectors in addition to points. References to scalar arguments are
+merely replaced with a number formatted just as any point
+coordinate. References to vectors become two-dimensional points. The
+tick operator that selects individual components of points and vectors
+elsewhere in <code>sketch</code> (see for example <a href="Affine-arithmetic.html#Affine-arithmetic">Affine arithmetic</a>)
+can also be applied to point and vector argument references.  All
+three dimensions of a transformed point or vector can also be
+substitued with <code>'3</code>. See <a href="Specials.html#Specials">Specials</a> for details.
+
+   <p>By default, <code>special</code> objects are printed last, overlaying all
+other objects in the scene.  If you specify the internal option
+<a name="index-internal-option-54"></a><a name="index-option_002c-internal-55"></a><code>lay=in</code>, the hidden surface algorithm
+<a name="index-lay-56"></a><a name="index-hidden-surface-algorithm-57"></a>considers the entire special object to be the first point
+(<tt>#1</tt>) in the argument list.  If that point is behind (of
+smaller z-component than) any drawable, then the entire special
+object is drawn before that drawable, so the drawable obscures parts of
+the special object that overlaps it.  In our example, <tt>p1</tt> is
+the front-most point in the scene (has the largest
+z-component), so adding <code>lay=in</code> has no effect.
+
+   <p>With option <code>lay=under</code>, a special is drawn <em>before</em>, hence
+appears <em>under</em> any of the objects handled by the hidden surface
+algorithm.  This is how the light gray axes were added to the &ldquo;hello
+world&rdquo; example <a href="Hello-world.html#Hello-world">Hello world</a>.
+
+   <p><tt>Special</tt> objects are powerful, with many possible uses.
+
+   </body></html>
+

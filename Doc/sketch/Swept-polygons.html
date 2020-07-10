@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+<title>Swept polygons - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Sweeps.html#Sweeps" title="Sweeps">
+<link rel="prev" href="Swept-lines.html#Swept-lines" title="Swept lines">
+<link rel="next" href="Swept-blocks.html#Swept-blocks" title="Swept blocks">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Swept-polygons"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Swept-blocks.html#Swept-blocks">Swept blocks</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Swept-lines.html#Swept-lines">Swept lines</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Sweeps.html#Sweeps">Sweeps</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h5 class="subsubsection">3.2.6.3 Swept polygons</h5>
+
+<p><a name="index-polygon-sweep-313"></a>If <var>swept_object</var> is a polygon, the <code>sweep</code> connects
+<var>n</var>+1 successive copies of the closed polyline border of
+the polygon to form body polygons exactly as though the border were a
+swept polyline as described in <a href="Swept-lines.html#Swept-lines">Swept lines</a>. 
+<a name="index-body-polygon-314"></a><a name="index-polygon_002c-body-315"></a>If there are m points in the
+original polygon, then m<var>n</var> body polygons are formed by
+this sweep.  The body polygons form an <dfn>extrusion</dfn> of the boundary of the
+original polygon with two holes at the open ends.
+
+   <p>Finally, the sweep adds two copies of the original polygon to cover
+the holes.  We call these hole-filling polygons <dfn>ends</dfn>. 
+<a name="index-end-polygon-316"></a><a name="index-polygon_002c-end-317"></a>In this manner, <code>sweep</code> forms the boundary of a three-dimensional
+object from a two-dimensional polygon.
+
+   <p>The order of vertices
+<a name="index-polygon-vertex-order-318"></a><a name="index-order_002c-polygon-vertex-319"></a>of end polygons is important for correct culling as described above. 
+An exact copy of the original polygon with vertex order intact forms
+the first end polygon.  The other end polygon results from
+transforming and the reversing the order of vertices in the original. 
+The transform places the original polygon at the uncovered hole;
+it is
+<pre class="example">     <var>T_1</var>^n then <var>T_2</var>^n then ... then <var>T_r</var>^n.
+</pre>
+   <p class="noindent">If there are no options on the swept polygon, then the <span class="samp">sweep</span>
+options are copied to each output polygon.  If the swept polygon does
+have options, these are copied to the ends; the sweep options are
+copied to the body polygons.  In this manner, body and ends may be
+drawn with different characteristics such as <code>fillcolor</code>.
+
+   </body></html>
+

@@ -1,0 +1,93 @@
+<html lang="en">
+<head>
+<title>TikZ/PGF options - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Options.html#Options" title="Options">
+<link rel="prev" href="PSTricks-options.html#PSTricks-options" title="PSTricks options">
+<link rel="next" href="Dots-in-TikZ_002fPGF.html#Dots-in-TikZ_002fPGF" title="Dots in TikZ/PGF">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="TikZ_002fPGF-options"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Dots-in-TikZ_002fPGF.html#Dots-in-TikZ_002fPGF">Dots in TikZ/PGF</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="PSTricks-options.html#PSTricks-options">PSTricks options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Options.html#Options">Options</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h5 class="subsubsection">3.1.5.2 <code>TikZ/PGF</code> options</h5>
+
+<p><code>TikZ/PGF</code> options are handled much as for <code>PSTricks</code>. 
+Though <code>TikZ/PGF</code> often allows colors and styles to be given
+without corresponding keys, for example,
+<pre class="verbatim">
+  \draw[red,ultra thick](0,0)--(1,1);
+</pre>
+this is not permitted in <code>sketch</code>.  To draw a red, ultra-thick
+line in <code>sketch</code>, the form is
+<pre class="verbatim">
+  line[draw=red,style=ultra thick](0,0)(1,1)
+</pre>
+
+   <p>Just as for <code>PSTricks</code>, when a <code>polygon</code> has options for
+both its face and its edges, and the polygon is split by the hidden
+surface algorithm, <code>sketch</code> must copy the edge options to
+<code>psline</code>s for the edge segments and the face options to
+<code>pspolygon</code>s.  <code>TikZ/PGF</code> options known to <code>sketch</code> for
+purposes of this splitting operation include <code>arrows</code>,
+<code>cap</code>, <code>color</code>, <code>dash pattern</code>, <code>dash phase</code>,
+<code>double</code>,
+<code>double distance</code>, <code>draw</code>, <code>draw opacity</code>, <code>fill</code>,
+<code>fill opacity</code>, <code>join</code>, <code>line width</code>, <code>miter
+limit</code>, <code>pattern</code>, <code>pattern color</code>, and <code>style</code>.
+
+   <p>The <code>style</code> option can contain both face and edge information, so
+<code>sketch</code> must check the style value.  Values known to
+<code>sketch</code> include <code>dashed</code>, <code>densely dashed</code>,
+<code>densely dotted</code>, <code>dotted</code>, <code>double</code>, <code>loosely
+dashed</code>, <code>loosely dotted</code>, <code>nearly opaque</code>, <code>nearly
+transparent</code>, <code>semithick</code>, <code>semitransparent</code>, <code>solid</code>,
+<code>thick</code>, <code>thin</code>, <code>transparent</code>,
+<code>ultra nearly transparent</code>, <code>ultra thick</code>, <code>ultra thin</code>,
+<code>very nearly transparent</code>, <code>very thick</code>, and <code>very thin</code>.
+
+   </body></html>
+

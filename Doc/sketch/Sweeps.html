@@ -1,0 +1,93 @@
+<html lang="en">
+<head>
+<title>Sweeps - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Drawables.html#Drawables" title="Drawables">
+<link rel="prev" href="Specials.html#Specials" title="Specials">
+<link rel="next" href="Blocks.html#Blocks" title="Blocks">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Sweeps"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Blocks.html#Blocks">Blocks</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Specials.html#Specials">Specials</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Drawables.html#Drawables">Drawables</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h4 class="subsection">3.2.6 Sweeps</h4>
+
+<p><a name="index-sweep-281"></a><strong>Syntax:</strong>
+<pre class="example">     sweep { <var>n</var>, <var>T_1</var>, <var>T_2</var>, ..., <var>T_r</var> }[<var>options</var>] <var>swept_object</var>
+     sweep { <var>n</var>&lt;&gt;, <var>T_1</var>, <var>T_2</var>, ..., <var>T_r</var> }[<var>options</var>] <var>swept_object</var>
+</pre>
+   <p class="noindent">The sweep connects <var>n</var> (or perhaps <var>n</var>+1) copies of
+<var>swept_object</var>
+<a name="index-swept-object-282"></a>in order to create a new object of higher
+dimension.  The <var>T_i</var> (for i between 1 and
+r) are transforms. 
+<a name="index-transform-283"></a>The k'th copy of <var>swept_object</var> is produced by applying the
+following transform to the original.
+<pre class="example">     <var>T_1</var>^k then <var>T_2</var>^k then ... then <var>T_r</var>^k
+</pre>
+   <p class="noindent">Here <var>T</var>^k means &ldquo;transform <var>T</var> applied k
+times.&rdquo;  The original object is the zero'th copy, with k=0 and
+effectively no transform applied (T^0=I, the identity
+transform).
+
+   <p>The method of connecting the copies depends on the type of
+<var>swept_object</var> and on whether the closure tag
+<a name="index-_003c_003e_0040r_007b_002c-closure-tag_007d-284"></a><a name="index-closure-tag_002c-_0040code_007b_003c_003e_007d-285"></a><span class="samp">&lt;&gt;</span> is present
+or not.
+
+   <p>An example of a sweep where r=2 is the Mobius figure at
+<a href="More-to-learn.html#More-to-learn">More to learn</a>.
+
+<ul class="menu">
+<li><a accesskey="1" href="Swept-points.html#Swept-points">Swept points</a>:                 Swept points make lines or polygons. 
+<li><a accesskey="2" href="Swept-lines.html#Swept-lines">Swept lines</a>:                  Swept lines make open or closed surfaces. 
+<li><a accesskey="3" href="Swept-polygons.html#Swept-polygons">Swept polygons</a>:               Swept polygons make closed surfaces. 
+<li><a accesskey="4" href="Swept-blocks.html#Swept-blocks">Swept blocks</a>:                 Swept block == block of sweeps. 
+<li><a accesskey="5" href="Sweep-face-splitting.html#Sweep-face-splitting">Sweep face splitting</a>:         Fixing warped faces with triangles. 
+</ul>
+
+   </body></html>
+

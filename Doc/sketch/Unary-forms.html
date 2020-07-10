@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+<title>Unary forms - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link rel="prev" href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms" title="Two-operand (binary) forms">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Unary-forms"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="Two_002doperand-_0028binary_0029-forms.html#Two_002doperand-_0028binary_0029-forms">Two-operand (binary) forms</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h5 class="subsubsection">3.1.4.2 Unary forms</h5>
+
+<p>Unary or one-operand forms
+<a name="index-unary-form-238"></a><a name="index-one_002doperand-form-239"></a>are summarized in the following table, where <code>X</code>
+stands for the operand.
+   <p><table summary=""><tr align="left"><th valign="top">Op         </th><th valign="top">Operand
+ </th><th valign="top">Result </th><th valign="top">Description
+<br></th></tr><tr align="left"><td valign="top"><code>-X</code>      </td><td valign="top">scalar
+<a name="index-_002d_0040r_007b_002c-unary-minus-operator_007d-240"></a> </td><td valign="top">scalar </td><td valign="top">Unary scalar negation. 
+<br></td></tr><tr align="left"><td valign="top"><code>-X</code>      </td><td valign="top">vector
+ </td><td valign="top">vector </td><td valign="top">Unary vector negation. 
+<br></td></tr><tr align="left"><td valign="top"><code>|X|</code>     </td><td valign="top">vector
+ <a name="index-_007c_0040math_007bX_007d_007c_0040r_007b_002c-magnitude-operator_007d-241"></a> </td><td valign="top">scalar </td><td valign="top">Vector length. 
+<br></td></tr><tr align="left"><td valign="top"><code>unit(X)</code> </td><td valign="top">vector
+ <a name="index-unit-242"></a> </td><td valign="top">vector </td><td valign="top">Unit vector with same direction. 
+<br></td></tr><tr align="left"><td valign="top"><code>sqrt(X)</code> </td><td valign="top">scalar
+ <a name="index-sqrt-243"></a> </td><td valign="top">scalar </td><td valign="top">Scalar square root. 
+<br></td></tr><tr align="left"><td valign="top"><code>sin(X)</code> </td><td valign="top">scalar
+ <a name="index-sin-244"></a> </td><td valign="top">scalar </td><td valign="top">Trigonometric sine (<code>X</code> in degrees). 
+<br></td></tr><tr align="left"><td valign="top"><code>cos(X)</code> </td><td valign="top">scalar
+ <a name="index-cos-245"></a> </td><td valign="top">scalar </td><td valign="top">Trigonometric cosine (<code>X</code> in degrees). 
+<br></td></tr><tr align="left"><td valign="top"><code>asin(X)</code> </td><td valign="top">scalar
+ <a name="index-asin-246"></a> </td><td valign="top">scalar </td><td valign="top">Inverse sine (<code>X</code> in degrees). 
+<br></td></tr><tr align="left"><td valign="top"><code>acos(X)</code> </td><td valign="top">scalar
+ <a name="index-acos-247"></a> </td><td valign="top">scalar </td><td valign="top">Inverse cosine (<code>X</code> in degrees). 
+<br></td></tr><tr align="left"><td valign="top"><code>atan2(X,Y)</code> </td><td valign="top">scalar
+ <a name="index-atan2-248"></a> </td><td valign="top">scalar </td><td valign="top">Polar angle in degrees of vector [X,Y]. 
+<br></td></tr><tr align="left"><td valign="top"><code>inverse(X)</code> </td><td valign="top">transform
+ <a name="index-inverse-249"></a> </td><td valign="top">transform </td><td valign="top">Inverse transform.
+   <br></td></tr></table>
+   <pre class="sp">
+
+</pre>
+Errors are reported when <code>|X|</code>, <code>unit</code>, <code>asin</code>,
+<code>acos</code>, <code>sqrt</code>, <code>atan2</code>, and <code>inverse</code> fail due to
+operands outside their respective domains.
+
+   </body></html>
+

@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+<title>Command line - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Building-a-drawing.html#Building-a-drawing" title="Building a drawing">
+<link rel="next" href="Installing-sketch.html#Installing-sketch" title="Installing sketch">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Command-line"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Installing-sketch.html#Installing-sketch">Installing sketch</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Building-a-drawing.html#Building-a-drawing">Building a drawing</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h2 class="chapter">5 Command line</h2>
+
+<p><a name="index-command-line_002c-_0040code_007bsketch_007d-509"></a><strong>Synopsis:</strong>
+<pre class="example">     sketch [-h][-V x.y][-v][-b][-d][t doctmp][-T[u|e][p[P|T][L|C]]][-o output.tex]
+       [-D <var>tag</var> ...] input1.sk [-U <var>tag</var> ...] input2.sk ...
+</pre>
+   <p class="noindent"><strong>Description</strong>
+Processes the <code>sketch</code> input files in order to produce
+<code>PSTricks</code> output code suitable for inclusion in a TeX or
+LaTeX document.
+
+<p class="noindent"><strong>Options:</strong>
+<a name="index-options_002c-command-line-510"></a><a name="index-command-line-options-511"></a>
+     <dl>
+<dt><code>-h</code><dd>Print a short catalog of options. 
+<br><dt><code>-V</code><dd>Set the <code>PSTricks</code> version assumed for output purposes to
+<code>x.y</code>, for example 1.19.  Usually needed only if your
+<code>PSTricks</code> is old compared to your <code>sketch</code>.  Use
+<code>-v</code> to see what <code>sketch</code> assumes by default. 
+<br><dt><code>-v</code><dd>Print version information to standard output, including the version
+of <code>PSTricks</code> assumed for output (can be changed with <code>-V</code> above). 
+<br><dt><code>-b</code><dd>Use a BSP
+<a name="index-binary-space-partition-512"></a><a name="index-BSP_002c-binary-space-partition-513"></a>(See <a href="Hidden-surface-removal.html#Hidden-surface-removal">Hidden surface removal</a>.) for
+<em>all</em> hidden surface removal rather than the default, which is
+the depth sort algorithm with BSPs used only for cycle resolution. 
+This may produce correct output in certain degenerate cases where the
+depth sort cannot, but it also leads to many gratuitous splits, hence
+more anomalies <a href="Bugs-and-anomalies.html#Bugs-and-anomalies">Bugs and anomalies</a> and big output files. 
+<br><dt><code>-d</code><dd>Run <code>sketch</code>'s parser in debugging mode.  This is primarily for
+development. 
+<br><dt><code>-t</code><dd>Use contents of file <span class="file">doctmp</span> as a document template
+<a name="index-document-template-514"></a><a name="index-template_002c-document-515"></a>in which to enclose <code>PSTricks</code> output code.  The code is inserted
+in place of the first instance of the escape string
+<tt>%%SKETCH_OUTPUT%%</tt>. 
+<br><dt><code>-T</code><dd>Causes <code>PSTricks</code> output to be enclosed in default US document
+template text.  Option <span class="option">-Tu</span> is a synonym.  Option <span class="option">-Te</span>
+causes the Euro standard document template to be used.  A <span class="option">p</span>
+appended to any of these options causes the respective default
+<code>PSTricks</code> document template to be printed to standard output. An
+appended <span class="option">P</span> is a synonym.  An appended <span class="option">T</span> causes the
+the <code>TikZ/PGF</code> template to be printed.  An appended <span class="option">L</span>
+prints the LaTeX version of the document template, a synonym for
+the default.  A <span class="option">C</span> prints the <code>ConTeXt</code> template. 
+<br><dt><code>-o</code><dd>Use <span class="file">output.tex</span> as the output file.  The default is standard output. 
+<br><dt><code>-D</code><dd>Define a tag
+<a name="index-tag-definition-516"></a><a name="index-definition_002c-tag-517"></a>for purposes of selecting definition alternatives. 
+See <a href="Definitions.html#Definitions">Definitions</a>.  The definition applies for all input files that
+follow unless the tag is undefined with <span class="option">-U</span>. 
+<br><dt><code>inputi.sk</code><dd>Input files, read in the sequence they are given. 
+<br><dt><code>-U</code><dd>Un-define a tag for purposes of selecting definition alternatives. 
+</dl>
+
+   </body></html>
+

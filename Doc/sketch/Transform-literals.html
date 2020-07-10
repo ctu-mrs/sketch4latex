@@ -1,0 +1,132 @@
+<html lang="en">
+<head>
+<title>Transform literals - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Literals.html#Literals" title="Literals">
+<link rel="prev" href="Point-and-vector-literals.html#Point-and-vector-literals" title="Point and vector literals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Transform-literals"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="Point-and-vector-literals.html#Point-and-vector-literals">Point and vector literals</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Literals.html#Literals">Literals</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h5 class="subsubsection">3.1.3.3 Transform literals</h5>
+
+<p><a name="index-transform-literal-179"></a><a name="index-literal_002c-transform-180"></a>Most transform literals are formed by <dfn>constructors</dfn>. 
+<a name="index-constructor-181"></a>These are summarized in the following table.
+   <p><table summary=""><tr align="left"><th valign="top">Constructor </th><th valign="top">Param types </th><th valign="top">Description
+<br></th></tr><tr align="left"><td valign="top"><code>rotate(A,P,X)</code>
+ <a name="index-rotate-182"></a> <a name="index-rotation-transform-183"></a> <a name="index-transform_002c-rotation-184"></a> </td><td valign="top">scalar,point,vector
+ </td><td valign="top">Rotate <code>A</code> degrees about point <code>P</code> with axis <code>X</code>
+   according to the right hand rule. See <a href="Right-hand-rule.html#Right-hand-rule">Right hand rule</a>. 
+   <code>P</code> and <code>X</code> are both optional and default to the origin and
+   the z-axis respectively. 
+<br></td></tr><tr align="left"><td valign="top"><code>translate(X)</code>
+ <a name="index-translate-185"></a> <a name="index-translation-transform-186"></a> <a name="index-transform_002c-translation-187"></a> </td><td valign="top">vector
+ </td><td valign="top">Translate by <code>X</code>. 
+<br></td></tr><tr align="left"><td valign="top"><code>scale(S)</code>
+ <a name="index-scale-188"></a> <a name="index-scale-transform-189"></a> <a name="index-transform_002c-scale-190"></a> </td><td valign="top">scalar
+ </td><td valign="top">Scale uniformly by factor <code>S</code>. 
+<br></td></tr><tr align="left"><td valign="top"><code>scale(V)</code>
+ <a name="index-scale-191"></a> <a name="index-scale-transform-192"></a> <a name="index-transform_002c-scale-193"></a> </td><td valign="top">vector
+ </td><td valign="top">Scale along each axis by components of <code>V</code>. 
+<br></td></tr><tr align="left"><td valign="top"><code>project()</code>
+ <a name="index-project-194"></a> <a name="index-parallel-projection-195"></a> <a name="index-projection_002c-parallel-196"></a> </td><td valign="top">&mdash;
+ </td><td valign="top">Same as <code>scale([1,1,0])</code>. 
+<br></td></tr><tr align="left"><td valign="top"><code>project(S)</code>
+ <a name="index-project-197"></a> <a name="index-perspective-projection-198"></a> <a name="index-projection_002c-perspective-199"></a> </td><td valign="top">scalar
+ </td><td valign="top">Perspective projection with view center at origin and projection
+ plane z=-<code>S</code>. 
+<br></td></tr><tr align="left"><td valign="top"><code>perspective(S)</code>
+ <a name="index-perspective-200"></a> <a name="index-perspective-projection-201"></a> <a name="index-projection_002c-perspective-202"></a> </td><td valign="top">scalar
+ </td><td valign="top">Perspective <em>transform</em> identical to <code>project(S)</code>
+ except that the z-coordinate of the transformed result is
+ <dfn>pseudodepth</dfn>, usable by the hidden surface algorithm. 
+ <a name="index-hidden-surface-algorithm-203"></a><br></td></tr><tr align="left"><td valign="top"><code>view(E,D,U)</code>
+ <a name="index-view-204"></a> <a name="index-view-transform-205"></a> <a name="index-transform_002c-view-206"></a> </td><td valign="top">point,vector,vector
+ </td><td valign="top">View transform similar to that of <code>OpenGL</code>'s.  The
+<em>eye point</em> <code>E</code> is translated to the origin while a rotation
+is also applied that makes the <em>view direction vector</em> <code>D</code>
+and the <em>view &ldquo;up&rdquo; vector</em> <code>U</code> point in the negative
+z- and the y-directions respectively.  If <code>U</code> is
+omitted, it defaults to [0,1,0]. When <code>U</code> is omitted,
+<code>D</code> may be also; it defaults to <code>(0,0,0)-(E)</code>, a vector
+pointing from the eye toward the origin. 
+<br></td></tr><tr align="left"><td valign="top"><code>view(E,L,U)</code>
+ <a name="index-view-207"></a> <a name="index-view-transform-208"></a> <a name="index-transform_002c-view-209"></a> </td><td valign="top">point,point,vector
+ </td><td valign="top">An alternate form of <code>view(E,D,U)</code> above where
+ the view direction parameter <code>D</code> is replaced with a
+&ldquo;look at&rdquo; point <code>L</code>, i.e., a point where the viewer is focusing
+her attention.  This form of view is equivalent to
+<code>view(E, (L)-(E), U)</code>, where <code>(L)-(E)</code> is a direction
+vector. <code>U</code> is optional and defaults to [0,1,0]. 
+<br></td></tr><tr align="left"><td valign="top"><code>[[a_11,a_12,a_13,a_14]</code><br>
+<code>&nbsp;<!-- /@w -->[a_21,a_22,a_23,a_24]</code><br>
+<code>&nbsp;<!-- /@w -->[a_31,a_32,a_33,a_34]</code><br>
+<code>&nbsp;<!-- /@w -->[a_41,a_42,a_43,a_44]]</code><br>
+  <a name="index-_005b_005b-_005d_005b-_005d_005b-_005d_005b-_005d_005d_0040r_007b_002c-transform-literal_007d-210"></a>  <a name="index-direct-transform-211"></a>  <a name="index-transform_002c-direct-212"></a>  </td><td valign="top">16 scalars
+  </td><td valign="top">Direct transform matrix definition. Each
+  of the a_ij is a scalar expression. See text for details.
+   <br></td></tr></table>
+The <code>project</code>
+<a name="index-project-213"></a>constructor is not generally useful because it
+defeats hidden surface removal by collapsing the scene onto a single
+plane.  It is a special purpose transform for drawing pictures of
+scenes where three-dimensional objects are being projected onto
+planes.  See, for example, <a href="Overview.html#Overview">Overview</a>.
+
+   <p>The direct transform constructor
+<a name="index-_005b_005b-_005d_005b-_005d_005b-_005d_005b-_005d_005d_0040r_007b_002c-transform-literal_007d-214"></a><a name="index-direct-transform-215"></a><a name="index-transform_002c-direct-216"></a>allows direct entry of a 4x4 transformation matrix. Most 3d graphics
+systems, including <code>sketch</code>, use 4-dimensional homogeneous
+coordinates internally. These are transformed by multiplication with
+4x4 matrices.  The built-in constructors (<code>rotate</code>, <code>scale</code>,
+etc.) are all translated internally to such 4x4 matrices. For more
+information on homogeneous coordinate transformations, see any good
+computer graphics textbook. The direct transform feature of
+<code>sketch</code> allows you to enter a matrix of your own choice. There
+are not many cases where this is useful, but if you do need it, you
+need it badly!
+
+   </body></html>
+

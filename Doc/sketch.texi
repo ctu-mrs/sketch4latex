@@ -1,0 +1,3335 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename sketch.info
+@include version.texi
+@settitle Sketch
+
+@c an index for sketch commands
+@defcodeindex sx
+@defcodeindex op
+@syncodeindex op sx
+@c %**end of header
+
+@copying
+Copyright @copyright{} 2005 to 2012 Eugene K. Ressler.
+
+This manual is for @code{sketch}, version @value{VERSION},
+@value{UPDATED}, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+@code{PSTricks} or @code{PGF/TikZ} code suitable for use with the
+@TeX{} document processing system.
+
+@code{Sketch} is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with @code{sketch}; see the file COPYING.txt.  If not, see
+@verb{|http://www.gnu.org/copyleft|}.
+
+@end copying
+
+@dircategory TeX
+@direntry
+* Sketch: (sketch).             Simple 3D sketching for TeX
+@end direntry
+ 
+@titlepage
+@title Sketch
+@subtitle Simple 3D sketching
+@subtitle Version @value{VERSION}, @value{UPDATED}
+@author Gene Ressler
+@page
+@vskip 0pt plus 1fill
+@insertcopying
+@end titlepage
+
+@c TOC
+@contents
+
+@ifnottex
+@node Top, About sketch, (dir), (dir)
+@top Sketch
+
+@insertcopying
+@end ifnottex
+
+@menu
+* About sketch::                Why sketch exists and what it does.
+* Introduction by example::     Most features shown as working code.
+* Input language::              Syntax and semantics of @code{sketch} commands. 
+* Building a drawing::          How to use @code{sketch} productively.
+* Command line::                Options and their usage.
+* Installing sketch::           Building and installing from sources.
+* Index of syntax::             
+* Index::                       
+
+@detailmenu
+ --- The Detailed Node Listing ---
+
+About sketch
+
+* Reporting bugs::              Let use know what's wrong!
+* Contributions::               How you can help@dots{}.
+
+Introduction by example
+
+* Hello world::                 Simplest possible @code{sketch} program.
+* Drawing options::             Controlling object appearance.
+* Drawing a solid::             Drawing an object with 3d appearance.
+* Special objects::             Laying @TeX{} over, in, or under drawings.
+* Object transforms::           Rotate, translate, scale, and others.
+* Repeated objects::            Making transformed copies.
+* Swept objects::               Sweeping objects in space to make new shapes.
+
+Swept objects
+
+* Point sweeps::                Swept points make lines and polygons.
+* Polyline sweeps::             Swept lines make surfaces.
+* Nested sweeps::               Swept sweeps are useful!
+* Polygon sweeps::              Swept polygons make solids...
+* Polyline sweeps with closure::  and so do closed polyline sweeps.
+* Affine arithmetic::           Sketch useful math expression.
+* More to learn::               Check out the Mobius strip!
+
+Input language
+
+* Language basics::             Case, space, comments, include files.
+* Drawables::                   Things that can be drawn.
+* Definitions::                 Giving things names.
+* Global environment::          Affect the entire drawing.
+
+Basics 
+
+* Identifiers::                 Names for things.
+* Key and reserved words::      Names you shouldn't use.
+* Literals::                    Constants and constructors.
+* Arithmetic::                  Rules for expressions.
+* Options::                     Modifying object appearance.
+
+Literals
+
+* Scalar literals::             Just the numbers.
+* Point and vector literals::   3d quantities.
+* Transform literals::          Matrix form.
+
+Arithmetic expressions
+
+* Two-operand (binary) forms::  A op B
+* Unary forms::                 op A (and others)
+
+Options
+
+* PSTricks options::            Options inherited from @code{PSTricks}.
+* TikZ/PGF options::            Options inherited from @code{TikZ/PGF}.
+* Dots in TikZ/PGF::            Sketch uses @code{TikZ/PGF} circles for dots.
+* TikZ/PGF user-defined styles::  Support for @code{TikZ/PGF} named, user-defined styles.
+* Transparency::                See-through polygons.
+* Internal options::            Options used by @code{sketch}.
+
+Point lists
+
+* Drawables::                   Things that are drawn.
+* Definitions::                 Things with names.
+
+Drawables
+
+* Dots::                        Draw dots.
+* Lines::                       Draw polylines.
+* Curves::                      Draw curves.
+* Polygons::                    Draw polygons.
+* Specials::                    Embed raw @LaTeX{} and @code{PSTricks}.
+* Sweeps::                      Draw sweeps of dots and polylines.
+* Blocks::                      Group other drawables.
+* Repeats::                     Draw transformed copies of objects.
+* Puts::                        Draw one object transformed.
+
+Sweeps
+
+* Swept points::                Swept points make lines or polygons.
+* Swept lines::                 Swept lines make open or closed surfaces.
+* Swept polygons::              Swept polygons make closed surfaces.
+* Swept blocks::                Swept block @equiv{} block of sweeps.
+* Sweep face splitting::        Fixing warped faces with triangles.
+
+Definitions
+
+* Forms of definitions::        Different defs for different purposes.
+* Forms of references::         How references denote types.
+
+Global environment
+
+* Global options::              Attributes of the entire drawing.
+* Camera::                      A final camera transformation of the scene.
+* Picture box::                 Setting the bounding box and 2d clipping.
+* Frame::                       Adding a box around the drawing.
+* Language::                    Setting the output language.
+
+Building a drawing
+
+* Overview::                    Building a substantial drawing.
+* A technical drawing::         An example with fine placement.
+* A hierarchical model::        An example with sweeps and puts.
+* Caveats::                     Where trouble can occur.
+
+Caveats
+
+* Limits on error detection::   What sketch doesn't do.
+* Clipping::                    No clipping at present.
+* Hidden surface removal::      Imperfections to fix.
+
+Hidden surface removal and polygon splitting
+
+* Statistics::                  Performance numbers on depth sort.
+* Bugs and anomalies::          Imperfections in this implementation.
+
+@end detailmenu
+@end menu
+
+@node About sketch, Introduction by example, Top, Top
+@comment  node-name,  next,  previous,  up
+@chapter About sketch
+
+@menu
+* Reporting bugs::              Let use know what's wrong!
+* Contributions::               How you can help@dots{}.
+@end menu
+
+@code{Sketch} is a small, simple system for producing line drawings of
+two- or three-dimensional objects and scenes.  It began as a way to
+make illustrations for a textbook after we could find no suitable
+tool for this purpose.  Existing scene processors emphasized GUIs
+and/or photo-realism, both un-useful to us.  We wanted to produce
+finely wrought, mathematically-based illustrations with no extraneous
+detail.
+
+@code{Sketch} accepts a tiny scene description language and generates
+@code{PSTricks} or @code{TikZ/PGF} code for @LaTeX{}.  The
+@code{sketch} language is similar to @code{PSTricks}, making it easy
+to learn for current @code{PSTricks} users.  See
+@cindex PSTricks
+@verb{|www.pstricks.de|} for information on @code{PSTricks}.
+@code{TikZ/PGF} is similar.
+See
+@cindex TikZ/PGF
+@verb{|http://sourceforge.net/projects/pgf|}.  One can easily include
+arbitrary
+@code{PSTricks} or @code{TikZ/PGF} drawings and text 
+over, in, or under
+@code{sketch} drawings, providing access to the full power of @LaTeX{}
+text and mathematics formatting in a three-dimensional setting.
+
+@node Reporting bugs, Contributions, About sketch, About sketch
+@comment  node-name,  next,  previous,  up
+@section Reporting bugs and recommending improvements.
+The group @verb{|http://groups.google.com/group/sketch-users|}
+is the best place to report bugs and make improvements.
+A second method that will probably produce a slower
+response is email to @verb{|sketch@frontiernet.net|}.
+We will try to respond, but can't promise.  In any event, don't be
+offended if a reply is not forthcoming.  We're just busy and will get
+to your suggestion eventually.
+
+For bugs, attach a @code{sketch} input file that causes the bad
+behavior.  Embed comments that explain what to look for in
+the behavior of @code{sketch} or its output.
+
+A recommendation for improvement from one unknown person counts as one
+vote. We use overall vote tallies to decide what to do next as
+resources permit.  We reserve the right to assign any number of votes
+to suggestions from people who have been helpful and supportive in the
+past.
+
+@node Contributions,  , Reporting bugs, About sketch
+@comment  node-name,  next,  previous,  up
+@section Contributions
+If you intend to implement an enhancement of your own, that's
+terrific!  Consider collaborating with us first to see if we're
+already working on your idea or if we can use your work in the
+official release.
+
+@center @image{ex000}
+@anchor{Solid coil example}
+
+@node Introduction by example, Input language, About sketch, Top
+@comment  node-name,  next,  previous,  up
+@chapter Introduction by example
+The @code{sketch} input language will seem familiar to users of the
+@code{PSTricks} package for @LaTeX{}.  The following program draws a
+triangular polygon pierced by a line.
+@verbatim
+  polygon(0,0,1)(1,0,0)(0,1,0)
+  line(-1,-1,-1)(2,2,2)
+@end verbatim
+@noindent
+The coordinate system 
+@cindex coordinate system, right-handed
+@cindex right-hand coordinate system
+is a standard right-handed Cartesian one.
+
+@center @image{ex010}
+
+@menu
+* Hello world::                 Simplest possible @code{sketch} program.
+* Drawing options::             Controlling object appearance.
+* Drawing a solid::             Drawing an object with 3d appearance.
+* Special objects::             Laying @TeX{} over, in, or under drawings.
+* Object transforms::           Rotate, translate, scale, and others.
+* Repeated objects::            Making transformed copies.
+* Swept objects::               Sweeping objects in space to make new shapes.
+@end menu
+
+@node Hello world, Drawing options, Introduction by example, Introduction by example
+@comment  node-name,  next,  previous,  up
+@section Hello world
+The @code{sketch} program above is nearly the simplest one possible,
+the equivalent of a ``hello world''
+@cindex hello world
+@cindex program, hello world
+program you might find at the start of a programming language text.
+If it is saved in the file @file{simple.sk}, then the command
+@cindex command line, @code{sketch}
+@cindex running @code{sketch}
+@verbatim
+  sketch simple.sk -o simple.tex
+@end verbatim
+@noindent
+creates a file @file{simple.tex} containing @code{PSTricks} commands to
+draw these objects on paper.  The contents of @file{simple.tex}
+look like this.
+@verbatim
+  \begin{pspicture}(-1,-1)(2,2)
+  \pstVerb{1 setlinejoin}
+  \psline(-1,-1)(.333,.333)
+  \pspolygon[fillstyle=solid,fillcolor=white](0,0)(1,0)(0,1)
+  \psline(.333,.333)(2,2)
+  \end{pspicture}
+@end verbatim
+@noindent
+The hidden surface algorithm 
+@cindex hidden surface algorithm
+of @code{sketch} has split 
+@cindex splitting, line and surface
+the line into
+two pieces and ordered the three resulting objects so that the correct
+portion of the line is hidden.
+
+If you've noticed that the projection we are using seems equivalent to
+erasing the @math{z}-coordinate of the three-dimensional input points,
+pat yourself on the back.  You are correct.  This is called a
+@dfn{parallel projection}.
+@cindex parallel projection
+@cindex projection, parallel
+The @math{z}-coordinate axis is pointing straight out of the paper at
+us, while the @math{x}- and @math{y}-axes point to the right and up as
+usual.
+
+The resulting picture file can be included in a @LaTeX{} document with
+@verb{|\input{simple}|}.  Alternately, adding the command line option
+@option{-T}@footnote{Or for European users of A4 size paper,
+@option{-Te}.} 
+@cindex command line option
+@cindex option, command line
+causes the @code{pspicture} to be wrapped in a short
+but complete document, ready to run though @LaTeX{}.
+@cindex document template
+@cindex template, document
+In a finished, typeset document, the picture looks like this.  (The
+axes have been added in light gray.)
+
+@center @image{ex020}
+
+@noindent
+It is important to know that only the ``outside'' 
+@cindex outside of a polygon
+@cindex polygon, outside of
+of a polygon is
+normally drawn.  The @dfn{outside} is where the vertices given in the
+@code{polygon} 
+@sxindex polygon
+command appear in @emph{counter-clockwise} 
+@cindex counter-clockwise polygon vertex order
+@cindex polygon vertex order
+@cindex order, polygon vertex
+order.  Thus, if the command above had been
+@verbatim
+  polygon(0,1,0)(1,0,0)(0,0,1)
+@end verbatim
+@noindent
+the polygon would not appear in the picture at all.  It would have
+been @dfn{culled}
+@cindex culling
+from the scene.  This culling behavior may seem
+strange, but stay tuned.
+
+@node Drawing options, Drawing a solid, Hello world, Introduction by example
+@comment  node-name,  next,  previous,  up
+@section Options
+Many @code{PSTricks} and @code{TikZ/PGF} options 
+@cindex option
+work just fine in @code{sketch}. If generating @code{PSTricks}, the code
+@sxindex line
+@verbatim
+  polygon[fillcolor=lightgray,linewidth=3pt](0,0,1)(1,0,0)(0,1,0)
+  line[linestyle=dotted](-1,-1,-1)(2,2,2)
+@end verbatim
+@noindent
+produces
+
+@center @image{ex030}
+
+To produce @code{TikZ/PGF}, the corresponding code is 
+@verbatim
+  polygon[fill=lightgray,line width=3pt](0,0,1)(1,0,0)(0,1,0)
+  line[style=dotted](-1,-1,-1)(2,2,2)
+  global { language tikz }
+@end verbatim
+@noindent
+The final @code{global} 
+@cindex options, global
+@cindex global options
+instructs @code{sketch} to produce @code{TikZ/PGF} code as output
+rather than the default, @code{PSTricks}.  Note that @code{polygon}
+fill color and @code{line} style options both conform to @code{TikZ}
+syntax rules.  The resulting @code{TikZ/PGF} output is
+@verbatim
+  \begin{tikzpicture}[join=round]
+  \draw[dotted](-1,-1)--(.333,.333);
+  \filldraw[fill=lightgray,line width=3pt](0,0)--(1,0)--(0,1)--cycle;
+  \draw[dotted](.333,.333)--(2,2);
+  \end{tikzpicture}
+@end verbatim
+@noindent
+The remaining examples of this manual are in PSTricks style.
+
+@node Drawing a solid, Special objects, Drawing options, Introduction by example
+@comment  node-name,  next,  previous,  up
+@section Drawing a solid
+Let's try something more exciting.  @code{Sketch} has no notion of a
+solid, 
+@cindex solid
+but polygonal @dfn{faces} 
+@cindex faces
+can be used to represent the
+boundary of a solid.  To the previous example, let's add three more
+triangular polygons to make the faces of an irregular tetrahedron.
+@cindex tetrahedron
+@sxindex def
+@sxindex polygon
+@verbatim
+  % vertices of the tetrahedron
+  def p1 (0,0,1) def p2 (1,0,0)
+  def p3 (0,1,0) def p4 (-.3,-.5,-.8)
+
+  % faces of the tetrahedron.
+  polygon(p1)(p2)(p3) % original front polygon
+  polygon(p1)(p4)(p2) % bottom
+  polygon(p1)(p3)(p4) % left
+  polygon(p3)(p2)(p4) % rear
+
+  % line to pierce the tetrahedron
+  line[linecolor=red](-1,-1,-1)(2,2,2)
+@end verbatim
+@noindent
+This example uses @dfn{definitions}, 
+@cindex definition
+which begin with 
+@code{def}.
+@sxindex def
+These @dfn{define} or give names to points, 
+@cindex definition, point
+@cindex point definition
+which are then available
+as @dfn{references} 
+@cindex reference, point
+by enclosing the names in parentheses,
+e.g.@ @verb{|(foo)|}.
+@sxindex (foo)@r{, point reference}
+The parentheses denote that the names refer to points; they are
+required.  There can be no
+@cindex white space
+white space between them and the name.
+
+As you can see, comments 
+@cindex comments
+start with @verb{|%|} as in @TeX{} and extend
+to the end of the line (though @verb{|#|} will work as well).  White
+space, 
+@cindex white space
+including spaces, tabs and blank lines, has no effect in the @code{sketch}
+language.
+
+@center @image{ex040}
+
+@noindent
+If we look inside the @TeX{} file produced by @code{sketch}, there
+will be only three polygons.  The fourth has been 
+@cindex culling
+culled because it is
+a ``back face'' 
+@cindex back face
+of the tetrahedron, invisible to our view.  It is
+unnecessary, and so it is removed.
+
+In some drawings, polygons act as zero-thickness solid surfaces with
+both sides visible rather than as the faces of solid objects, where
+back faces can be culled.  For zero-thickness solids, culling 
+@cindex culling
+is a
+problem.  One solution is to use a pair of @code{sketch} polygons for
+each zero-thickness face, identical except with opposite vertex
+orders.  This is unwieldy and expensive.  A better way is to
+set the @code{sketch} internal option @code{cull} to @code{false} in
+the usual @code{PSTricks} manner.
+@opindex cull
+@verbatim
+  polygon[cull=false](p1)(p2)(p3)
+@end verbatim
+@noindent
+The following shows the same helix
+@cindex helix
+shape drawn first with
+@verb{|cull=true|} (the default) and then @verb{|cull=false|}.
+
+@center @image{ex045} @anchor{Helix with cull set false then true} 
+
+@noindent
+We'll soon see how to produce these helixes with a few lines 
+of @code{sketch} language code.
+
+It may be tempting to turn culling off gratuitously so that vertex order
+can be ignored.  This is not a good idea because output file size and
+@TeX{} and Postscript processing time both depend on the number of
+output polygons.  Culling usually improves performance by a factor of
+two.  On the other hand, globally setting @code{cull=false} is 
+reasonable while debugging.  See @ref{Global options} and 
+@ref{Limits on error detection}.
+
+@node Special objects, Object transforms, Drawing a solid, Introduction by example
+@comment  node-name,  next,  previous,  up
+@section Special objects
+We can add labels 
+@cindex labels
+to a drawing by using @verb{|special|} 
+@sxindex special
+@cindex special object
+objects, which provide a way to embed raw @LaTeX{} and @code{PSTricks}
+code.  Adding this to the tetrahedron does the trick.
+@verbatim
+  special |\footnotesize
+           \uput{2pt}[ur]#1{$P1$}
+           \uput[r]#2{$P2$}
+           \uput[u]#3{$P3$}
+           \uput[d]#4{$P4$}|
+    (p1)(p2)(p3)(p4)
+@end verbatim
+@noindent
+Here is the result.
+
+@center @image{ex042}
+
+There are several details to note here.  First, the quoting convention
+@cindex quoting, special
+for the raw code is similar to the @LaTeX{} @verb{|\verb|} command.  The
+first non-white space character following @verb{|special|} is
+understood to be the quote character, 
+in this case @samp{|}.  The raw
+text continues until this character recurs.
+
+Second, the argument references 
+@cindex argument, special
+@verb{|#1|}, @verb{|#2|}, @verb{|#3|}, and @verb{|#4|} refer to point,
+vector, or scalar values in the list that follow.  This is similar to
+@TeX{} macro syntax.  The transformed and two-dimensional projections
+of these three-dimensional points are substituted
+@cindex substitution, special
+@cindex special argument substitution
+in the final output.  An argument reference of the form @verb{|#1-2|}
+is replaced with the angle in degrees of the two-dimensional vector
+that connects the projections of the two respective argument points,
+here @verb{|#1|} and @verb{|#2|}.  The substituted angle is enclosed
+in curly braces @code{@{ @}}.  When @code{TikZ/PGF} output is being
+generated, the angle is rounded to the nearest degree because
+non-integer angles are not allowed by @code{TikZ/PGF} primitives.
+
+As of Version 0.3 of @code{sketch}, special arguments may be scalars
+or vectors in addition to points. References to scalar arguments are
+merely replaced with a number formatted just as any point
+coordinate. References to vectors become two-dimensional points. The
+tick operator that selects individual components of points and vectors
+elsewhere in @code{sketch} (see for example @ref{Affine arithmetic})
+can also be applied to point and vector argument references.  All
+three dimensions of a transformed point or vector can also be
+substitued with @code{'3}. See @ref{Specials} for details.
+
+By default, @code{special} objects are printed last, overlaying all
+other objects in the scene.  If you specify the internal option
+@cindex internal option
+@cindex option, internal
+@code{lay=in}, the hidden surface algorithm 
+@opindex lay
+@cindex hidden surface algorithm
+considers the entire special object to be the first point
+(@verb{|#1|}) in the argument list.  If that point is behind (of
+smaller @math{z}-component than) any drawable, then the entire special
+object is drawn before that drawable, so the drawable obscures parts of
+the special object that overlaps it.  In our example, @verb{|p1|} is
+the front-most point in the scene (has the largest
+@math{z}-component), so adding @code{lay=in} has no effect.  
+
+With option @code{lay=under}, a special is drawn @emph{before}, hence
+appears @emph{under} any of the objects handled by the hidden surface
+algorithm.  This is how the light gray axes were added to the ``hello
+world'' example @ref{Hello world}.
+
+@verb{|Special|} objects are powerful, with many possible uses.
+
+@node Object transforms, Repeated objects, Special objects, Introduction by example
+@comment  node-name,  next,  previous,  up
+@section Transforms
+@cindex transform
+Now let's add a second copy of the pierced tetrahedron.  We'll rotate
+the copy 90 degrees about the @math{x}-axis with the origin as
+@dfn{center of rotation}
+@cindex center of rotation
+@cindex rotation, center of
+so we can see the back,
+then translate it to the right---in the positive
+@math{x}-direction---so it doesn't collide with the original. To help
+us see what's going on, make the back side gray.
+@sxindex def
+@sxindex put
+@sxindex line
+@sxindex polygon
+@opindex linecolor
+@opindex fillcolor
+@sxindex rotate
+@sxindex translate
+@sxindex then
+@verbatim
+  def pierced_tetrahedron {
+    def p1 (0,0,1) def p2 (1,0,0)
+    def p3 (0,1,0) def p4 (-.3,-.5,-.8)
+    polygon(p1)(p2)(p3)                      % original
+    polygon(p1)(p4)(p2)                      % bottom
+    polygon(p1)(p3)(p4)                      % left
+    polygon[fillcolor=lightgray](p3)(p2)(p4) % rear
+    line[linecolor=red](-1,-1,-1)(2,2,2)
+  }
+  {pierced_tetrahedron}  % tetrahedron in original position
+  put { rotate(90, (0,0,0), [1,0,0]) % copy in new position
+        then translate([2.5,0,0]) } {pierced_tetrahedron}
+@end verbatim
+@noindent
+Here the entire code of the previous example has been wrapped in a
+definition by forming a @dfn{block} 
+@cindex block
+@sxindex @{ @}@r{, block drawable}
+with braces (a single item would not need them).  The point
+definitions nested inside the braces are @dfn{lexically scoped}.
+@cindex lexical scope
+@cindex scope, identifier
+Their meaning extends only to the end of the block.  The outer
+@verb{|def|} is called a @dfn{drawable}
+@cindex drawable
+definition 
+@cindex definition, drawable
+@cindex drawable definition
+because it describes something that can be drawn.
+
+A drawable definition by itself causes nothing to happen until its
+name is referenced.  Drawable references must be enclosed in curly
+braces, e.g.@ @verb{|{foo}|}, with no intervening
+@cindex white space
+white space.  In the code
+above, the first reference 
+@cindex reference, drawable
+@verb{|{pierced_tetrahedron}|} 
+@sxindex @{foo@}@r{, drawable reference}
+is a plain
+one. Its effect is merely to duplicate the earlier drawing.  Almost
+any series of @code{sketch} commands @verb{|stuff|} may be replaced
+with @verb{|def foo { stuff } {foo}|} without changing its meaning.
+
+The @verb{|put|} command supplies a second reference, this time with
+a @dfn{transform} applied first.  The @verb{|rotate|}
+@sxindex rotate
+@cindex rotation
+transform turns the tetrahedron 90 degrees about the origin.  The
+axis of rotation 
+@cindex axis, rotation
+is the vector @math{[1,0,0]}.  By the @dfn{right
+hand rule}, 
+@cindex right hand rule
+this causes the top of the tetrahedron to rotate toward
+the viewer and the bottom away.  The rule receives its name from the
+following definition:
+@quotation
+@anchor{Right hand rule}
+@strong{Right hand rule.}  If the right hand is wrapped around any
+axis with the thumb pointing in the axis direction, then the fingers
+curl in the direction of positive rotation about that axis.
+@end quotation
+The @verb{|translate|} 
+@sxindex translate
+@cindex translation transform
+@cindex transform, translation
+transform moves the pyramid laterally to
+the right by adding the vector 
+@cindex vector
+@math{[2.5,0,0]} to each vertex
+coordinate.  The result is shown here.
+
+@center @image{ex050}
+
+@node  Repeated objects, Swept objects, Object transforms, Introduction by example
+@comment  node-name,  next,  previous,  up
+@section Repeated objects
+To draw seven instances of the tetrahedron, each differing from the
+last by the same transform, replace the last two commands of the
+previous example with
+@sxindex repeat
+@sxindex rotate
+@sxindex translate
+@verbatim
+  repeat { 7, rotate(15, (0,0,0), [1,0,0]) % copy in new position
+              then translate([2,0,0]) } {pierced_tetrahedron}
+@end verbatim
+@noindent
+And the result@enddots{}
+
+@center @image{ex060}
+
+@node  Swept objects,  , Repeated objects, Introduction by example
+@comment  node-name,  next,  previous,  up
+@section Swept objects
+@cindex swept object
+@cindex sweep
+Many familiar shapes can be generated by sweeping simpler ones through
+space and considering the resulting path, surface, or volume.
+@code{Sketch} implements this idea in the @verb{|sweep|} command.
+@sxindex sweep
+@sxindex rotate
+@verbatim
+  def n_segs 8
+  sweep { n_segs, rotate(180 / n_segs, (0,0,0), [0,0,1]) } (1,0,0)
+@end verbatim
+@noindent
+This code sweeps the point @math{(1,0,0)} 
+@cindex point sweep
+@cindex swept point
+eight times by rotating it
+@math{180/8 = 22.5} degrees each time and connecting the resulting
+points with line segments.  The @verb{|def|} used here is a
+@dfn{scalar} definition.
+@cindex definition, scalar
+@cindex scalar definition
+References to
+@cindex reference, scalar
+scalars have no enclosing brackets at all.
+
+@menu
+* Point sweeps::                Swept points make lines and polygons.
+* Polyline sweeps::             Swept lines make surfaces.
+* Nested sweeps::               Swept sweeps are useful!
+* Polygon sweeps::              Swept polygons make solids...
+* Polyline sweeps with closure::  and so do closed polyline sweeps.
+* Affine arithmetic::           Sketch useful math expression.
+* More to learn::               Check out the Mobius strip!
+@end menu
+
+@node Point sweeps, Polyline sweeps, Swept objects, Swept objects
+@comment  node-name,  next,  previous,  up
+@subsection Point sweeps
+Sweeping a point makes a one-dimensional path, which is a polyline.
+Since we have swept with a rotation, the result is a circular arc.
+Here is what it looks like.
+
+@center @image{ex070}
+
+This is the first example we have seen of @code{sketch} arithmetic.
+The expression @verb{|180 / n_segs|} causes the eight rotations to add
+to 180.  If you're paying attention, you'll have already noted that
+there are @emph{nine} points, producing eight line segments.
+
+You can cause the swept point to generate a single polygon rather than
+a polyline by using the @dfn{closure tag} @verb{|<>|} 
+@sxindex <>@r{, closure tag}
+@cindex closure tag, @code{<>}
+after the number
+of swept objects. Code and result follow
+@sxindex def
+@sxindex rotate
+@sxindex sweep
+@verbatim
+  def n_segs 8
+  sweep { n_segs<>, rotate(180 / n_segs, (0,0,0), [0,0,1]) } (1,0,0)
+@end verbatim
+@center @image{ex080}
+
+@node Polyline sweeps, Nested sweeps, Point sweeps, Swept objects
+@comment  node-name,  next,  previous,  up
+@subsection Polyline sweeps
+Sweeping a polyline produces a 
+@cindex line sweep
+@cindex swept line
+@cindex surface
+surface composed of many faces.  
+@cindex faces
+The unbroken helix in the
+example @ref{Helix with cull set false then true} is produced by this
+code (plus a surrounding @verb{|put|} rotation to make an interesting
+view; this has been omitted).
+@sxindex def
+@sxindex sweep
+@sxindex rotate
+@sxindex translate
+@opindex cull
+@opindex linewidth
+@verbatim
+  def K [0,0,1]
+  sweep[cull=false] {
+    60, 
+    rotate(10, (0,0,0), [K]) then translate(1/6 * [K]) 
+  } line[linewidth=2pt](-1,0)(1,0)
+@end verbatim
+@noindent
+Again, 60 segments of the helix 
+@cindex helix
+are produced by connecting 61
+instances of the swept line.  Options 
+@cindex options, sweep
+applied to the sweep, here
+@verb{|cull=false|}, are treated as options for the generated polygon
+or polyline.  Options of the swept line itself, here
+@verb{|linewidth=2pt|}, are ignored, though with a warning. This
+@verb{|def|} is a @dfn{vector} definition, 
+@cindex definition, vector
+@cindex vector definition
+which must be referenced
+with square brackets, e.g.@ @verb{|[foo]|}.
+@cindex reference, vector
+@sxindex [foo]@r{, vector reference}
+
+@node Nested sweeps, Polygon sweeps, Polyline sweeps, Swept objects
+@comment  node-name,  next,  previous,  up
+@subsection Nested sweeps
+When the center point of rotation is omitted, 
+@cindex center of rotation
+@cindex rotation, center of
+the origin is assumed.
+When a point has only two coordinates, they are taken as
+@math{x}@tie{}and @math{y},@tie{}with @math{z=0} assumed.  A toroid 
+@cindex toroid
+is therefore obtained with this code.
+@sxindex def
+@sxindex sweep
+@sxindex rotate
+@verbatim
+  def n_toroid_segs 20   def n_circle_segs 16
+  def r_minor 1          def r_major 1.5
+  sweep { n_toroid_segs, rotate(360 / n_toroid_segs, [0,1,0]) }
+    sweep { n_circle_segs, rotate(360 / n_circle_segs, (r_major,0,0)) } 
+      (r_major + r_minor, 0)
+@end verbatim
+@indent
+For intuition, the idea of the code is to sketch a circle to the right
+of the origin in the @math{xy}-plane, then rotate that circle ``out of
+the plane'' about the @math{y}-axis to make the final figure.  This
+produces the following.  (A view rotation and some axes have been
+added.)
+
+@center @image{ex090}
+
+This example also shows that the swept object may itself be another
+@code{sweep}.
+@sxindex sweep
+@cindex nesting, swept object
+In fact, it may be @emph{any} @code{sketch} expression that results in
+a list of one or more points or, alternately, a list of one or more
+polylines and polygons.  The latter kind of list can be created with a
+@verb{|{ }|}-enclosed block, perhaps following a 
+@sxindex put
+@verb{|put|} or
+@sxindex repeat
+@verb{|repeat|}.
+@sxindex @{ @}@r{, block drawable}
+
+@node Polygon sweeps, Polyline sweeps with closure, Nested sweeps, Swept objects
+@comment  node-name,  next,  previous,  up
+@subsection Polygon sweeps
+Sweeping a polygon 
+@cindex polygon sweep
+@cindex swept polygon
+creates a closed surface with polygons at the ends,
+which are just copies of the original, appropriately
+positioned.  @xref{Solid coil example}. 
+@cindex options, swept object
+Options on the swept polygon,
+if they exist, are applied to the ends.  Otherwise the sweep options
+@cindex options, sweep
+are used throughout.
+
+@node Polyline sweeps with closure, Affine arithmetic, Polygon sweeps, Swept objects
+@comment  node-name,  next,  previous,  up
+@subsection Polyline sweeps with closure
+A polyline sweep with a closure tag 
+@sxindex <>@r{, closure tag}
+@cindex closure tag, @code{<>}
+creates another kind of closed
+surface.  First, the polyline segments are connected by faces, just as
+without the closure tag.  Then, each set of end points is joined to
+make a polygon, one for each end.  A code for several views of a
+cylindrical prism follows.
+@sxindex def
+@sxindex repeat
+@sxindex rotate
+@sxindex then
+@sxindex translate
+@sxindex sweep
+@sxindex line
+@opindex fillcolor
+@verbatim
+  def n_cyl_segs 20  def n_views 5  def I [1,0,0]
+  def endopts [fillcolor=lightgray]
+  repeat { n_views, rotate(180/n_views, [I]) then translate([I] * 2.1) } 
+    sweep[endopts]{ n_cyl_segs<>, rotate(360/n_cyl_segs, [0,1,0]) } 
+      line[fillcolor=white](1,-1)(1,1)
+@end verbatim
+@noindent
+It produces this drawing.
+
+@center @image{ex110}
+
+@noindent
+The options of the swept line, if any, are applied to the faces
+produced by sweeping the line, but not the end polygons.  Otherwise,
+the sweep options are applied throughout.
+@cindex options, swept object
+The @verb{|def|} in this example is an @dfn{option} definition.
+@cindex definition, options
+@cindex options definition
+References to options must be enclosed in square brackets, e.g.@tie{}
+@verb{|[foo]|}.
+@cindex reference, options
+@sxindex [foo]@r{, options reference}
+You can concatenate several sets of options with a single
+reference, e.g.@tie{}
+@verb{|[color, size, style]|}
+would cause the option definitions for @code{color}, @code{size},
+and @code{style} to appear in sequence in the output 
+created by the @code{sketch} command containing the reference.
+Happily, the syntax of @code{sketch} is such that
+options references can never be confused with vector references.  While
+not apparent in this example, options references are useful when
+defining many objects with a similar appearance.
+
+@node Affine arithmetic, More to learn, Polyline sweeps with closure, Swept objects
+@comment  node-name,  next,  previous,  up
+@subsection Affine arithmetic
+The arithmetic @verb{|[I] * 2.1|} above hints at a larger truth.
+@code{Sketch} operators work on scalars, vectors, points, and
+transforms according to the general rules of @dfn{affine algebra}.
+@cindex affine arithmetic
+This can be helpful for setting up diagrams with computed geometry.
+For example, if you have triangle vertices @verb{|(p1)|} through
+@verb{|(p3)|} and need to draw a unit normal vector pointing out of
+the center of the triangle, this code does the trick.
+@sxindex def
+@sxindex polygon
+@sxindex line
+@opindex arrows
+@verbatim
+  def p1 (1,0,0)  def p2 (0,0.5,0)  def p3 (-0.5,-1,2)
+  def O (0,0,0)
+  def N unit( ((p3) - (p2)) * ((p1) - (p2)) )
+  def n1 ((p1)-(O) + (p2)-(O) + (p3)-(O)) / 3 + (O)
+  def n2 (n1)+[N]
+  polygon(p1)(p2)(p3)
+  line[arrows=*->](n1)(n2)
+@end verbatim
+@noindent
+The first line computes the cross product of two edge vectors of the
+triangle and scales it to unit length.  The second computes the
+average of the vertices.  Note that subtraction and addition of the
+origin effectively convert vectors to points and @emph{vice versa}.
+The line command draws the normal at the correct spot.
+
+@center @image{ex100}
+
+Two caveats regarding this example remain.  First, the only way to use
+@code{PSTricks}-style arrows is with @verb{|arrows=|}.  
+@opindex arrows
+The alternative syntax for @code{PSTricks} arrows is not allowed in
+@verb{|sketch|}. Second, you might like to eliminate the third
+@verb{|def|} and write instead the following.
+@verbatim
+  line[arrows=*->](n1) (n1)+[N]
+@end verbatim
+@noindent
+This is not allowed.  The point lists in drawables may consist only of
+explicit points or point references.  You may, however, use arithmetic
+to calculate point components.  The following works, though it's
+a little cumbersome.
+@verbatim
+  line[arrows=*->](n1)((n1)'x+(N)'x, (n1)'y+(N)'y, (n1)'z+(N)'z)
+@end verbatim
+@noindent
+Obviously, the @dfn{tick operator} 
+@cindex tick operator (@code{'})
+@sxindex 'x@r{,} 'y@r{, and }'z
+@samp{'x} extracts components of points and
+vectors. 
+
+@node More to learn,  , Affine arithmetic, Swept objects
+@comment  node-name,  next,  previous,  up
+@subsection More to learn
+This is not the end of the story on sweeps!  We invite the reader into
+the main body of this documentation @ref{Sweeps} to learn more.
+
+@center @image{ex120}
+
+@noindent
+Who knows where you'll finish?
+
+@node Input language, Building a drawing, Introduction by example, Top
+@comment  node-name,  next,  previous,  up
+@chapter Input language
+This chapter describes the @code{sketch} input language in detail.
+
+@menu
+* Language basics::             Case, space, comments, include files.
+* Drawables::                   Things that can be drawn.
+* Definitions::                 Giving things names.
+* Global environment::          Affect the entire drawing.
+@end menu
+
+@node Language basics, Drawables, Input language, Input language
+@comment  node-name,  next,  previous,  up
+@section Basics 
+@code{Sketch} input is plain ASCII text, usually stored in an input
+file.  
+@cindex input file
+@cindex file, input
+It describes a @dfn{scene},
+so the sketch language is a @dfn{scene description
+language}.
+@cindex scene description language
+@cindex language, scene description
+@code{Sketch} input is also @dfn{declarative}.
+@cindex declarative language
+@cindex language, declarative
+It merely
+declares what the scene ought to look like when drawing is complete
+and says very little about how @code{sketch} should do its work.
+@code{Sketch} commands are not executed sequentially as in the usual
+programming language.  They merely contribute to that declaration.
+
+A few syntactic details are important.  Case is significant in the
+@code{sketch} language.  With a few exceptions, white space is not.
+This includes line breaks.
+@cindex white space
+Comments begin with @code{%} or @code{#} and extend to the end of the
+line.  You can disable a chunk of syntactically correct @code{sketch}
+code by enclosing it in a @code{def}.
+@cindex comments
+There is a simple ``include file'' mechanism. 
+@cindex include file
+@cindex file, include
+The command
+@sxindex input
+@verbatim
+  input{otherfile.sk}
+@end verbatim
+@noindent
+causes the contents of @file{otherfile.sk} to be inserted as though
+they were part of the current file.
+
+@menu
+* Identifiers::                 Names for things.
+* Key and reserved words::      Names you shouldn't use.
+* Literals::                    Constants and constructors.
+* Arithmetic::                  Rules for expressions.
+* Options::                     Modifying object appearance.
+@end menu
+
+@node Identifiers, Key and reserved words, Language basics, Language basics
+@comment  node-name,  next,  previous,  up
+@subsection Identifiers
+Identifiers in @code{sketch} are references to earlier-defined
+options, scalars, points, vectors, transforms, drawables, and tags.
+@cindex identifiers
+Definitions are explained in @ref{Definitions}.
+
+An identifier consists of a leading letter followed by letters,
+numbers and underscores.  The last character may @emph{not} be an
+underscore.  Keywords cannot be used as identifiers, and reserved
+words ought to be avoided. @xref{Key and reserved words}.
+
+@node Key and reserved words, Literals, Identifiers, Language basics
+@comment  node-name,  next,  previous,  up
+@subsection Key and reserved words
+@cindex keywords
+The keywords of @code{sketch} are @code{picturebox} @code{curve}
+@code{def} @code{dots} @code{frame} @code{global} @code{input}
+@code{line} @code{polygon} @code{put} @code{repeat} @code{set}
+@code{sweep} and @code{then}.  The @code{sketch} parser will note a
+syntax error if any of these are used in place of a proper identifier.
+
+In addition, there are reserved words 
+@cindex reserved words
+that can currently be defined by the user, but with the risk that
+future versions of @code{sketch} will reject those definitions.  The
+reserved words are @code{acos} @code{asin} @code{atan2} @code{cos}
+@code{inverse} @code{perspective} @code{project} @code{rotate}
+@code{scale} @code{sin} @code{special} @code{sqrt} @code{translate}
+@code{unit} and @code{view}.
+
+@node Literals, Arithmetic, Key and reserved words, Language basics
+@comment  node-name,  next,  previous,  up
+@subsection Literals
+Literals in @code{sketch} include scalars, points, vectors, and
+transforms.  Literals, along with defined object references,
+are used in arithmetic expressions.  @xref{Arithmetic}.
+
+@menu
+* Scalar literals::             Just the numbers.
+* Point and vector literals::   3d quantities.
+* Transform literals::          Matrix form.
+@end menu
+
+@node Scalar literals, Point and vector literals, Literals, Literals
+@comment  node-name,  next,  previous,  up
+@subsubsection Scalar literals
+@cindex scalar literal
+@cindex literal, scalar
+Scalar literals are positive floating point numbers with syntax
+according to C conventions.  The following are some examples.
+@example
+0 1004 .001 8.3143 3. 1.60E-19 6.02e+23 
+@end example
+@noindent
+Scalar literals may not contain embedded spaces.
+
+@node Point and vector literals, Transform literals, Scalar literals, Literals
+@comment  node-name,  next,  previous,  up
+@subsubsection Point and vector literals
+@cindex point literal
+@cindex literal, point
+@cindex vector literal
+@cindex literal, vector
+Points and vector literals have these forms respectively.
+@example
+(@i{X},@i{Y},@i{Z})  [@i{X},@i{Y},@i{Z}]
+@end example
+@noindent
+Each of the components is itself a scalar expression.  The
+@math{z}-components are optional and default to zero.
+
+@node Transform literals,  , Point and vector literals, Literals
+@comment  node-name,  next,  previous,  up
+@subsubsection Transform literals
+@cindex transform literal
+@cindex literal, transform
+Most transform literals are formed by @dfn{constructors}.
+@cindex constructor
+These are summarized in the following table.
+@multitable {@code{[[@math{a_{11}},@math{a_{12}},@math{a_{13}},@math{a_{14}}],}}{point,vector,vector}{Long column meant to wrap but does it?  Maybe.}
+@headitem Constructor @tab Param types @tab Description
+@item @code{rotate(A,P,X)} 
+ @sxindex rotate
+ @cindex rotation transform
+ @cindex transform, rotation
+ @tab scalar,point,vector 
+ @tab Rotate @code{A} degrees about point @code{P} with axis @code{X}
+   according to the right hand rule. @xref{Right hand rule}.
+   @code{P} and @code{X} are both optional and default to the origin and
+   the @math{z}-axis respectively.
+@item @code{translate(X)} 
+ @sxindex translate
+ @cindex translation transform
+ @cindex transform, translation
+ @tab vector 
+ @tab Translate by @code{X}.
+@item @code{scale(S)} 
+ @sxindex scale
+ @cindex scale transform
+ @cindex transform, scale
+ @tab scalar
+ @tab Scale uniformly by factor @code{S}.
+@item @code{scale(V)} 
+ @sxindex scale
+ @cindex scale transform
+ @cindex transform, scale
+ @tab vector
+ @tab Scale along each axis by components of @code{V}.
+@item @code{project()} 
+ @sxindex project
+ @cindex parallel projection
+ @cindex projection, parallel
+ @tab ---
+ @tab Same as @code{scale([1,1,0])}.
+@item @code{project(S)} 
+ @sxindex project
+ @cindex perspective projection
+ @cindex projection, perspective
+ @tab scalar
+ @tab Perspective projection with view center at origin and projection
+ plane @math{z=-@code{S}}.
+@item @code{perspective(S)} 
+ @sxindex perspective
+ @cindex perspective projection
+ @cindex projection, perspective
+ @tab scalar
+ @tab Perspective @emph{transform} identical to @code{project(S)}
+ except that the @math{z}-coordinate of the transformed result is
+ @dfn{pseudodepth}, usable by the hidden surface algorithm. 
+ @cindex hidden surface algorithm
+@item @code{view(E,D,U)} 
+ @sxindex view
+ @cindex view transform
+ @cindex transform, view
+ @tab point,vector,vector
+ @tab View transform similar to that of @code{OpenGL}'s.  The
+@emph{eye point} @code{E} is translated to the origin while a rotation
+is also applied that makes the @emph{view direction vector} @code{D}
+and the @emph{view ``up'' vector} @code{U} point in the negative
+@math{z}- and the @math{y}-directions respectively.  If @code{U} is
+omitted, it defaults to @math{[0,1,0]}. When @code{U} is omitted,
+@code{D} may be also; it defaults to @code{(0,0,0)-(E)}, a vector
+pointing from the eye toward the origin.
+@item @code{view(E,L,U)} 
+ @sxindex view
+ @cindex view transform
+ @cindex transform, view
+ @tab point,point,vector
+ @tab An alternate form of @code{view(E,D,U)} above where 
+ the view direction parameter @code{D} is replaced with a
+``look at'' point @code{L}, i.e., a point where the viewer is focusing
+her attention.  This form of view is equivalent to
+@code{view(E, (L)-(E), U)}, where @code{(L)-(E)} is a direction
+vector. @code{U} is optional and defaults to @math{[0,1,0]}.
+@item
+@code{[[@math{a_{11}},@math{a_{12}},@math{a_{13}},@math{a_{14}}]}@*
+@code{@w{ }[@math{a_{21}},@math{a_{22}},@math{a_{23}},@math{a_{24}}]}@*
+@code{@w{ }[@math{a_{31}},@math{a_{32}},@math{a_{33}},@math{a_{34}}]}@*
+@code{@w{ }[@math{a_{41}},@math{a_{42}},@math{a_{43}},@math{a_{44}}]]}@*
+  @sxindex [[ ][ ][ ][ ]]@r{, transform literal}
+  @cindex direct transform
+  @cindex transform, direct
+  @tab 16 scalars 
+  @tab Direct transform matrix definition. Each
+  of the @math{a_{ij}} is a scalar expression. See text for details.
+@end multitable
+@noindent
+The @code{project} 
+@sxindex project
+constructor is not generally useful because it
+defeats hidden surface removal by collapsing the scene onto a single
+plane.  It is a special purpose transform for drawing pictures of
+scenes where three-dimensional objects are being projected onto
+planes.  See, for example, @ref{Overview}.
+
+The direct transform constructor 
+@sxindex [[ ][ ][ ][ ]]@r{, transform literal}
+@cindex direct transform
+@cindex transform, direct
+allows direct entry of a 4x4 transformation matrix. Most 3d graphics
+systems, including @code{sketch}, use 4-dimensional homogeneous
+coordinates internally. These are transformed by multiplication with
+4x4 matrices.  The built-in constructors (@code{rotate}, @code{scale},
+etc.) are all translated internally to such 4x4 matrices. For more
+information on homogeneous coordinate transformations, see any good
+computer graphics textbook. The direct transform feature of
+@code{sketch} allows you to enter a matrix of your own choice. There
+are not many cases where this is useful, but if you do need it, you
+need it badly!
+
+@node Arithmetic, Options, Literals, Language basics
+@subsection Arithmetic expressions
+Arithmetic expressions over @code{sketch} literals and
+defined identifiers are summarized in the following tables.
+
+@menu
+* Two-operand (binary) forms::  A op B
+* Unary forms::                 op A (and others)
+@end menu
+
+@node Two-operand (binary) forms, Unary forms, Arithmetic, Arithmetic
+@comment  node-name,  next,  previous,  up
+@subsubsection Two-operand (binary) forms and precedence
+Most two-operand binary 
+@cindex binary form
+@cindex two-operand form
+forms have meanings dependent on the types of
+their arguments.  An exhaustive summary of the possibilities is given
+in the following table.
+@multitable {transform}{@code{then}}{transform}{transform}{a long description that really ought to wrap but does it I do not know}
+@headitem Left @tab Op @tab Right @tab Result @tab Description
+@item scalar @tab @code{+} @tab scalar 
+@sxindex +@r{, plus operator}
+@tab scalar @tab Scalar sum.
+@item vector @tab @code{+} @tab vector
+@tab  vector @tab Vector sum.
+@item point  @tab @code{+} @tab vector
+@tab  point  @tab Point-vector affine sum.
+@item vector @tab @code{+} @tab point
+@tab  "         @tab " 
+@item scalar    @tab @code{-} @tab scalar
+@sxindex -@r{, minus operator}
+@tab  scalar    @tab Scalar difference.
+@item vector    @tab @code{-} @tab vector
+@tab  vector    @tab Vector difference.
+@item point     @tab @code{-} @tab point
+@tab  vector    @tab Point-point affine difference.
+@item point     @tab @code{-} @tab vector
+@tab  point     @tab Point-vector affine difference.
+@item scalar    @tab @code{*} or 
+                     @code{.} @tab scalar
+@sxindex *@r{, multiplication operator}
+@sxindex .@r{, dot operator}
+@tab  scalar    @tab Scalar product.
+@item scalar    @tab @code{*} or 
+                     @code{.} @tab vector
+@tab  vector    @tab Scalar-vector product.
+@item vector    @tab @code{*} or 
+                     @code{.} @tab scalar
+@tab  "         @tab " 
+@item vector    @tab @code{*} @tab vector
+@tab  vector    @tab Vector cross-product.
+@item vector    @tab @code{.} @tab vector
+@tab  scalar    @tab Vector dot product.
+@item scalar    @tab @code{^} @tab scalar
+@sxindex ^@r{, exponentiation operator}
+@tab  scalar    @tab Raise scalar to scalar power.
+@item transform @tab @code{^} @tab integer
+@tab  transform @tab Raise transform to integer power.
+@cindex transform
+@item transform @tab @code{*} or 
+                     @code{.} @tab point
+@tab  point     @tab Affine point transform (right-to-left).
+@item transform @tab @code{*} or 
+                     @code{.} @tab vector
+@tab  vector    @tab Affine vector transform (right-to-left).
+@item transform @tab @code{*} or 
+                     @code{.} @tab transform
+@tab  transform @tab Transform composition (right-to-left).
+@item point     @tab @code{then} @tab transform
+@sxindex then
+@tab  point     @tab Affine point transform (left-to-right).
+@item vector    @tab @code{then} @tab transform
+@tab  vector    @tab Affine vector transform (left-to-right).
+@item transform @tab @code{then} @tab transform
+@tab  transform @tab Transform composition (left-to-right).
+@item scalar    @tab @code{/} @tab scalar
+@sxindex /@r{, division operator}
+@tab  scalar    @tab Scalar division.
+@item vector    @tab @code{/} @tab scalar
+@tab  vector    @tab Vector component-wise division by scalar.
+@item point     @tab @code{'} @tab @code{x}, @code{y}, or @code{z}
+@cindex tick operator (@code{'})
+@sxindex 'x@r{,} 'y@r{, and }'z
+@tab  scalar    @tab Point component extraction.
+@item vector    @tab @code{'} @tab @code{x}, @code{y}, or @code{z}
+@tab  scalar    @tab Vector component extraction.
+@end multitable
+@sp 1
+@noindent
+Operator precedence 
+@cindex precedence, operator
+@cindex operator precedence
+is shown in this table.
+@multitable {@code{then}} {highest (most tightly binding)}
+@headitem Op        @tab Precedence
+@item @code{'}      @tab highest (most tightly binding)
+@item @code{^}      @tab 
+@item @code{-}      @tab (unary negation)
+@item @code{*}
+      @code{.}
+      @code{/}      @tab 
+@item @code{+}
+      @code{-}      @tab
+@item @code{then}   @tab lowest (least tightly binding)
+@end multitable
+@sp 1
+@noindent
+All operations are left-associative 
+@cindex operator associativity
+@cindex associativity, operator
+except for @samp{^}.
+Parentheses @samp{( )} 
+@cindex parentheses
+@sxindex ( )@r{, grouping}
+are used for grouping to override precedence in the usual way.
+
+As you can see, the dot operator @samp{.} 
+@sxindex .@r{, dot operator}
+is usually a synonym for run-of-the-mill multiplication, @samp{*}.
+The meanings differ only for vector operands.  The @code{then}
+operator
+@sxindex then
+merely reverses the operand
+order with respect to normal multiplication @samp{*}.  The intent
+here is to make compositions read more naturally. The code
+@example
+(1,2,3) then scale(2) then rotate(30) then translate([1,3,0]) 
+@end example
+@noindent
+expresses a series of successive modifications to the point,
+whereas the equivalent form
+@sxindex *@r{, multiplication operator}
+@example
+translate([1,3,0]) * rotate(30) * scale(2) * (1,2,3)
+@end example
+@noindent
+will be intuitive only to mathematicians (and perhaps Arabic
+language readers). 
+
+@node Unary forms,  , Two-operand (binary) forms, Arithmetic
+@comment  node-name,  next,  previous,  up
+@subsubsection Unary forms
+Unary or one-operand forms
+@cindex unary form
+@cindex one-operand form
+are summarized in the following table, where @code{X}
+stands for the operand.
+@multitable{@code{inverse(X)}}{transform}{transform}{Long description meant to wrap eventually.}
+@headitem Op         @tab Operand 
+ @tab Result @tab Description
+@item @code{-X}      @tab scalar
+@sxindex -@r{, unary minus operator}
+ @tab scalar @tab Unary scalar negation.
+@item @code{-X}      @tab vector
+ @tab vector @tab Unary vector negation.
+@item @code{|X|}     @tab vector
+ @sxindex |@math{X}|@r{, magnitude operator}
+ @tab scalar @tab Vector length.
+@item @code{unit(X)} @tab vector
+ @sxindex unit
+ @tab vector @tab Unit vector with same direction.
+@item @code{sqrt(X)} @tab scalar
+ @sxindex sqrt
+ @tab scalar @tab Scalar square root.
+@item @code{sin(X)} @tab scalar
+ @sxindex sin
+ @tab scalar @tab Trigonometric sine (@code{X} in degrees).
+@item @code{cos(X)} @tab scalar
+ @sxindex cos
+ @tab scalar @tab Trigonometric cosine (@code{X} in degrees).
+@item @code{asin(X)} @tab scalar
+ @sxindex asin
+ @tab scalar @tab Inverse sine (@code{X} in degrees).
+@item @code{acos(X)} @tab scalar
+ @sxindex acos
+ @tab scalar @tab Inverse cosine (@code{X} in degrees).
+@item @code{atan2(X,Y)} @tab scalar
+ @sxindex atan2
+ @tab scalar @tab Polar angle in degrees of vector @math{[X,Y]}.
+@item @code{inverse(X)} @tab transform
+ @sxindex inverse
+ @tab transform @tab Inverse transform.
+@end multitable
+@sp 1
+@noindent
+Errors are reported when @code{|X|}, @code{unit}, @code{asin},
+@code{acos}, @code{sqrt}, @code{atan2}, and @code{inverse} fail due to
+operands outside their respective domains.
+
+@node Options,  , Arithmetic, Language basics
+@comment  node-name,  next,  previous,  up
+@subsection Options
+@cindex options
+@strong{Syntax:}
+@example
+[@var{key1}=@var{val1},@var{key2}=@var{val2},@dots{}]
+@end example
+@noindent
+Options are used to specify details of the appearance of drawables.
+As shown above, they are given as comma-separated key-value
+pairs. 
+
+@menu
+* PSTricks options::            Options inherited from @code{PSTricks}.
+* TikZ/PGF options::            Options inherited from @code{TikZ/PGF}.
+* Dots in TikZ/PGF::            Sketch uses @code{TikZ/PGF} circles for dots.
+* TikZ/PGF user-defined styles::  Support for @code{TikZ/PGF} named, user-defined styles.
+* Transparency::                See-through polygons.
+* Internal options::            Options used by @code{sketch}.
+@end menu
+
+@node PSTricks options, TikZ/PGF options, Options, Options
+@comment  node-name,  next,  previous,  up
+@subsubsection @code{PSTricks} options
+When @code{language pstricks} is selected (the default), permissible
+key-value pairs include all those for similar @code{PSTricks} objects.
+For example, a polygon might have the options
+@verbatim
+  [linewidth=1pt,linecolor=blue,fillcolor=cyan]
+@end verbatim
+@noindent
+@code{Sketch} merely passes these on to @code{PSTricks} without
+checking or modification.  Option lists are always optional.  A
+missing options list is equivalent to an empty one @samp{[]}.
+
+When a @code{polygon} has options for both its face and its edges, and
+the polygon is split by the hidden surface algorithm, @code{sketch}
+must copy the edge options to @code{psline}s for the edge segments and
+the face options to @code{pspolygon}s.  Options known to @code{sketch}
+for purposes of this splitting operation include @code{arrows},
+@code{dash}, @code{dotsep}, @code{fillcolor}, @code{fillstyle},
+@code{linecolor}, @code{linestyle}, @code{linewidth}, @code{opacity}, 
+@code{showpoints}, @code{strokeopacity}, and @code{transpalpha}.
+
+@node TikZ/PGF options, Dots in TikZ/PGF, PSTricks options, Options
+@comment  node-name,  next,  previous,  up
+@subsubsection @code{TikZ/PGF} options
+@code{TikZ/PGF} options are handled much as for @code{PSTricks}.
+Though @code{TikZ/PGF} often allows colors and styles to be given
+without corresponding keys, for example,
+@verbatim
+  \draw[red,ultra thick](0,0)--(1,1);
+@end verbatim
+@noindent
+this is not permitted in @code{sketch}.  To draw a red, ultra-thick
+line in @code{sketch}, the form is
+@verbatim
+  line[draw=red,style=ultra thick](0,0)(1,1)
+@end verbatim
+
+Just as for @code{PSTricks}, when a @code{polygon} has options for
+both its face and its edges, and the polygon is split by the hidden
+surface algorithm, @code{sketch} must copy the edge options to
+@code{psline}s for the edge segments and the face options to
+@code{pspolygon}s.  @code{TikZ/PGF} options known to @code{sketch} for
+purposes of this splitting operation include @code{arrows},
+@code{cap}, @code{color}, @code{dash pattern}, @code{dash phase},
+@code{double},
+@code{double distance}, @code{draw}, @code{draw opacity}, @code{fill},
+@code{fill opacity}, @code{join}, @code{line width}, @code{miter
+limit}, @code{pattern}, @code{pattern color}, and @code{style}.
+
+The @code{style} option can contain both face and edge information, so
+@code{sketch} must check the style value.  Values known to
+@code{sketch} include @code{dashed}, @code{densely dashed},
+@code{densely dotted}, @code{dotted}, @code{double}, @code{loosely
+dashed}, @code{loosely dotted}, @code{nearly opaque}, @code{nearly
+transparent}, @code{semithick}, @code{semitransparent}, @code{solid},
+@code{thick}, @code{thin}, @code{transparent}, 
+@code{ultra nearly transparent}, @code{ultra thick}, @code{ultra thin}, 
+@code{very nearly transparent}, @code{very thick}, and @code{very thin}.
+
+@node  Dots in TikZ/PGF, TikZ/PGF user-defined styles, TikZ/PGF options, Options
+@comment  node-name,  next,  previous,  up
+@subsubsection Dots in @code{TikZ/PGF}
+@code{TikZ/PGF} does not have a @code{dots} command as does PSTricks.
+Instead, @code{Sketch} emits dots as @code{filldraw} circles.  The
+diameter may be set using the option @code{dotsize} borrowed from
+PSTricks.  The @code{dotsize} option will be removed from the option
+list in the output @code{filldraw} command.  Other options work in the
+expected way.  For example, @code{fill} sets fill color and
+@code{color} sets line color of the circles.
+
+@node  TikZ/PGF user-defined styles, Transparency, Dots in TikZ/PGF, Options
+@comment  node-name,  next,  previous,  up
+@subsubsection @code{TikZ/PGF} user-defined styles
+@code{TikZ/PGF} allows named styles defined by the user, for
+example
+@verbatim
+  \tikzstyle{mypolygonstyle} = [fill=blue!20,fill opacity=0.8]  
+  \tikzstyle{mylinestyle} = [red!20,dashed]
+@end verbatim
+@noindent
+Since @code{sketch} has no information on the contents of such styles,
+it omits them entirely from lines, polygons, and their edges during
+option splitting.  For example,
+@verbatim
+  polygon[style=mypolygonstyle,style=thick](0,0,1)(1,0,0)(0,1,0)
+  line[style=mylinestyle](-1,-1,-1)(2,2,2)
+@end verbatim
+@noindent
+produces the @code{TikZ} output
+@verbatim
+  \draw(-1,-1)--(.333,.333);
+  \filldraw[thick,fill=white](0,0)--(1,0)--(0,1)--cycle;
+  \draw(.333,.333)--(2,2);
+@end verbatim
+@noindent
+Note that the user-defined styles are not present.  Sketch also issues
+warnings:
+@verbatim
+  warning, unknown polygon option style=mypolygonstyle will be ignored
+  warning, unknown line option style=mylinestyle will be ignored
+@end verbatim
+
+The remedy is to state explicitly whether a user-defined style should
+be attched to polygons or lines in the @code{TikZ} output using
+@emph{pseudo-options} @code{fill style} and @code{line style},
+@cindex pseudo-options
+@sxindex fill style
+@sxindex line style
+@verbatim
+  polygon[fill style=mypolygonstyle,style=thick](0,0,1)(1,0,0)(0,1,0)
+  line[line style=mylinestyle](-1,-1,-1)(2,2,2)
+@end verbatim
+@noindent
+Now, the output is
+@verbatim
+  \draw[mylinestyle](-1,-1)--(.333,.333);
+  \filldraw[mypolygonstyle,thick](0,0)--(1,0)--(0,1)--cycle;
+  \draw[mylinestyle](.333,.333)--(2,2);
+@end verbatim
+
+A useful technique is to include user-defined style definitions in
+@code{sketch} code as @code{special}s with option @code{[lay=under]}
+to ensure that the styles are emitted first in the output, before
+any uses of the style names.
+@opindex lay
+@footnote{This clever trick is due to Kjell Magne Fauske.}  For
+example,
+@verbatim
+  special|\tikzstyle{mypolygonstyle} = [fill=blue!20,fill opacity=0.8]|[lay=under]
+  special|\tikzstyle{mylinestyle} = [red!20,dashed]|[lay=under]
+@end verbatim
+@noindent
+The author is responsible for using the key, @code{line style}
+or @code{fill style}, that matches the content of the style
+definition.
+
+@node  Transparency, Internal options, TikZ/PGF user-defined styles, Options
+@comment  node-name,  next,  previous,  up
+@subsubsection Transparency
+@cindex transparency
+Both @code{PSTricks} and @code{TikZ/PGF} support polygon options that
+have the effect of making the polygon appear transparent.  For
+@code{PSTricks}, keyword @code{transpalpha} was used during initial
+development of transparency features, and @code{opacity} was adopted 
+later. @code{Sketch} honors both. @code{TikZ/PGF} uses @code{opacity} only.
+@opindex transpalpha
+@opindex opacity
+@opindex fill opacity
+When transparent polygons are in the foreground, objects behind them
+(drawn earlier) are visible with color subdued and tinted.  The hidden
+surface algorithm of @code{sketch} works well with such transparent
+polygons.
+
+Note that @verb{|cull=false|}
+@opindex cull
+must be used for rear-facing polygons to be visible when positioned
+behind other transparent surfaces.
+
+@node Internal options,  , Transparency, Options
+@comment  node-name,  next,  previous,  up
+@subsubsection Internal options
+There are also @emph{internal} options
+@cindex options, internal
+@cindex internal options
+used only by @code{sketch} and not
+passed on to @code{PSTricks}.  These are summarized in the following
+table.
+@sxindex cull
+@sxindex lay
+@sxindex split
+@multitable {@code{split}}{@code{over}, @code{in}, @code{under}}{A column that ought to wrap.  Will it wrap?  I do not know.}
+@headitem Key @tab Possible values @tab Description
+@item @code{cull}
+@tab  @code{true}, @code{false}
+@tab  Turn culling of backfaces on and off respectively for this object.
+The default value is @code{true}.
+@item @code{lay}
+@tab  @code{over}, @code{in}, @code{under}
+@tab  Force this object to be @code{under} or
+@code{over} all other objects in the depth sort
+@cindex depth sort
+order created by the hidden surface algorithm.  The default value
+@code{over} guarantees that output due to the @code{special} will be
+visible.
+@item @code{split}
+@tab  @code{true}, @code{false}
+@tab  Turn splitting of sweep-generated body polygons 
+@cindex body polygon
+@cindex polygon, body
+on and off respectively. @xref{Sweeps}.  The default value @code{true}
+causes ``warped'' polygons to be split into triangles, which avoids
+mistakes by the hidden surface algorithm.
+@end multitable
+
+@subsection Point lists
+@sxindex point list
+@strong{Syntax:}
+@example
+(@var{x1},@var{y1},@var{z1})(@var{x2},@var{y2},@var{z2})@dots{}
+@end example
+@noindent
+A sequence of one or more points makes a point list, a feature
+common to all drawables.  Each of the point components is a scalar
+arithmetic expression.  Any point may have the @math{z}-component
+omitted; it will default to @math{z=0}.
+
+@menu
+* Drawables::                   Things that are drawn.
+* Definitions::                 Things with names.
+@end menu
+
+@node Drawables, Definitions, Language basics, Input language
+@comment  node-name,  next,  previous,  up
+@section Drawables
+@cindex drawable
+Drawables are simply @code{sketch} objects that might appear in the
+drawing.  They include dots, polylines, curves, polygons, and more
+complex objects that are built up from simpler ones in various ways.
+Finally, @dfn{special} objects are those composed of @LaTeX{} or
+@code{PSTricks} code, perhaps including coordinates and angles
+computed by @code{sketch}.
+
+@menu
+* Dots::                        Draw dots.
+* Lines::                       Draw polylines.
+* Curves::                      Draw curves.
+* Polygons::                    Draw polygons.
+* Specials::                    Embed raw @LaTeX{} and @code{PSTricks}.
+* Sweeps::                      Draw sweeps of dots and polylines.
+* Blocks::                      Group other drawables.
+* Repeats::                     Draw transformed copies of objects.
+* Puts::                        Draw one object transformed.
+@end menu
+
+@node Dots, Lines, Drawables, Drawables
+@comment  node-name,  next,  previous,  up
+@subsection Dots
+@sxindex dots
+@strong{Syntax:}
+@example
+dots[@var{options}] @var{point_list}
+@end example
+@noindent
+This command is the three-dimensional equivalent of the
+@code{PSTricks} command @code{\psdots}.
+
+@node Lines, Curves, Dots, Drawables
+@comment  node-name,  next,  previous,  up
+@subsection Lines
+@sxindex line
+@strong{Syntax:}
+@example
+line[@var{options}] @var{point_list}
+@end example
+@noindent
+This command is the three-dimensional equivalent of the 
+@code{PSTricks} command @code{\psline}.
+
+@node Curves, Polygons, Lines, Drawables
+@comment  node-name,  next,  previous,  up
+@subsection Curves
+@sxindex curve
+@strong{Syntax:}
+@example
+curve[@var{options}] @var{point_list}
+@end example
+@noindent
+This command is the three-dimensional equivalent of the 
+@code{PSTricks} command @code{\pscurve}. @b{It is not
+implemented in the current version of @code{sketch}}.
+
+@node Polygons, Specials, Curves, Drawables
+@comment  node-name,  next,  previous,  up
+@subsection Polygons
+@sxindex polygon
+@strong{Syntax:}
+@example
+polygon[@var{options}] @var{point_list}
+@end example
+@noindent
+@noindent
+This command is the three-dimensional equivalent of the
+@code{PSTricks} command @code{\pspolygon}.  The @code{sketch} hidden
+surface algorithm assumes that polygons are convex and planar.  
+@cindex polygon, planar
+@cindex planarity of polygons
+In practice, drawings may well turn out correctly even if these
+assumptions are violated.
+
+@node Specials, Sweeps, Polygons, Drawables
+@comment  node-name,  next,  previous,  up
+@subsection Specials
+@sxindex special
+@strong{Syntax:}
+@example
+special $@var{raw_text}$[@var{options}] @var{arg_list}
+@end example
+@noindent
+Here @code{$} 
+@cindex quoting, special
+can be any character and is used to delimit the start
+and end of @var{raw_text}.  The command embeds @var{raw_text} in the
+@code{sketch} output after performing substitutions as follows.
+@cindex special argument substitution
+@cindex argument, special
+@itemize
+@item 
+@code{#@var{i}} where @var{i} is a positive integer is replaced by the
+@var{i}'th value in @var{arg_list}.  Point and vector arguments become
+two-dimensional points, which are the transformed 3d arguments
+projected onto the @var{x}-@var{y} plane. This allows
+two-dimentional output elements such as labels to be easily positioned
+with respect to three-dimensional features in the drawing. Scalar 
+arguments are subsituted directly. No transformation is applied.
+@item
+@code{#@{@var{i}@}} is also replaced as above.
+@item
+@code{#@var{i}'2} is replaced as above for points or vectors.  It is
+an error for the @var{i}'th argument to be a scalar.
+@item
+@code{#@var{i}'x}, @code{#@var{i}'y}, or @code{#@var{i}'z} is
+replaced, respectively, by the scalar @var{x}, @var{y}, or
+@var{z}-coordinate of the argument point or vector. It is an error for
+the @var{i}'th argument to be a scalar.
+@item
+@code{#@var{i}'3} is replaced by the three-dimensional
+transformed argument. Note that if a perspective transformation has
+been applied, the @var{z}-coordinate has little geometric
+significance, though it accurately indicates relative depth.
+@item
+@code{#@var{i}-@var{j}} where @var{i} and @var{j} are positive
+integers is replaced by a string @code{@{@var{angle}@}} where
+@var{angle} is the polar angle of a vector from the @var{i}'th point
+in @var{point_list} to the @var{j}'th point projected into the
+@math{x}-@math{y} plane.  It is an error for the @var{i}'th or
+@var{j}'th argument to be a scalar or a vector.
+@item
+@code{#@{@var{i}-@var{j}@}} is also replaced as above.
+@item 
+@code{##} is replaced with @code{#}.
+@end itemize
+@noindent
+The forms with braces @samp{@{ @}} are useful when the argument is
+immediately followed by a digit or a tick character that is part of
+the @TeX{} code.
+
+The only useful option of @code{special} is @code{lay}, which
+determines if the substitued raw text is emitted before, after,
+or using the first point in @var{point_list} as an indicator
+of depth.  These occur, respectively, with @code{lay=under},
+@code{lay=over}, and @code{lay=in}.  See @ref{Special objects}
+and @ref{TikZ/PGF user-defined styles} for examples.
+@sxindex lay
+@xref{Internal options}.
+
+@node Sweeps, Blocks, Specials, Drawables
+@comment  node-name,  next,  previous,  up
+@subsection Sweeps
+@sxindex sweep
+@strong{Syntax:}
+@example
+sweep @{ @var{n}, @var{T_1}, @var{T_2}, @dots{}, @var{T_@math{r}} @}[@var{options}] @var{swept_object}
+sweep @{ @var{n}<>, @var{T_1}, @var{T_2}, @dots{}, @var{T_@math{r}} @}[@var{options}] @var{swept_object}
+@end example
+@noindent
+The sweep connects @var{n} (or perhaps @math{@var{n}+1}) copies of
+@var{swept_object} 
+@cindex swept object
+in order to create a new object of higher
+dimension.  The @var{T_@math{i}} (for @math{i} between @math{1} and
+@math{r}) are transforms.  
+@cindex transform
+The @math{k}'th copy of @var{swept_object} is produced by applying the
+following transform to the original.
+@example
+@math{@var{T_1}^k} then @math{@var{T_2}^k} then @dots{} then @math{@var{T_r}^k}
+@end example
+@noindent
+Here @math{@var{T}^k} means ``transform @var{T} applied @math{k}
+times.''  The original object is the zero'th copy, with @math{k=0} and
+effectively no transform applied (@math{T^0=I}, the identity
+transform).
+
+The method of connecting the copies depends on the type of
+@var{swept_object} and on whether the closure tag
+@sxindex <>@r{, closure tag}
+@cindex closure tag, @code{<>}
+@samp{<>} is present
+or not.
+
+An example of a sweep where @math{r=2} is the Mobius figure at
+@ref{More to learn}.
+
+@menu
+* Swept points::                Swept points make lines or polygons.
+* Swept lines::                 Swept lines make open or closed surfaces.
+* Swept polygons::              Swept polygons make closed surfaces.
+* Swept blocks::                Swept block @equiv{} block of sweeps.
+* Sweep face splitting::        Fixing warped faces with triangles.
+@end menu
+
+@node Swept points, Swept lines, Sweeps, Sweeps
+@comment  node-name,  next,  previous,  up
+@subsubsection Swept points
+@cindex swept point
+@cindex point sweep
+If @var{swept_object} is a point list and there is no closure tag,
+@sxindex <>@r{, closure tag}
+@cindex closure tag, @code{<>}
+then @code{sweep} connects @math{@var{n}+1} successive copies of each
+point (including the original) with straight line segments to form a
+polyline.  If there are @math{m} points in the original point list,
+@cindex point list
+then @math{m} polylines with @var{n} segments each are formed by the
+sweep.  In this manner, @code{sweep} forms a set of one-dimensional
+objects (polylines) from zero-dimensional ones (points).
+
+When there @emph{is} a closure tag, 
+@sxindex <>@r{, closure tag}
+@cindex closure tag, @code{<>}
+@code{sweep} connects @var{n}
+successive copies of each point (including the original) with straight
+line segments and finally connects the last copy back to the original
+to form a polygon with @var{n} sides.  If there are @math{m} points in
+the original point list, then @math{m} polygons with @var{n} sides
+each are formed by the sweep.  In this manner, @code{sweep} forms a
+set of two-dimensional objects (polygons) from zero-dimensional ones
+(points).
+
+Options 
+@cindex options, sweep
+of the @code{sweep} are copied directly to the resulting
+polyline(s).
+
+@node Swept lines, Swept polygons, Swept points, Sweeps
+@comment  node-name,  next,  previous,  up
+@subsubsection Swept lines
+@cindex swept line
+@cindex line sweep
+If @var{swept_object} is a polyline and there is no closure tag, 
+@sxindex <>@r{, closure tag}
+@cindex closure tag, @code{<>}
+then
+@code{sweep} connects @math{@var{n}+1} successive copies of the
+polyline (including the original) with four-sided polygons, each pair
+of copies giving rise to a ``polygon strip.''  If there are @math{m}
+points in the original polyline, then @math{(m-1)@var{n}} polygons are
+formed by the sweep.  We call these @dfn{body polygons}.
+@cindex body polygon
+@cindex polygon, body
+In this manner, @code{sweep} forms a
+two-dimensional surface from from a one-dimensional polyline.
+
+The order of vertices 
+@cindex polygon vertex order
+@cindex order, polygon vertex
+produced by @code{sweep} is important.  If a
+polygon's vertices do not appear in counter-clockwise order in the
+final image, the polygon will be culled 
+@cindex culling
+(unless @code{cull=false} is
+set).  If the points in the @math{k}'th copy of the polyline are
+@math{P_1}, @math{P_2}, @dots{}, @math{P_m}, and the points in the
+next copy, the @math{(k+1)}st, are @math{P_1'}, @math{P_2'}, @dots{},
+@math{P_m'}, then the vertex order of the generated polygons is
+@display
+Body polygon 1: @math{P_2} @math{P_1} @math{P_1'} @math{P_2'} 
+Body polygon 2: @math{P_3} @math{P_2} @math{P_2'} @math{P_3'} 
+@dots{}
+Body polygon @math{m-1}: @math{P_m} @math{P_{m-1}} @math{P_{m-1}'} @math{P_m'} 
+@end display
+
+Options of unclosed line sweeps 
+@cindex options, sweep
+are copied to each output polygon.
+Options of the swept line are ignored.
+@cindex options, swept object
+
+When there @emph{is} a closure tag, 
+@sxindex <>@r{, closure tag}
+@cindex closure tag, @code{<>}
+then @code{sweep} connects @var{n}
+successive copies of the polyline (including the original) with
+four-sided body polygons just as the case with no closure tag.  It then
+connects the last copy back to the original to form a ribbon-shaped
+surface that closes on itself with two holes remaining.
+
+Finally, the sweep adds two more polygons to seal the holes and form a
+closed surface that, depending on the sweep transforms, may
+represent the boundary of a solid.  In this manner, @code{sweep} forms
+the boundary of a three-dimensional object from a one-dimensional
+polyline.  We call these hole-filling polygons @dfn{ends}.
+@cindex end polygon
+@cindex polygon, end
+
+The order of vertices of end polygons 
+@cindex polygon vertex order
+@cindex order, polygon vertex
+is important for correct culling
+as described above.  If @math{P_1^1}, @math{P_1^2}, @dots{},
+@math{P_1^n} are the @var{n} copies of the first polyline point and
+@math{P_m^1}, @math{P_m^2}, @dots{} ,@math{P_m^n} are the @var{n}
+copies of the last polyline point, then the end polygon vertex order
+is
+@display
+End polygon 1: @math{P_1^n}, @math{P_1^{n-1}}, @dots{} ,@math{P_1^1}
+End polygon 2: @math{P_m^1}, @math{P_m^2}, @dots{} ,@math{P_m^n}
+@end display
+
+If there are no options on the swept line, 
+@cindex options, swept object
+then the @samp{sweep}
+options 
+@cindex options, sweep
+are copied to each output polygon.  If the swept line does
+have options, these are copied to corresponding body polygons; the
+sweep options are copied to the end polygons.  In this manner, body
+and ends may be drawn with different characteristics such as
+@code{fillcolor}.
+
+@node Swept polygons, Swept blocks, Swept lines, Sweeps
+@comment  node-name,  next,  previous,  up
+@subsubsection Swept polygons
+@cindex polygon sweep
+If @var{swept_object} is a polygon, the @code{sweep} connects
+@math{@var{n}+1} successive copies of the closed polyline border of
+the polygon to form body polygons exactly as though the border were a
+swept polyline as described in @ref{Swept lines}.
+@cindex body polygon
+@cindex polygon, body
+If there are @math{m} points in the
+original polygon, then @math{m@var{n}} body polygons are formed by
+this sweep.  The body polygons form an @dfn{extrusion} of the boundary of the
+original polygon with two holes at the open ends.  
+
+Finally, the sweep adds two copies of the original polygon to cover
+the holes.  We call these hole-filling polygons @dfn{ends}.
+@cindex end polygon
+@cindex polygon, end
+In this manner, @code{sweep} forms the boundary of a three-dimensional
+object from a two-dimensional polygon.
+
+The order of vertices 
+@cindex polygon vertex order
+@cindex order, polygon vertex
+of end polygons is important for correct culling as described above.
+An exact copy of the original polygon with vertex order intact forms
+the first end polygon.  The other end polygon results from
+transforming and the reversing the order of vertices in the original.
+The transform places the original polygon at the uncovered hole;
+it is
+@example
+@math{@var{T_1}^n} then @math{@var{T_2}^n} then @dots{} then @math{@var{T_r}^n}.
+@end example
+@noindent
+If there are no options on the swept polygon, then the @samp{sweep}
+options are copied to each output polygon.  If the swept polygon does
+have options, these are copied to the ends; the sweep options are
+copied to the body polygons.  In this manner, body and ends may be
+drawn with different characteristics such as @code{fillcolor}.
+
+@node Swept blocks, Sweep face splitting, Swept polygons, Sweeps
+@comment  node-name,  next,  previous,  up
+@subsubsection Swept blocks
+@cindex swept bock
+@cindex block sweep
+The swept object @var{swept_object} may also be any collection of
+polylines and polygons.  This may be a block 
+@cindex block
+@sxindex @{ @}@r{, block drawable}
+composed of @code{line} 
+@sxindex line
+and/or @code{polygon} 
+@sxindex polygon
+commands in braces
+@samp{@{ @}}, or it may be the result of a @code{repeat}, another
+@code{sweep}, etc.  The sweep acts independently on each object in the
+block exactly as if it were a single swept object described above in
+@ref{Swept lines} and @ref{Swept polygons}.
+
+@node Sweep face splitting,  , Swept blocks, Sweeps
+@comment  node-name,  next,  previous,  up
+@subsubsection Sweep face splitting
+Before sending each four-sided body polygon of a @code{sweep}
+to the output, @code{sketch} tests to see if it is roughly planar.
+@cindex polygon, planar
+@cindex planarity of polygons
+Since planarity is necessary for proper functioning of the hidden
+surface algorithm, ``warped'' polygons are automatically split into
+two triangles.  
+
+Hole-filling polygons produced by closure-tagged 
+@sxindex <>@r{, closure tag}
+@cindex closure tag, @code{<>}
+line sweeps are not
+split.  Nor are original polygons in polygon sweeps.  It is the user's
+responsibility to ensure these are planar.
+
+@node Blocks, Repeats, Sweeps, Drawables
+@comment  node-name,  next,  previous,  up
+@subsection Blocks
+@cindex block
+@sxindex @{ @}@r{, block drawable}
+Any sequence of drawables may be grouped in a @dfn{block} merely by
+enclosing them in braces @samp{@{ @}}.  A block is itself drawable.  A
+key use of blocks is to extend the effect of a single @code{def},
+@ref{Definitions}, @code{put} @ref{Puts}, @code{sweep} @ref{Sweeps},
+or @code{repeat} @ref{Repeats} to include several objects rather than
+one.
+
+Definitions (@xref{Definitions}.) inside a block have @dfn{lexical
+scope} 
+@cindex lexical scope
+@cindex scope, identifier
+extending from the place of definition to the end of the block.
+
+@node Repeats, Puts, Blocks, Drawables
+@comment  node-name,  next,  previous,  up
+@subsection Repeats
+@sxindex repeat
+@cindex repeated object
+@strong{Syntax:}
+@example
+repeat @{ @var{n}, @var{T_1}, @var{T_2}, @dots{}, @var{T_r} @} @var{repeated_object}
+@end example
+@noindent
+The repeat makes @var{n} transformed copies of @var{repeated_object}
+(including the original).  The @var{T_@math{i}} are transforms.
+@cindex transform
+The @math{k}'th copy of the @var{repeated_object} (for
+@math{k=0,1,...,n-1}) is produced in the
+same manner as for @code{sweep}s described in @ref{Sweeps}.  This is
+repeated here (no pun intended) for convenience.  To make the
+@math{k}'th copy, the following transform is applied to the
+original object.
+@example
+@math{@var{T_1}^k} then @math{@var{T_2}^k} then @dots{} then @math{@var{T_r}^k}
+@end example
+@noindent
+Here @math{@var{T}^k} means ``transform @var{T} applied @math{k}
+times.'' 
+
+@node Puts,  , Repeats, Drawables
+@comment  node-name,  next,  previous,  up
+@subsection Puts
+@sxindex put
+@strong{Syntax:}
+@example
+put @{ @var{T} @} @var{put_object}
+@end example
+@noindent
+Put merely applies transform @var{T} to the drawable @var{put_object}.
+
+@node Definitions, Global environment, Drawables, Input language
+@comment  node-name,  next,  previous,  up
+@section Definitions
+@cindex definition
+Definitions give names to @code{sketch} objects.  Definitions alone
+are benign.  A @code{sketch} input file consisting entirely of
+definitions will generate no drawing.  Only when definitions are
+@dfn{referenced} do they potentially lead to ink on the drawing.
+
+The intent of definitions is to make @code{sketch} code more concise
+and readable.  There is no input file employing definitions
+that could not be re-written without them.
+
+Definable objects include any result of an affine arithmetic
+expression (scalar, point, vector, or transform), any drawable
+object (dots, line, curve, polygon, block, sweep, put, repeat, or
+special), and option strings.  In addition, @dfn{tag definitions},
+@cindex definition, tag
+@cindex tag definition
+which have no associated object at all, allow the meaning of other
+definitions to be selected from a set of alternatives. Since tags may
+be defined (and undefined) in the command line of @code{sketch}, they
+can be an aid in the script-driven preparation of documents.
+
+@menu
+* Forms of definitions::        Different defs for different purposes.
+* Forms of references::         How references denote types.
+@end menu
+
+@node Forms of definitions, Forms of references, Definitions, Definitions
+@comment  node-name,  next,  previous,  up
+@subsection Forms of definitions
+Definitions have three possible forms, @dfn{simple}, 
+@cindex simple definition
+@cindex definition, simple
+@dfn{with alternatives}, 
+@cindex definition with alternatives
+@cindex alternatives, definition
+and @dfn{tag} 
+@cindex tag definition
+@cindex definition, tag
+as shown here in order.
+
+@noindent
+@strong{Syntax:}
+@example
+def @var{id} @var{object}  % simple def
+def @var{id} <@var{tag_1}> @var{object_1}  % def with alternatives
+       <@var{tag_2}> @var{object_2}
+       @dots{}
+       <> @var{default_object}
+def @var{id} <>  % tag def
+@end example
+@noindent
+The simple definition merely associates @var{object} with the
+identifier @var{id}.  
+
+The definition with alternatives associates
+@var{object_i} with @var{id}, where @var{tag_i} is the
+first defined tag in the list of alternative tag references.
+@cindex tag reference
+@cindex reference, tag
+@sxindex <foo>@r{, tag reference}
+If no tag in the list is defined, then @var{default_object} is
+associated with identifier @var{id}.
+
+The final form defines @var{id} as a tag.  Another way to define a tag
+is with the @option{-D} command line option. @xref{Command line}.
+
+@node Forms of references,  , Forms of definitions, Definitions
+@subsection Forms of references
+References to defined names are enclosed in bracketing delimiters.
+The delimiter characters imply the type of the associated value as
+shown in the table below.  A type error is raised if the type of a
+reference does not match the type of the defined value.  The intent of
+this mechanism is, again, to make @code{sketch} input files more
+readable.
+@multitable {transform}{@code{[@var{id}]} or @code{[@var{id1}, ..., @var{idN}]}}
+@headitem Type  @tab Reference
+@item scalar    @tab @code{@var{id}}
+@cindex scalar reference
+@cindex reference, scalar
+@item point     @tab @code{(@var{id})}
+@cindex point reference
+@cindex reference, point
+@sxindex (foo)@r{, point reference}
+@item vector    @tab @code{[@var{id}]}
+@cindex vector reference
+@cindex reference, vector
+@sxindex [foo]@r{, vector reference}
+@item transform @tab @code{[[@var{id}]]}
+@cindex transform reference
+@cindex reference, transform
+@sxindex [[foo]]@r{, transform reference}
+@item drawable  @tab @code{@{@var{id}@}}
+@cindex drawable reference
+@cindex reference, drawable
+@sxindex @{foo@}@r{, drawable reference}
+@item options   @tab @code{[@var{id}]} or @code{[@var{id1},...,@var{idN}]}
+@cindex options reference
+@cindex reference, options
+@sxindex [foo]@r{, options reference}
+@cindex options multiple reference
+@cindex reference, multiple options
+@sxindex [foo,...,bar]@r{, multiple options reference}
+@item tag       @tab @code{<@var{id}>}
+@cindex tag reference
+@cindex reference, tag
+@sxindex <foo>@r{, tag reference}
+@end multitable
+@sp 1
+@noindent
+Note that square brackets @samp{[ ]} are used both for vector and for
+options references.  Details of @code{sketch} syntax make it
+impossible for these two reference types to be confused.  The
+special multiple reference @code{[@var{id1},@var{id2},...,@var{idN}]}
+acts as if the respective lists of options were concatenated.
+
+@node Global environment,  , Definitions, Input language
+@comment  node-name,  next,  previous,  up
+@section Global environment
+An optional global environment block provides a few ways to affect the
+entire scene.  The block must appear as the last text in the
+@code{sketch} input file.  It may include definitions, but note
+that previous definitions at the top level (not nested inside
+blocks) are also available.
+
+@noindent
+@strong{Syntax:}
+@sxindex global
+@example
+global @{ @var{environment_settings} @}
+@end example
+@noindent
+The contents of @var{environment_settings} are discussed in the
+sections that follow.
+
+@menu
+* Global options::              Attributes of the entire drawing.
+* Camera::                      A final camera transformation of the scene.
+* Picture box::                 Setting the bounding box and 2d clipping.
+* Frame::                       Adding a box around the drawing.
+* Language::                    Setting the output language.
+@end menu
+
+@node Global options, Camera, Global environment, Global environment
+@comment  node-name,  next,  previous,  up
+@subsection Global options
+@cindex options, global
+@cindex global options
+@sxindex set
+@strong{Syntax:}
+@example
+set [ @var{options} ]
+@end example
+@noindent
+The contents of @var{options}, except for @code{sketch} internal
+options, are copied as-is to a @verb{|\psset|} that appears before
+anything else in the output file.  This is a good place to set
+@code{unit}, a default @code{linewidth}, etc.
+
+Internal options 
+@cindex options, internal
+@cindex internal options
+work on all objects where they make sense.
+This includes 
+@sxindex cull
+@sxindex split
+@sxindex lay
+@code{cull} and @code{split} (but not @code{lay}).
+@xref{Internal options}. 
+
+@node Camera, Picture box, Global options, Global environment
+@comment  node-name,  next,  previous,  up
+@subsection Camera
+@cindex camera
+@strong{Syntax:}
+@sxindex camera
+@example
+camera @var{transform_expression}
+@end example
+The @var{transform_expression} is applied after all other
+transformations of the scene.  This is currently only useful for
+transforming the bounding box.  @xref{Picture box}.  It will play a
+role in any future implementation of clipping.
+
+@node Picture box, Frame, Camera, Global environment
+@comment  node-name,  next,  previous,  up
+@subsection Picture box
+@cindex picture box
+@strong{Syntax:}
+@sxindex picturebox
+@example
+picturebox[@var{baseline}]
+picturebox[@var{baseline}] (@var{p1})(@var{p2})
+@end example
+@noindent
+The first form of @code{picturebox} causes a scalar @var{baseline}
+fraction to be emitted in the @code{pspicture}
+@cindex @code{pspicture}
+@cindex baseline fraction
+environment of the output.  See
+@code{PSTricks} documentation for @code{pspicture}.
+
+In the second form, the @var{baseline} fraction is optional, and the
+two points that follow define the diagonal of a three-dimensional
+bounding box
+@cindex bounding box
+for the completed scene.  The parallel projection 
+@cindex parallel projection
+@cindex projection, parallel
+of the bounding box
+determines the corners of the drawing's @code{pspicture*} environment,
+which is used in place of @code{pspicture}.  This causes PostScript to
+clip
+@cindex clipping
+the final drawing to the bounding box in 2d.  If there is a
+@code{camera} specified, the camera tranformation is applied to the
+bounding box, and the @code{pspicture} is set just large
+enough to include the transformed box.
+
+When no bounding box is given, @code{sketch} computes one
+automatically.
+
+@node Frame, Language, Picture box, Global environment
+@comment  node-name,  next,  previous,  up
+@subsection Frame
+@cindex frame box
+@strong{Syntax:}
+@sxindex frame
+@example
+frame [@var{options}]
+@end example
+@noindent
+Causes a @verb{|\psframebox|} 
+@cindex @code{psframebox}
+to surround the @code{pspicture}
+environment in the output.  If @var{options} are present, they are
+copied as-is.  Normally one would want to set 
+@opindex linewidth
+@code{linewidth},
+@opindex linestyle
+@code{linestyle}, 
+@opindex linecolor
+@code{linecolor}, etc. 
+If omitted, then 
+@opindex framesep
+@code{framesep=0pt} is
+added so that the frame tightly hugs the @code{pspicture}.
+
+@node Language,  , Frame, Global environment
+@comment  node-name,  next,  previous,  up
+@subsection Language
+@cindex language, output
+@cindex output language
+@sxindex language
+@example
+language tikz
+language tikz, context
+language pstricks
+language pstricks, latex
+@end example
+@noindent
+Sets the output language generated by @code{sketch}.  
+@sxindex pstricks
+@sxindex tikz
+The set of options understood by sketch also changes.  For example,
+the @code{PSTricks} option @code{linewidth} will not be properly
+handled if @code{language} is set to @code{tikz}.  Similarly, the
+@code{TikZ} option @code{line style} (note the space) will not be
+properly handled if @code{language} is set to @code{pstricks}.  If no
+language is specified, the default @code{pstricks} is used.
+
+An optional comma followed by 
+@code{latex} 
+@sxindex latex
+or 
+@code{context} 
+@sxindex context
+specifies the macro package that the output should assume.  This
+affects the @code{picture} environment commands emitted and the
+document template used with the @option{-T} option. @xref{Command
+line}.  Note that at the time this manual was generated,
+@code{PSTricks} was not supported by @LaTeX{} or by @code{ConTeXt}.
+
+@node Building a drawing, Command line, Input language, Top
+@comment  node-name,  next,  previous,  up
+@chapter Building a drawing
+Successful drawings with @code{sketch} and with any scene description
+language
+@cindex scene description language
+require that the user develop an accurate mental picture of her code
+and its meaning.  This image is best built in small pieces.
+Therefore, @code{sketch} inputs are best created in small increments
+with frequent pauses to compile and view the results.  Careful
+comments in the input often help as a scene grows in complexity.
+
+@menu
+* Overview::                    Building a substantial drawing.
+* A technical drawing::         An example with fine placement.
+* A hierarchical model::        An example with sweeps and puts.
+* Caveats::                     Where trouble can occur.
+@end menu
+
+@node Overview, A technical drawing, Building a drawing, Building a drawing
+@comment  node-name,  next,  previous,  up
+@section Overview
+As an overview, let's develop a diagram that shows how a perspective
+projection transform
+@cindex perspective projection
+@cindex transform
+@cindex projection, perspective
+works.  We'll start with the traditional reference object
+used in computer graphics textbooks, a house-shaped prism.  Begin
+by defining the points of the house.  Rather than defining the faces
+of the house as polygons and transforming those, we are going to
+transform the points themselves with @code{sketch} arithmetic so that
+we have names for the transformed points later.
+@sxindex def
+@verbatim
+  % right side (outside to right)
+  def R1 (1,1,1) def R2 (1,-1,1) def R3 (1,-1,-1) def R4 (1,1,-1)
+  def R5 (1,1.5,0)
+
+  % left side (outside to right--backward)
+  def W  [2,0,0]
+  def L1 (R1)-[W] def L2 (R2)-[W] def L3 (R3)-[W] def L4 (R4)-[W]
+  def L5 (R5)-[W]
+@end verbatim
+@noindent
+To add a door to the house, we use a polygon slightly in
+front of the foremost face of the house.
+@verbatim
+  % door
+  def e .01
+  def D1 (0,-1,1+e) def D2 (.5,-1,1+e) def D3 (.5,0,1+e) def D4 (0,0,1+e)
+@end verbatim
+@noindent
+Now let's create a new set of points that are a to-be-determined
+transform of the originals.
+@verbatim
+  def hp scale(1) % house positioner
+  def pR1 [[hp]]*(R1) def pR2 [[hp]]*(R2) def pR3 [[hp]]*(R3)
+  def pR4 [[hp]]*(R4) def pR5 [[hp]]*(R5)
+  def pL1 [[hp]]*(L1) def pL2 [[hp]]*(L2) def pL3 [[hp]]*(L3)
+  def pL4 [[hp]]*(L4) def pL5 [[hp]]*(L5)
+  def pD1 [[hp]]*(D1) def pD2 [[hp]]*(D2) def pD3 [[hp]]*(D3)
+  def pD4 [[hp]]*(D4) 
+@end verbatim
+@noindent
+Note the use of a @dfn{transform definition} 
+@cindex transform definition
+@cindex definition, transform
+@sxindex [[foo]]@r{, transform reference}
+and
+@dfn{transform references}.
+@cindex transform reference
+@cindex reference, transform
+@sxindex [[foo]]@r{, transform reference}
+Now define the seven polygonal faces of the house and the door using
+the transformed points as vertices.  Be careful with vertex order!
+@cindex polygon vertex order
+@cindex order, polygon vertex
+@opindex fillcolor
+@sxindex def
+@sxindex polygon
+@sxindex @{ @}@r{, block drawable}
+@verbatim
+  def rgt polygon (pR1)(pR2)(pR3)(pR4)(pR5)
+  def lft polygon (pL5)(pL4)(pL3)(pL2)(pL1)
+  def frt polygon (pR2)(pR1)(pL1)(pL2)
+  def bck polygon (pR4)(pR3)(pL3)(pL4)
+  def tfr polygon (pR1)(pR5)(pL5)(pL1)
+  def tbk polygon (pR5)(pR4)(pL4)(pL5)
+  def bot polygon (pR2)(pL2)(pL3)(pR3)
+  def door polygon[fillcolor=brown] (pD1)(pD2)(pD3)(pD4)
+  def house { {rgt}{lft}{frt}{bck}{tfr}{tbk}{bot}{door} }
+@end verbatim
+Time for a sanity check.  Add the line
+@sxindex @{foo@}@r{, drawable reference}
+@cindex reference, drawable
+@verbatim
+  {house}
+@end verbatim
+@noindent
+and this is what we get.
+
+@center @image{ex130}
+
+@noindent
+This is correct, but does not reveal very much.  Common errors are
+misplaced vertices and polygons missing entirely due to incorrect
+vertex order.  
+@cindex polygon vertex order
+@cindex order, polygon vertex
+To rule these out, let's inspect all sides of the
+house. This is not hard. Merely replace the reference
+@verb{|{house}|} with a @code{repeat}. @xref{Repeats}.
+@sxindex @{foo@}@r{, drawable reference}
+@cindex reference, drawable
+@sxindex repeat
+@sxindex rotate
+@sxindex translate
+@verbatim
+  repeat { 13, rotate(30, [1,2,3]), translate([3,0,0]) } {house}
+@end verbatim
+@center @image{ex140}
+
+@noindent
+Again things look correct.  Note that the hidden surface algorithm
+handles intersecting polygons correctly where some copies of the house
+overlap. 
+
+Let's lay out the geometry of perspective projection of the house onto
+a plane with rays passing through the origin.  Begin by positioning the
+house twelve units back on the negative @math{z}-axis and adding a set
+of coordinate axes.  To move the house we need only change the ``house
+positioning'' transform defined earlier.
+@sxindex def
+@sxindex rotate
+@sxindex translate
+@opindex arrows
+@opindex linewidth
+@opindex linecolor
+@opindex linestyle
+@sxindex special
+@sxindex line
+@verbatim
+  def hp rotate(-40, [0,1,0]) then translate([0,0,-12])
+  def axes {
+    def sz 1
+    line [arrows=<->] (sz,0,0)(O)(0,sz,0)
+    line [arrows=->]  (O)(0,0,sz)
+    line [linewidth=.2pt,linecolor=blue,linestyle=dashed] (O)(0,0,-10)
+    special |\uput[r]#1{$x$}\uput[u]#2{$y$}\uput[l]#3{$z$}|
+      (sz,0,0)(0,sz,0)(0,0,sz)
+  }
+@end verbatim
+
+Time for another test.  Let's build a real view transform,
+creating a @dfn{virtual camera}
+@cindex virtual camera
+to look at the scene we are constructing.  Replace the @code{repeat}
+with
+@verbatim
+  def eye (10,4,10)
+  def look_at (0,0,-5)
+  put { view((eye), (look_at)) } { {house}{axes} }
+@end verbatim
+The @dfn{view transform} repositions the scene so that the point
+@code{eye} is at the origin and the direction from @code{eye} to
+@code{look_at} is the negative @math{z}-axis.  This requires a
+rotation and a translation that are all packed into the constructor
+@code{view}.
+
+@center @image{ex150}
+
+@noindent
+This is starting to look good!  Add the projection plane half way
+between the origin and the house at @math{z=-5}.  We'll try
+the angle argument feature of @code{special} to position a label.
+@verbatim
+  def p 5 % projection distance (plane at z=-p)
+  def projection_plane {
+    def sz 1.5
+    polygon (-sz,-sz,-p)(sz,-sz,-p)(sz,sz,-p)(-sz,sz,-p)
+    special |\rput[b]#1-2#3{\footnotesize\sf projection plane}| 
+      (-sz,-sz,-p)(sz,-sz,-p)(0,-sz+.1,-p)
+  }
+@end verbatim
+@noindent
+Add @verb{|{projection_plane}|} to the list of objects in the
+@code{put} above.
+
+@center @image{ex160}
+
+@indent
+The way we constructed the points of the house now makes it easy to
+draw rays of projection.  We'll cast one ray from every visible vertex
+of the house and define options so the appearance of
+all rays can be changed at the same time.
+@verbatim
+  def projection_rays {
+    def rayopt [linewidth=.3pt,linecolor=lightgray]
+    line [rayopt](O)(pR1) line [rayopt](O)(pR2) line[rayopt](O)(pR3)
+    line [rayopt](O)(pR4) line [rayopt](O)(pR5)
+    line [rayopt](O)(pL1) line [rayopt](O)(pL2) line[rayopt](O)(pL5)
+    line [rayopt](O)(pD1) line [rayopt](O)(pD2) 
+    line [rayopt](O)(pD3) line [rayopt](O)(pD4) 
+  }
+@end verbatim
+@noindent
+The result is shown here.  
+
+@center @image{ex170}
+
+@noindent
+The rays pierce the projection plane at the corresponding points on
+the perspective image we are trying to draw.  Albrecht D@"urer and his
+Renaissance contemporaries had the same idea in the early 1500's.
+
+@center @image{duerer,,1.5in}
+
+All that's left is to find a way to connect the points of the house
+on the projection plane.  We could pull out a good computer graphics
+text, find the necessary matrix, and enter it ourselves as a
+transform literal.  @xref{Transform literals}. That work is
+already done, however.  We can use the @code{project(p)} constructor.
+
+There are still some details that require care.  Projection will
+flatten whatever is transformed onto the plane @math{z=-p}.  Therefore
+any part of the house could disappear behind the projection plane (the
+hidden surface algorithm orders objects at the same depth
+arbitrarily).  The door may also disappear behind the front of the
+house.  To make sure everything remains visible, we'll place the house
+a tiny bit in front of the projection plane and a second copy of the
+door in front of the house.
+@verbatim
+  def projection {
+    % e is a small number defined above
+    put { project(p) then translate([0,0,1*e]) } {house}
+    put { project(p) then translate([0,0,2*e]) } {door}
+  }
+@end verbatim
+
+@center @image{ex180}
+
+If you have studied and understand all this, you are well on the way
+to success with @code{sketch}.  Not shown are the 20 or so iterations
+that were required to find a reasonable viewing angle and house
+position, etc.  Nonetheless, this drawing was completed in about an
+hour.  While a GUI tool may have been a little faster, it is unlikely
+that a new drawing, itself a perspective projection of the scene,
+could be generated with two more minutes' work!  Just change the view
+transform to
+@verbatim
+  put { view((eye), (look_at)) then perspective(9) } { ...
+@end verbatim
+@noindent 
+and produce this.
+
+@center @image{ex190}
+
+@node  A technical drawing, A hierarchical model, Overview, Building a drawing
+@comment  node-name,  next,  previous,  up
+@section A technical drawing
+Let's look at a drawing that represents the kind of problem
+@code{sketch} was meant to solve---a pair of textbook figures
+regarding a polygonal approximation of a truncated cone.  Here are the
+pictures we will produce.
+
+@center @image{ex250}@ @ @ @ @ @image{ex260}
+
+The cone shape is just a swept line with no closure tag and culling
+turned off.  Begin by setting up some useful constants.
+@sxindex def
+@sxindex rotate
+@verbatim
+  def O (0,0,0) def I [1,0,0] def J [0,1,0] def K [0,0,1]
+  def p0 (1,2) def p1 (1.5,0) def N 8
+  def seg_rot rotate(360 / N, [J])
+@end verbatim
+@noindent
+The points @code{p0} and @code{p1} are the end points of the line to
+be swept.  The definition @code{seg_rot} is the sweep transformation.
+With these, the cone itself is simple.
+@sxindex sweep
+@opindex cull
+@sxindex line
+@cindex swept line
+@cindex line sweep
+@verbatim
+  sweep[cull=false] { N, [[seg_rot]] } line(p0)(p1)
+@end verbatim
+
+The axes are next and include an interesing trick that shows the
+hidden parts as dotted lines.  The secret is draw the axes
+twice---solid lines with the normal
+@cindex hidden surface algorithm
+hidden surface algorithm in effect, and then dotted with the
+option
+@opindex lay
+@code{lay=over} so that no polygons can hide them.
+@sxindex def
+@sxindex line
+@opindex arrows
+@opindex linewidth
+@opindex lay
+@opindex linestyle
+@sxindex special
+@verbatim
+  def ax (dx,0,0) % tips of the axes
+  def ay (0,dy,0)
+  def az (0,0,dz)
+  line[arrows=<->,linewidth=.4pt](ax)(O)(ay)
+  line[arrows=->,linewidth=.4pt](O)(az)
+  % repeat dotted as an overlay to hint at the hidden lines
+  line[lay=over,linestyle=dotted,linewidth=.4pt](ax)(O)(ay)
+  line[lay=over,linestyle=dotted,linewidth=.4pt](O)(az)
+  special|\footnotesize
+          \uput[d]#1{$x$}\uput[u]#2{$y$}\uput[l]#3{$z$}|
+    (ax)(ay)(az)
+@end verbatim
+@noindent
+The labels are applied with @code{PSTricks} special objects 
+@cindex special objects
+as usual.
+
+For the height dimension mark, the power of affine 
+@cindex affine arithmetic
+arithetic is very helpful.
+@sxindex def
+@sxindex unit
+@sxindex scale
+@sxindex line
+@sxindex special
+@verbatim
+  def hdim_ref unit((p1) - (O)) then [[seg_rot]]^2
+  def c0 (p0) then scale([J])
+  def h00 (c0) + 1.1 * [hdim_ref]
+  def h01 (c0) + 1.9 * [hdim_ref]
+  def h02 (c0) + 1.8 * [hdim_ref]
+  line(h00)(h01)
+  def h10 (O) + 1.6 * [hdim_ref]
+  def h11 (O) + 1.9 * [hdim_ref]
+  def h12 (O) + 1.8 * [hdim_ref]
+  line(h10)(h11)
+  line[arrows=<->](h02)(h12)
+  def hm2 ((h02) - (O) + (h12) - (O)) / 2 + (O)
+  special|\footnotesize\rput*#1{$h$}|(hm2)
+@end verbatim
+The general idea employed here is to compute a unit ``reference
+vector'' parallel to the @math{xz}-plane in the desired direction of
+the dimension from the origin.  The transformation
+@code{[[seg_rot]]^2} rotates two segments about the @math{y}-axis.
+When applied to @code{(p1) - (O)}, the resulting vector points to the
+right as shown.  In this manner, we can pick any vertex as the
+location of the height dimension lines by varying the exponent of
+@code{[[seg_rot]]}.  This is only one of many possible strategies.
+
+The computation of @code{hm2} is a useful idiom for finding the
+@cindex centroid
+centroid of a set of points.
+
+The two radius marks are done similarly, so we present the code
+without comment.
+@sxindex def
+@sxindex line
+@sxindex special
+@sxindex scale
+@opindex arrows
+@verbatim
+  % radius measurement marks
+  def gap [0,.2,0]  % used to create small vertical gaps
+
+  % first r1
+  def up1 [0,3.1,0] % tick rises above dimension a little
+  def r1 ((p1) then [[seg_rot]]^-2) + [up1]
+  def r1c (r1) then scale([J])
+  def r1t (r1) + [gap]
+  def r1b ((r1t) then scale([1,0,1])) + [gap]
+  line[arrows=<->](r1c)(r1)  % dimension line
+  line(r1b)(r1t)             % tick
+  def r1m ((r1) - (O) + (r1c) - (O)) / 2 + (O) % label position
+  special |\footnotesize\rput*#1{$r_1$}|(r1m)  % label
+
+  % same drill for r0, but must project down first
+  def up0 [0,2.7,0]
+  def r0 ((p0) then scale([1,0,1]) then [[seg_rot]]^-2) + [up0]
+  def r0c (r0) then scale([J])
+  def r0t (r0) + [gap]
+  def r0b ((p0) then [[seg_rot]]^-2) + [gap]
+  line[arrows=<->](r0c)(r0)
+  line(r0b)(r0t)
+  def r0m ((r0) - (O) + (r0c) - (O)) / 2 + (O)
+  special |\footnotesize\rput*#1{$r_0$}|(r0m)
+@end verbatim
+
+The second drawing uses the same techniques.  Only the method for
+drawing the elliptical arc is new.  Here is the code.
+@sxindex def
+@sxindex special
+@opindex lay
+@verbatim
+  def mid ((p00)-(O)+(p10)-(O)+(p11)-(O)+(p01)-(O))/4+(O)
+  special|\rput#1{\pscustom{
+    \scale{1 1.3}
+    \psarc[arrowlength=.5]{->}{.25}{-60}{240}}}|
+    [lay=over](mid)
+@end verbatim
+@noindent
+We could have swept a point to make the arc with @code{sketch}, but
+using a @code{PSTricks} custom graphic was simpler.  Again we computed
+the 
+@cindex centroid
+centroid of the quadrilateral by averaging points.  Note that scaling
+in Postscript distorts the arrowhead, but in this case the distortion
+actually looks better in the projection of the slanted face.  A
+@code{sketch} arrowhead would not have been distorted.
+
+The complete code for this example, which draws either figure
+depending on the definition of the tag @code{<labeled>}, is included
+in the @code{sketch} distribution in the file @file{truncatedcone.sk}.
+
+@node A hierarchical model, Caveats, A technical drawing, Building a drawing
+@comment  node-name,  next,  previous,  up
+@section A hierarchical model
+@cindex hierarchical model
+While @code{sketch} was never meant to be a geometric modeling
+language, it comes fairly close.  The following example puts all we
+have seen to work in a very simple model of the human hand.  Start by
+sweeping a line to make a truncated cone, which will be copied over
+and over again to make the segments of fingers.
+@sxindex def
+@sxindex sweep
+@sxindex rotate
+@sxindex line
+@verbatim
+  def O (0,0,0) % origin
+  def I [1,0,0] def J [0,1,0] def K [0,0,1] % canonical unit vectors
+  def segment {
+    def n_faces 8
+    sweep { n_faces<>, rotate(360 / n_faces, [J]) } 
+      line(proximal_rad, 0)(distal_rad, distal_len)
+  }
+@end verbatim
+@noindent
+In hand anatomy, @emph{distal} is ``at the tip'' and @emph{proximal}
+is ``in the area of the palm.''  We have omitted all the scalar
+constants.  You can find them in @file{hand.sk}, which is provided
+in the @code{sketch} distribution. 
+
+We also need a prototypical sphere to use for the joints themselves.
+@sxindex def
+@sxindex sweep
+@sxindex rotate
+@verbatim
+  def joint_sphere {
+    def n_joint_faces 8
+    sweep [fillcolor=red] { n_joint_faces, rotate(360 / n_joint_faces, [J]) }
+      sweep { n_joint_faces, rotate(180 / n_joint_faces) } 
+        (0, -joint_rad)
+  }
+@end verbatim
+
+We'll now design the index finger (number@w{ }1 in our notational
+convention; finger@w{ }0 is the thumb).  The distal rotation for the
+finger applies only to the tip, so we define the following.
+@sxindex def
+@sxindex put
+@sxindex translate
+@sxindex rotate
+@sxindex scale
+@verbatim
+  def distal_1 {
+    put { translate(joint_gap * joint_rad * [J]) 
+          then rotate(distal_1_rot, [I]) 
+          then translate((distal_len + joint_gap * joint_rad) * [J]) }
+      {segment}
+    put { rotate(distal_1_rot / 2, [I])
+          then translate((distal_len + joint_gap * joint_rad) * [J]) } 
+      {joint_sphere}
+    put { scale( [J] + proximal_distal_ratio * ([I]+[K]) ) }
+      {segment}
+  }  
+@end verbatim
+@noindent
+The identifiers here are for size and location constants. The
+exception is @code{distal_rot_1}.  This rotation parameter models the
+flexing of the finger tip.  The first @code{put} makes a copy of the
+finger segment that is translated upward 
+@cindex translation transform
+@cindex transform, translation
+just far enough to make room
+for the spherical joint.  Then it applies the distal rotation.
+@cindex rotation transform
+@cindex transform, rotation
+Finally it translates the whole assembly upward again to make room for
+the middle phlanges (the next bone toward the palm).  The second
+@code{put} positions the sphere.  There is a rotation to place the
+grid on the sphere surface at an nice angle, then a translation to the
+base of the distal phlanges, which is also center of its rotation.
+Finally, the last @code{put} positions the middle segment itself.
+
+The middle joint is the next one down, with rotation angle
+@code{middle_rot_1}.  When this angle changes, we need all the objects
+in @code{distal_1} to rotate as a unit.  
+@cindex rotation transform
+@cindex transform, rotation
+This is the reasoning behind
+the next definition.
+@verbatim
+  def finger_1 {
+    put { translate(joint_gap * joint_rad * [J])
+          then rotate(middle_1_rot, [I])
+          then translate((middle_ratio * distal_len + 
+                          joint_gap * joint_rad) * [J]) }
+      {distal_1}
+    put { scale(proximal_distal_ratio)
+          then rotate(middle_1_rot / 2, [I])
+          then translate((middle_ratio * distal_len + 
+                          joint_gap * joint_rad) * [J]) } 
+      {joint_sphere}
+    put { scale( middle_ratio * [J] + 
+                 proximal_distal_ratio^2 * ([I]+[K]) ) }
+      {segment}
+  }
+@end verbatim
+@noindent
+This looks very similar to the previous definition, and it is.  The
+important difference is that rather than positioning and rotating a
+single segment, we position and rotate the entire ``assembly'' defined
+as @code{distal_1}.  
+@cindex rotation transform
+@cindex transform, rotation
+The rest is just arithmetic to compute sizes and
+positions that look nice.  The last @code{put} places an appropriately
+shaped segment that is the @emph{proximal phlanges}, the bone that
+joins the palm of the hand.  This completes the finger itself.
+
+All the other fingers are described identically to this one.  We
+account for the fact that real fingers are different sizes in the next
+step, which is to build the entire hand.
+
+The @code{hand} definition that follows includes a section for each
+finger.  We'll continue with finger@w{ }1 and omit all the others.
+(Of note is that the thumb needs slightly special treatment---an extra
+rotation to account for its opposing angle. This is clear in the full
+source code.) Not surprisingly, the @code{hand} definition looks very
+much like the previous two.  It should be no surprise that when the
+rotation parameter @code{meta_1_rot} changes, the entire finger
+rotates!
+@cindex rotation transform
+@cindex transform, rotation
+There is an additional rotation that allows the fingers to spread
+laterally.  We say these joints of the proximal phlanges have two
+@emph{degrees of freedom}. The joints higher on the finger have only
+one. Finally, each finger is scaled by a factor to lend it proportion.
+@verbatim
+  def hand {
+    % finger 1 [all other fingers omitted]
+    def scale_1 .85
+    put { scale(scale_1) 
+          then translate((joint_gap * joint_rad) * [J])
+	  then rotate(meta_1_rot, [I])
+          then rotate(-spread_rot, [K])
+          then translate((proximal_1_loc) - (O)) } 
+      {finger_1}
+    put { scale(scale_1 * proximal_distal_ratio^2)
+          then rotate(meta_1_rot / 2, [I])
+          then rotate(-spread_rot, [K])
+          then translate((proximal_1_loc) - (O)) } 
+      {joint_sphere}
+
+    % palm
+    sweep { 1, rotate(6, (0,15,0), [I]) }
+      put { rotate(-3, (0,15,0), [I]) } {
+        polygon(proximal_1_loc)(proximal_2_loc)
+               (proximal_3_loc)(proximal_4_loc)
+               (h5)(h6)(h6a)(h9)(h10)
+        polygon(h6a)(h7)(h8)(h9)
+   }  }
+@end verbatim
+@noindent
+The last section of the definition creates the polytope for the palm
+of the hand by @code{sweep}ing 
+@cindex swept polygon
+@cindex polygon sweep
+a 10-sided polygon through a very short
+arc (9@w{ }degrees).  This provides a wedge-shaped profile when viewed
+from the side. The thick end of the wedge is the wrist.  Because the
+polygon is concave, it is split into into two convex shapes with nine
+and four vertices.
+
+We can now have fun positioning the hand by adjusting the various
+rotation angles.  The complete source includes definitions with
+alternatives that include the following views and more.
+
+@center @image{ex210}@image{ex220}@image{ex230}@image{ex240}
+
+@node Caveats,  , A hierarchical model, Building a drawing
+@comment  node-name,  next,  previous,  up
+@section Caveats
+@code{Sketch} is a fairly powerful tool for drawing, but, just as with
+@TeX{}, the power to create beautiful results comes along with the
+power to make mistakes.  The following are some points where care is
+necessary and where the current version of @code{sketch} is limited or
+has known bugs.
+
+@menu
+* Limits on error detection::   What sketch doesn't do.
+* Clipping::                    No clipping at present.
+* Hidden surface removal::      Imperfections to fix.
+@end menu
+
+@node Limits on error detection, Clipping, Caveats, Caveats
+@comment  node-name,  next,  previous,  up
+@subsection Limits on @code{sketch} error detection
+
+@code{Sketch} catches many kinds of errors, but not all. For example,
+options that sketch does not recognize, even incorrect ones, are
+quietly copied to @code{PSTricks} commands in the output.  It is also
+unfortunately easy to produce @code{sketch} inputs that lead to no
+picture at all (improper vertex ordering causes everything to be
+culled), to pictures that are too big or too small for @code{PSTricks}
+to draw (due to limits of @TeX{} math), and pictures that look nothing
+like what was intended.  A picture with one of these problems can be
+difficult to ``debug.''  We offer the following suggestions.
+@itemize
+@item 
+Follow the suggested incremental development method described in
+@ref{Overview}. 
+@item
+Always maintain one or two back-versions of a drawing so that it is
+easy to fall back to a known-good increment.
+@item
+When using @code{perspective}, ensure all finally transformed objects
+satisfy @math{z<0} and, in fact, do not come very close to the origin
+at all.
+@item
+Temporarily use @code{cull=false} to see where vertex ordering
+problems lie.
+@item
+Use temporary changes of color of one or more objects to ensure that
+your understanding of the scene geometry is correct.
+@item
+If @code{PSTricks} complains about something, inspect the output
+directly for clues.
+@end itemize
+
+@node Clipping, Hidden surface removal, Limits on error detection, Caveats
+@comment  node-name,  next,  previous,  up
+@subsection Clipping
+The current version of @code{sketch} has no clipping 
+@cindex clipping
+operations.  The entire scene is always drawn.  This means that when a
+perspective transform is employed, it is the user's responsibility to
+make sure the entire scene remains in front of the viewer, the region
+@math{z<0}.
+
+@node Hidden surface removal,  , Clipping, Caveats
+@comment  node-name,  next,  previous,  up
+@subsection Hidden surface removal and polygon splitting
+@code{Sketch} uses the @dfn{depth sort algorithm} 
+@cindex depth sort
+@cindex hidden surface algorithm
+for hidden surface removal.  This is a very old technique due to
+Newell.@footnote{Newell, M.E., R.G.@: Newell, and T.L.@: Sancha, A
+solution to the hidden surface problem. @i{Proceedings of the ACM
+annual conference - Volume 1}, page 443--450, ACM Press, 1972.}  It is
+generally regarded as too slow for real time graphics, but it is
+ideal for our purpose where speed is not very important.@footnote{We
+have run @code{sketch} on the famous Stanford Bunny, which consists
+of nearly @math{70,000} triangles.  Run time was about 6 seconds.
+Most of this was spent writing the output file rather than in the
+hidden surface algorithm.  @LaTeX{} took much longer to process the
+resulting @code{PSTricks} code.  The obvious conclusion is that the
+speed of the depth sort algorithm is not a worry.}
+
+The depth sort algorithm merely sorts objects on a key of increasing
+@math{z}-coordinate, equivalent to decreasing depth.  Objects are then
+drawn in the sorted sequence so that those at the rear of the scene
+are overwritten by those closer to the viewer. Since this is also
+how oil painters practice their art, depth sort is sometimes called
+``the painter's algorithm.''
+
+In some cases it is impossible to strictly order polygons according to
+depth.  Moreover, even if a correct depth ordering exists, the
+computation needed to find it may be too complex and slow.  In these
+cases, @code{sketch} splits 
+@cindex splitting, line and surface
+one or more polygons into pieces.  The
+expectation is that the new, smaller polygons will be simpler to
+order.  @code{Sketch} uses a @acronym{BSP,binary space partition} 
+@cindex binary space partition
+@cindex BSP, binary space partition
+to handle the splitting operation.
+
+@menu
+* Statistics::                  Performance numbers on depth sort.
+* Bugs and anomalies::          Imperfections in this implementation.
+@end menu
+
+@node Statistics, Bugs and anomalies, Hidden surface removal, Hidden surface removal
+@comment  node-name,  next,  previous,  up
+@subsubsection Statistics
+For the curious, @code{sketch} writes one line of depth sort
+statistics.  Here is an example for a large collection of triangles.
+@verbatim
+  remark, node=34824 probe=581.9 swap=5 split=2 (in=4 out=6) ols=24851/0
+@end verbatim
+@noindent
+It means that @math{34,824} objects were depth sorted after culling.
+For each, an average of @math{581.9} others had to be checked to
+ensure that the initial, approximate ordering was correct.  Among all
+these checks, only @math{5} resulted in swaps to reorder the initial
+sort.  In two cases, a correct ordering could not be determined, so
+binary space partitions
+@cindex binary space partition
+were constructed for splitting.  A total of @math{4}
+objects (triangles in this case) were inserted in the partitions, and
+@math{6} polygons were produced.  Finally, @math{24,851} ``last
+resort'' polygon overlap checks were performed after simpler, faster
+checks failed to yield conclusive results.  The final @math{/0} is for
+line-polygon overlap checks.  For comparison, the statistics for the
+last figure in @ref{Overview} follow.
+@verbatim
+  remark, node=27 probe=14.6 swap=36 split=15 (in=30 out=45) ols=0/69
+@end verbatim
+@noindent
+Note that there was proportionally much more swapping and splitting
+activity in this highly connected scene.
+
+@node Bugs and anomalies,  , Statistics, Hidden surface removal
+@comment  node-name,  next,  previous,  up
+@subsubsection Bugs and anomalies
+Polygon and line splitting can both cause anomalies in the output.  
+@code{PSTricks} dash patterns, specified with @code{linestyle=dashed},
+@opindex linestyle
+can be disrupted by splitting.  This occurs when the depth sort
+@cindex depth sort
+gives up too early and splits a line where it is not really
+necessary. 
+A workaround is to use gray or finely dotted
+lines instead.  If your drawing is small, you can also edit the
+@code{sketch} output by hand to merge the pieces of the offending
+line.
+
+Another anomaly is tiny (or in degenerate cases not-so-tiny) notches
+in the lines that border split polygons.  These derive from the way
+each polygon is painted: first, all pixels within the boundary are
+@dfn{filled} with color (perhaps white), then the same boundary is
+@dfn{stroked} (a Postscript term) with a line.  The result is that
+half the line lies inside the boundary and half outside, while the
+Painter's algorithm assumes the polygon lies entirely within its
+boundary.  The notches are due to one polygon fill operation
+overwriting the already-drawn inside of the border of another
+polygon.@footnote{I know how to fix this problem, but I don't like my
+solution, and I'm interested in yours.}  One workaround is to make
+border lines very thin.  In fact @code{linewidth=0pt} is guaranteed to
+eliminate this problem, though this results in the thinnest line your
+output device can draw, which is usually too thin.  You might get
+lucky by merely reordering things in the input file, which is likely
+to move the splits to different places.  The only sure-fire solution
+is pretty terrible: custom fit @code{special} overlay lines (with
+@code{\psline}) to cover the notches.
+
+Polygon splitting also breaks @code{PSTricks} hatch patterns.  The
+only known workaround is to substitute a solid fill for the hatch.
+
+@node Command line, Installing sketch, Building a drawing, Top
+@comment  node-name,  next,  previous,  up
+@chapter Command line
+@cindex command line, @code{sketch}
+@strong{Synopsis:}
+@example
+sketch [-h][-V x.y][-v][-b][-d][t doctmp][-T[u|e][p[P|T][L|C]]][-o output.tex]
+  [-D @var{tag} @dots{}] input1.sk [-U @var{tag} @dots{}] input2.sk @dots{}
+@end example
+
+@noindent
+@strong{Description}
+Processes the @code{sketch} input files in order to produce
+@code{PSTricks} output code suitable for inclusion in a @TeX{} or
+@LaTeX{} document.
+
+@noindent
+@strong{Options:}
+@cindex options, command line
+@cindex command line options
+@table @code
+@item -h
+Print a short catalog of options.
+@item -V
+Set the @code{PSTricks} version assumed for output purposes to
+@code{x.y}, for example 1.19.  Usually needed only if your
+@code{PSTricks} is old compared to your @code{sketch}.  Use
+@code{-v} to see what @code{sketch} assumes by default.
+@item -v
+Print version information to standard output, including the version
+of @code{PSTricks} assumed for output (can be changed with @code{-V} above).
+@item -b
+Use a BSP 
+@cindex binary space partition
+@cindex BSP, binary space partition
+(@xref{Hidden surface removal}.) for
+@emph{all} hidden surface removal rather than the default, which is
+the depth sort algorithm with BSPs used only for cycle resolution.
+This may produce correct output in certain degenerate cases where the
+depth sort cannot, but it also leads to many gratuitous splits, hence
+more anomalies @ref{Bugs and anomalies} and big output files.
+@item -d
+Run @code{sketch}'s parser in debugging mode.  This is primarily for
+development.
+@item -t
+Use contents of file @file{doctmp} as a document template 
+@cindex document template
+@cindex template, document
+in which to enclose @code{PSTricks} output code.  The code is inserted
+in place of the first instance of the escape string
+@verb{|%%SKETCH_OUTPUT%%|}.  
+@item -T
+Causes @code{PSTricks} output to be enclosed in default US document
+template text.  Option @option{-Tu} is a synonym.  Option @option{-Te}
+causes the Euro standard document template to be used.  A @option{p}
+appended to any of these options causes the respective default
+@code{PSTricks} document template to be printed to standard output. An
+appended @option{P} is a synonym.  An appended @option{T} causes the
+the @code{TikZ/PGF} template to be printed.  An appended @option{L}
+prints the @LaTeX{} version of the document template, a synonym for
+the default.  A @option{C} prints the @code{ConTeXt} template.
+@item -o
+Use @file{output.tex} as the output file.  The default is standard output.
+@item -D
+Define a tag 
+@cindex tag definition
+@cindex definition, tag
+for purposes of selecting definition alternatives.
+@xref{Definitions}.  The definition applies for all input files that
+follow unless the tag is undefined with @option{-U}.
+@item input@math{i}.sk
+Input files, read in the sequence they are given.
+@item -U
+Un-define a tag for purposes of selecting definition alternatives.
+@end table
+
+@node Installing sketch, Index of syntax, Command line, Top
+@comment  node-name,  next,  previous,  up
+@chapter Building and installing @code{sketch}
+@code{Sketch} is so small that compiling by brute force is probably
+best.  The following command ought to do the trick on any
+systems where @code{gcc} is installed.  Make sure to first change
+current directories to the place where you have unpacked the sources.
+@example
+gcc *.c -o sketch.exe -lm
+@end example
+@noindent
+The @samp{.exe} at the end is necessary for Windows systems.  Drop it
+if your system is some version of Unix.  Other C compilers ought
+to work as just as well.  For example,
+@example
+cl *.c -o sketch.exe
+@end example
+@noindent
+is the correct command for many versions of MS Visual C.  In the
+latest versions, Microsoft has deprecated the @code{-o} option and, by
+default, does not define the @code{__STDC__} macro.  This causes
+problems with some versions of @code{flex}, @code{bison}, @code{lex},
+and @code{yacc}, which are used to create the @code{sketch} scanner
+and parser.  It's nearly always possible to find a set of options that
+compiles with no errors or warnings, and this means @code{sketch} is
+@emph{very} likely to work correctly.  For example, the Visual C++
+2005 Express Edition compiler (available free of charge from the
+Microsoft web site), @code{flex} version 2.5.4, and @code{bison}
+version 2.1 build error-free with
+@example
+cl -DYY_NEVER_INTERACTIVE=1 -Za -Ox -Fesketch.exe *.c
+@end example
+
+For purists, there is also a @code{makefile} compatible with GNU
+@code{make} and @code{gcc}. The command
+@example
+make
+@end example
+@noindent
+will build the executable, including the rebuilding of the scanner and
+parser with @code{flex} and @code{bison} if you have changed
+@file{sketch.l} or @code{sketch.y} respectively.  
+
+While not essential, building the manual is an excellent test of your
+@code{sketch} installation.  To build this document in all its myriad
+forms (assuming you have the necessary conversion programs on your
+system), use
+@example
+make docs
+@end example
+@noindent
+The possibilities are listed in this following table.
+@multitable {@code{manual/index.html}}{texi2dvi,dvips}{@b{Pictures}}{wide column that needs to be as big as it needs to be,}
+@headitem Format @tab Converter @tab Pictures @tab Description
+@item manual.info 
+  @tab makeinfo       @tab @file{.txt} @tab @acronym{GNU} Info.
+@item manual.dvi
+  @tab texi2dvi       @tab @file{.eps} @tab @TeX{} typeset output.
+@item manual.ps   
+  @tab texi2dvi,dvips @tab @file{.eps} @tab Postscript.
+@item manual.pdf
+  @tab texi2dvi       @tab @file{.pdf} @tab Adobe PDF.
+@item manual.html 
+  @tab makeinfo       @tab @file{.png} @tab A single web page.
+@item manual/index.html
+  @tab makeinfo       @tab @file{.png} @tab Linked web pages, one per node.
+@end multitable
+All the required tools are included in the standard @code{TeX Live}
+distribution except that an additional open source program
+@code{epstool} is needed to refine the Encapsulated Postscript
+bounding boxes of @code{sketch}-generated figures in the manual.  This
+tool is available in binary form for Windows, and it builds easily
+with a simple @code{make} under linux or Cygwin installations that
+have development tools installed or under @code{Mac OS X} with
+@code{XCode} installed.
+
+@node Index of syntax, Index, Installing sketch, Top
+@comment  node-name,  next,  previous,  up
+@unnumbered Index of syntax
+
+@printindex sx
+
+@node Index,  , Index of syntax, Top
+@comment  node-name,  next,  previous,  up
+@unnumbered Index of concepts
+
+@printindex cp
+
+@bye

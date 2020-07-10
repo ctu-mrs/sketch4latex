@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+<title>Forms of references - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Definitions.html#Definitions" title="Definitions">
+<link rel="prev" href="Forms-of-definitions.html#Forms-of-definitions" title="Forms of definitions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Forms-of-references"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="Forms-of-definitions.html#Forms-of-definitions">Forms of definitions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Definitions.html#Definitions">Definitions</a>
+<hr><br>
+</div>
+
+<h4 class="subsection">3.3.2 Forms of references</h4>
+
+<p>References to defined names are enclosed in bracketing delimiters. 
+The delimiter characters imply the type of the associated value as
+shown in the table below.  A type error is raised if the type of a
+reference does not match the type of the defined value.  The intent of
+this mechanism is, again, to make <code>sketch</code> input files more
+readable.
+   <p><table summary=""><tr align="left"><th valign="top">Type  </th><th valign="top">Reference
+<br></th></tr><tr align="left"><td valign="top">scalar    </td><td valign="top"><var>id</var>
+<a name="index-scalar-reference-350"></a><a name="index-reference_002c-scalar-351"></a><br></td></tr><tr align="left"><td valign="top">point     </td><td valign="top"><code>(</code><var>id</var><code>)</code>
+<a name="index-point-reference-352"></a><a name="index-reference_002c-point-353"></a><a name="index-_0028foo_0029_0040r_007b_002c-point-reference_007d-354"></a><br></td></tr><tr align="left"><td valign="top">vector    </td><td valign="top"><code>[</code><var>id</var><code>]</code>
+<a name="index-vector-reference-355"></a><a name="index-reference_002c-vector-356"></a><a name="index-_005bfoo_005d_0040r_007b_002c-vector-reference_007d-357"></a><br></td></tr><tr align="left"><td valign="top">transform </td><td valign="top"><code>[[</code><var>id</var><code>]]</code>
+<a name="index-transform-reference-358"></a><a name="index-reference_002c-transform-359"></a><a name="index-_005b_005bfoo_005d_005d_0040r_007b_002c-transform-reference_007d-360"></a><br></td></tr><tr align="left"><td valign="top">drawable  </td><td valign="top"><code>{</code><var>id</var><code>}</code>
+<a name="index-drawable-reference-361"></a><a name="index-reference_002c-drawable-362"></a><a name="index-_0040_007bfoo_0040_007d_0040r_007b_002c-drawable-reference_007d-363"></a><br></td></tr><tr align="left"><td valign="top">options   </td><td valign="top"><code>[</code><var>id</var><code>]</code> or <code>[</code><var>id1</var><code>,...,</code><var>idN</var><code>]</code>
+<a name="index-options-reference-364"></a><a name="index-reference_002c-options-365"></a><a name="index-_005bfoo_005d_0040r_007b_002c-options-reference_007d-366"></a><a name="index-options-multiple-reference-367"></a><a name="index-reference_002c-multiple-options-368"></a><a name="index-_005bfoo_002c_002e_002e_002e_002cbar_005d_0040r_007b_002c-multiple-options-reference_007d-369"></a><br></td></tr><tr align="left"><td valign="top">tag       </td><td valign="top"><code>&lt;</code><var>id</var><code>&gt;</code>
+<a name="index-tag-reference-370"></a><a name="index-reference_002c-tag-371"></a><a name="index-_003cfoo_003e_0040r_007b_002c-tag-reference_007d-372"></a>
+   <br></td></tr></table>
+   <pre class="sp">
+
+</pre>
+Note that square brackets <span class="samp">[ ]</span> are used both for vector and for
+options references.  Details of <code>sketch</code> syntax make it
+impossible for these two reference types to be confused.  The
+special multiple reference <code>[</code><var>id1</var><code>,</code><var>id2</var><code>,...,</code><var>idN</var><code>]</code>
+acts as if the respective lists of options were concatenated.
+
+   </body></html>
+

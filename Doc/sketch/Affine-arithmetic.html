@@ -1,0 +1,103 @@
+<html lang="en">
+<head>
+<title>Affine arithmetic - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Swept-objects.html#Swept-objects" title="Swept objects">
+<link rel="prev" href="Polyline-sweeps-with-closure.html#Polyline-sweeps-with-closure" title="Polyline sweeps with closure">
+<link rel="next" href="More-to-learn.html#More-to-learn" title="More to learn">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Affine-arithmetic"></a>Next:&nbsp;<a rel="next" accesskey="n" href="More-to-learn.html#More-to-learn">More to learn</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Polyline-sweeps-with-closure.html#Polyline-sweeps-with-closure">Polyline sweeps with closure</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Swept-objects.html#Swept-objects">Swept objects</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h4 class="subsection">2.7.6 Affine arithmetic</h4>
+
+<p>The arithmetic <tt>[I] * 2.1</tt> above hints at a larger truth. 
+<code>Sketch</code> operators work on scalars, vectors, points, and
+transforms according to the general rules of <dfn>affine algebra</dfn>. 
+<a name="index-affine-arithmetic-151"></a>This can be helpful for setting up diagrams with computed geometry. 
+For example, if you have triangle vertices <tt>(p1)</tt> through
+<tt>(p3)</tt> and need to draw a unit normal vector pointing out of
+the center of the triangle, this code does the trick. 
+<a name="index-def-152"></a><a name="index-polygon-153"></a><a name="index-line-154"></a><a name="index-arrows-155"></a>
+<pre class="verbatim">
+  def p1 (1,0,0)  def p2 (0,0.5,0)  def p3 (-0.5,-1,2)
+  def O (0,0,0)
+  def N unit( ((p3) - (p2)) * ((p1) - (p2)) )
+  def n1 ((p1)-(O) + (p2)-(O) + (p3)-(O)) / 3 + (O)
+  def n2 (n1)+[N]
+  polygon(p1)(p2)(p3)
+  line[arrows=*->](n1)(n2)
+</pre>
+The first line computes the cross product of two edge vectors of the
+triangle and scales it to unit length.  The second computes the
+average of the vertices.  Note that subtraction and addition of the
+origin effectively convert vectors to points and <em>vice versa</em>. 
+The line command draws the normal at the correct spot.
+
+<div align="center"><img src="ex100.png" alt="ex100.png"></div>
+
+   <p>Two caveats regarding this example remain.  First, the only way to use
+<code>PSTricks</code>-style arrows is with <tt>arrows=</tt>. 
+<a name="index-arrows-156"></a>The alternative syntax for <code>PSTricks</code> arrows is not allowed in
+<tt>sketch</tt>. Second, you might like to eliminate the third
+<tt>def</tt> and write instead the following.
+<pre class="verbatim">
+  line[arrows=*->](n1) (n1)+[N]
+</pre>
+This is not allowed.  The point lists in drawables may consist only of
+explicit points or point references.  You may, however, use arithmetic
+to calculate point components.  The following works, though it's
+a little cumbersome.
+<pre class="verbatim">
+  line[arrows=*->](n1)((n1)'x+(N)'x, (n1)'y+(N)'y, (n1)'z+(N)'z)
+</pre>
+Obviously, the <dfn>tick operator</dfn>
+<a name="index-tick-operator-_0028_0040code_007b_0027_007d_0029-157"></a><a name="index-_0027x_0040r_007b_002c_007d-_0027y_0040r_007b_002c-and-_007d_0027z-158"></a><span class="samp">'x</span> extracts components of points and
+vectors.
+
+   </body></html>
+

@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+<title>Forms of definitions - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Definitions.html#Definitions" title="Definitions">
+<link rel="prev" href="Definitions.html#Definitions" title="Definitions">
+<link rel="next" href="Forms-of-references.html#Forms-of-references" title="Forms of references">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Forms-of-definitions"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Forms-of-references.html#Forms-of-references">Forms of references</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Definitions.html#Definitions">Definitions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Definitions.html#Definitions">Definitions</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h4 class="subsection">3.3.1 Forms of definitions</h4>
+
+<p>Definitions have three possible forms, <dfn>simple</dfn>,
+<a name="index-simple-definition-341"></a><a name="index-definition_002c-simple-342"></a><dfn>with alternatives</dfn>,
+<a name="index-definition-with-alternatives-343"></a><a name="index-alternatives_002c-definition-344"></a>and <dfn>tag</dfn>
+<a name="index-tag-definition-345"></a><a name="index-definition_002c-tag-346"></a>as shown here in order.
+
+<p class="noindent"><strong>Syntax:</strong>
+<pre class="example">     def <var>id</var> <var>object</var>  % simple def
+     def <var>id</var> &lt;<var>tag_1</var>&gt; <var>object_1</var>  % def with alternatives
+            &lt;<var>tag_2</var>&gt; <var>object_2</var>
+            ...
+            &lt;&gt; <var>default_object</var>
+     def <var>id</var> &lt;&gt;  % tag def
+</pre>
+   <p class="noindent">The simple definition merely associates <var>object</var> with the
+identifier <var>id</var>.
+
+   <p>The definition with alternatives associates
+<var>object_i</var> with <var>id</var>, where <var>tag_i</var> is the
+first defined tag in the list of alternative tag references. 
+<a name="index-tag-reference-347"></a><a name="index-reference_002c-tag-348"></a><a name="index-_003cfoo_003e_0040r_007b_002c-tag-reference_007d-349"></a>If no tag in the list is defined, then <var>default_object</var> is
+associated with identifier <var>id</var>.
+
+   <p>The final form defines <var>id</var> as a tag.  Another way to define a tag
+is with the <span class="option">-D</span> command line option. See <a href="Command-line.html#Command-line">Command line</a>.
+
+   </body></html>
+

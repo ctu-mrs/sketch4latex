@@ -1,0 +1,206 @@
+<html lang="en">
+<head>
+<title>A hierarchical model - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Building-a-drawing.html#Building-a-drawing" title="Building a drawing">
+<link rel="prev" href="A-technical-drawing.html#A-technical-drawing" title="A technical drawing">
+<link rel="next" href="Caveats.html#Caveats" title="Caveats">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="A-hierarchical-model"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Caveats.html#Caveats">Caveats</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="A-technical-drawing.html#A-technical-drawing">A technical drawing</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Building-a-drawing.html#Building-a-drawing">Building a drawing</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">4.3 A hierarchical model</h3>
+
+<p><a name="index-hierarchical-model-475"></a>While <code>sketch</code> was never meant to be a geometric modeling
+language, it comes fairly close.  The following example puts all we
+have seen to work in a very simple model of the human hand.  Start by
+sweeping a line to make a truncated cone, which will be copied over
+and over again to make the segments of fingers. 
+<a name="index-def-476"></a><a name="index-sweep-477"></a><a name="index-rotate-478"></a><a name="index-line-479"></a>
+<pre class="verbatim">
+  def O (0,0,0) % origin
+  def I [1,0,0] def J [0,1,0] def K [0,0,1] % canonical unit vectors
+  def segment {
+    def n_faces 8
+    sweep { n_faces&lt;>, rotate(360 / n_faces, [J]) } 
+      line(proximal_rad, 0)(distal_rad, distal_len)
+  }
+</pre>
+In hand anatomy, <em>distal</em> is &ldquo;at the tip&rdquo; and <em>proximal</em>
+is &ldquo;in the area of the palm.&rdquo;  We have omitted all the scalar
+constants.  You can find them in <span class="file">hand.sk</span>, which is provided
+in the <code>sketch</code> distribution.
+
+   <p>We also need a prototypical sphere to use for the joints themselves. 
+<a name="index-def-480"></a><a name="index-sweep-481"></a><a name="index-rotate-482"></a>
+<pre class="verbatim">
+  def joint_sphere {
+    def n_joint_faces 8
+    sweep [fillcolor=red] { n_joint_faces, rotate(360 / n_joint_faces, [J]) }
+      sweep { n_joint_faces, rotate(180 / n_joint_faces) } 
+        (0, -joint_rad)
+  }
+</pre>
+
+   <p>We'll now design the index finger (number&nbsp;<!-- /@w -->1 in our notational
+convention; finger&nbsp;<!-- /@w -->0 is the thumb).  The distal rotation for the
+finger applies only to the tip, so we define the following. 
+<a name="index-def-483"></a><a name="index-put-484"></a><a name="index-translate-485"></a><a name="index-rotate-486"></a><a name="index-scale-487"></a>
+<pre class="verbatim">
+  def distal_1 {
+    put { translate(joint_gap * joint_rad * [J]) 
+          then rotate(distal_1_rot, [I]) 
+          then translate((distal_len + joint_gap * joint_rad) * [J]) }
+      {segment}
+    put { rotate(distal_1_rot / 2, [I])
+          then translate((distal_len + joint_gap * joint_rad) * [J]) } 
+      {joint_sphere}
+    put { scale( [J] + proximal_distal_ratio * ([I]+[K]) ) }
+      {segment}
+  }  
+</pre>
+The identifiers here are for size and location constants. The
+exception is <code>distal_rot_1</code>.  This rotation parameter models the
+flexing of the finger tip.  The first <code>put</code> makes a copy of the
+finger segment that is translated upward
+<a name="index-translation-transform-488"></a><a name="index-transform_002c-translation-489"></a>just far enough to make room
+for the spherical joint.  Then it applies the distal rotation. 
+<a name="index-rotation-transform-490"></a><a name="index-transform_002c-rotation-491"></a>Finally it translates the whole assembly upward again to make room for
+the middle phlanges (the next bone toward the palm).  The second
+<code>put</code> positions the sphere.  There is a rotation to place the
+grid on the sphere surface at an nice angle, then a translation to the
+base of the distal phlanges, which is also center of its rotation. 
+Finally, the last <code>put</code> positions the middle segment itself.
+
+   <p>The middle joint is the next one down, with rotation angle
+<code>middle_rot_1</code>.  When this angle changes, we need all the objects
+in <code>distal_1</code> to rotate as a unit. 
+<a name="index-rotation-transform-492"></a><a name="index-transform_002c-rotation-493"></a>This is the reasoning behind
+the next definition.
+<pre class="verbatim">
+  def finger_1 {
+    put { translate(joint_gap * joint_rad * [J])
+          then rotate(middle_1_rot, [I])
+          then translate((middle_ratio * distal_len + 
+                          joint_gap * joint_rad) * [J]) }
+      {distal_1}
+    put { scale(proximal_distal_ratio)
+          then rotate(middle_1_rot / 2, [I])
+          then translate((middle_ratio * distal_len + 
+                          joint_gap * joint_rad) * [J]) } 
+      {joint_sphere}
+    put { scale( middle_ratio * [J] + 
+                 proximal_distal_ratio^2 * ([I]+[K]) ) }
+      {segment}
+  }
+</pre>
+This looks very similar to the previous definition, and it is.  The
+important difference is that rather than positioning and rotating a
+single segment, we position and rotate the entire &ldquo;assembly&rdquo; defined
+as <code>distal_1</code>. 
+<a name="index-rotation-transform-494"></a><a name="index-transform_002c-rotation-495"></a>The rest is just arithmetic to compute sizes and
+positions that look nice.  The last <code>put</code> places an appropriately
+shaped segment that is the <em>proximal phlanges</em>, the bone that
+joins the palm of the hand.  This completes the finger itself.
+
+   <p>All the other fingers are described identically to this one.  We
+account for the fact that real fingers are different sizes in the next
+step, which is to build the entire hand.
+
+   <p>The <code>hand</code> definition that follows includes a section for each
+finger.  We'll continue with finger&nbsp;<!-- /@w -->1 and omit all the others. 
+(Of note is that the thumb needs slightly special treatment&mdash;an extra
+rotation to account for its opposing angle. This is clear in the full
+source code.) Not surprisingly, the <code>hand</code> definition looks very
+much like the previous two.  It should be no surprise that when the
+rotation parameter <code>meta_1_rot</code> changes, the entire finger
+rotates! 
+<a name="index-rotation-transform-496"></a><a name="index-transform_002c-rotation-497"></a>There is an additional rotation that allows the fingers to spread
+laterally.  We say these joints of the proximal phlanges have two
+<em>degrees of freedom</em>. The joints higher on the finger have only
+one. Finally, each finger is scaled by a factor to lend it proportion.
+<pre class="verbatim">
+  def hand {
+    % finger 1 [all other fingers omitted]
+    def scale_1 .85
+    put { scale(scale_1) 
+          then translate((joint_gap * joint_rad) * [J])
+	  then rotate(meta_1_rot, [I])
+          then rotate(-spread_rot, [K])
+          then translate((proximal_1_loc) - (O)) } 
+      {finger_1}
+    put { scale(scale_1 * proximal_distal_ratio^2)
+          then rotate(meta_1_rot / 2, [I])
+          then rotate(-spread_rot, [K])
+          then translate((proximal_1_loc) - (O)) } 
+      {joint_sphere}
+
+    % palm
+    sweep { 1, rotate(6, (0,15,0), [I]) }
+      put { rotate(-3, (0,15,0), [I]) } {
+        polygon(proximal_1_loc)(proximal_2_loc)
+               (proximal_3_loc)(proximal_4_loc)
+               (h5)(h6)(h6a)(h9)(h10)
+        polygon(h6a)(h7)(h8)(h9)
+   }  }
+</pre>
+The last section of the definition creates the polytope for the palm
+of the hand by <code>sweep</code>ing
+<a name="index-swept-polygon-498"></a><a name="index-polygon-sweep-499"></a>a 10-sided polygon through a very short
+arc (9&nbsp;<!-- /@w -->degrees).  This provides a wedge-shaped profile when viewed
+from the side. The thick end of the wedge is the wrist.  Because the
+polygon is concave, it is split into into two convex shapes with nine
+and four vertices.
+
+   <p>We can now have fun positioning the hand by adjusting the various
+rotation angles.  The complete source includes definitions with
+alternatives that include the following views and more.
+
+<div align="center"><img src="ex210.png" alt="ex210.png"><img src="ex220.png" alt="ex220.png"><img src="ex230.png" alt="ex230.png"><img src="ex240.png" alt="ex240.png"></div>
+
+   </body></html>
+

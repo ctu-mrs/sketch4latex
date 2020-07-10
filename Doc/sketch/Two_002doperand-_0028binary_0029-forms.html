@@ -1,0 +1,162 @@
+<html lang="en">
+<head>
+<title>Two-operand (binary) forms - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link rel="prev" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link rel="next" href="Unary-forms.html#Unary-forms" title="Unary forms">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Two_002doperand-_0028binary_0029-forms"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Unary-forms.html#Unary-forms">Unary forms</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Arithmetic.html#Arithmetic">Arithmetic</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h5 class="subsubsection">3.1.4.1 Two-operand (binary) forms and precedence</h5>
+
+<p>Most two-operand binary
+<a name="index-binary-form-217"></a><a name="index-two_002doperand-form-218"></a>forms have meanings dependent on the types of
+their arguments.  An exhaustive summary of the possibilities is given
+in the following table.
+   <p><table summary=""><tr align="left"><th valign="top">Left </th><th valign="top">Op </th><th valign="top">Right </th><th valign="top">Result </th><th valign="top">Description
+<br></th></tr><tr align="left"><td valign="top">scalar </td><td valign="top"><code>+</code> </td><td valign="top">scalar
+<a name="index-_002b_0040r_007b_002c-plus-operator_007d-219"></a></td><td valign="top">scalar </td><td valign="top">Scalar sum. 
+<br></td></tr><tr align="left"><td valign="top">vector </td><td valign="top"><code>+</code> </td><td valign="top">vector
+</td><td valign="top">vector </td><td valign="top">Vector sum. 
+<br></td></tr><tr align="left"><td valign="top">point  </td><td valign="top"><code>+</code> </td><td valign="top">vector
+</td><td valign="top">point  </td><td valign="top">Point-vector affine sum. 
+<br></td></tr><tr align="left"><td valign="top">vector </td><td valign="top"><code>+</code> </td><td valign="top">point
+</td><td valign="top">"         </td><td valign="top">"
+<br></td></tr><tr align="left"><td valign="top">scalar    </td><td valign="top"><code>-</code> </td><td valign="top">scalar
+<a name="index-_002d_0040r_007b_002c-minus-operator_007d-220"></a></td><td valign="top">scalar    </td><td valign="top">Scalar difference. 
+<br></td></tr><tr align="left"><td valign="top">vector    </td><td valign="top"><code>-</code> </td><td valign="top">vector
+</td><td valign="top">vector    </td><td valign="top">Vector difference. 
+<br></td></tr><tr align="left"><td valign="top">point     </td><td valign="top"><code>-</code> </td><td valign="top">point
+</td><td valign="top">vector    </td><td valign="top">Point-point affine difference. 
+<br></td></tr><tr align="left"><td valign="top">point     </td><td valign="top"><code>-</code> </td><td valign="top">vector
+</td><td valign="top">point     </td><td valign="top">Point-vector affine difference. 
+<br></td></tr><tr align="left"><td valign="top">scalar    </td><td valign="top"><code>*</code> or
+                     <code>.</code> </td><td valign="top">scalar
+<a name="index-_002a_0040r_007b_002c-multiplication-operator_007d-221"></a><a name="index-_002e_0040r_007b_002c-dot-operator_007d-222"></a></td><td valign="top">scalar    </td><td valign="top">Scalar product. 
+<br></td></tr><tr align="left"><td valign="top">scalar    </td><td valign="top"><code>*</code> or
+                     <code>.</code> </td><td valign="top">vector
+</td><td valign="top">vector    </td><td valign="top">Scalar-vector product. 
+<br></td></tr><tr align="left"><td valign="top">vector    </td><td valign="top"><code>*</code> or
+                     <code>.</code> </td><td valign="top">scalar
+</td><td valign="top">"         </td><td valign="top">"
+<br></td></tr><tr align="left"><td valign="top">vector    </td><td valign="top"><code>*</code> </td><td valign="top">vector
+</td><td valign="top">vector    </td><td valign="top">Vector cross-product. 
+<br></td></tr><tr align="left"><td valign="top">vector    </td><td valign="top"><code>.</code> </td><td valign="top">vector
+</td><td valign="top">scalar    </td><td valign="top">Vector dot product. 
+<br></td></tr><tr align="left"><td valign="top">scalar    </td><td valign="top"><code>^</code> </td><td valign="top">scalar
+<a name="index-_005e_0040r_007b_002c-exponentiation-operator_007d-223"></a></td><td valign="top">scalar    </td><td valign="top">Raise scalar to scalar power. 
+<br></td></tr><tr align="left"><td valign="top">transform </td><td valign="top"><code>^</code> </td><td valign="top">integer
+</td><td valign="top">transform </td><td valign="top">Raise transform to integer power. 
+<a name="index-transform-224"></a><br></td></tr><tr align="left"><td valign="top">transform </td><td valign="top"><code>*</code> or
+                     <code>.</code> </td><td valign="top">point
+</td><td valign="top">point     </td><td valign="top">Affine point transform (right-to-left). 
+<br></td></tr><tr align="left"><td valign="top">transform </td><td valign="top"><code>*</code> or
+                     <code>.</code> </td><td valign="top">vector
+</td><td valign="top">vector    </td><td valign="top">Affine vector transform (right-to-left). 
+<br></td></tr><tr align="left"><td valign="top">transform </td><td valign="top"><code>*</code> or
+                     <code>.</code> </td><td valign="top">transform
+</td><td valign="top">transform </td><td valign="top">Transform composition (right-to-left). 
+<br></td></tr><tr align="left"><td valign="top">point     </td><td valign="top"><code>then</code> </td><td valign="top">transform
+<a name="index-then-225"></a></td><td valign="top">point     </td><td valign="top">Affine point transform (left-to-right). 
+<br></td></tr><tr align="left"><td valign="top">vector    </td><td valign="top"><code>then</code> </td><td valign="top">transform
+</td><td valign="top">vector    </td><td valign="top">Affine vector transform (left-to-right). 
+<br></td></tr><tr align="left"><td valign="top">transform </td><td valign="top"><code>then</code> </td><td valign="top">transform
+</td><td valign="top">transform </td><td valign="top">Transform composition (left-to-right). 
+<br></td></tr><tr align="left"><td valign="top">scalar    </td><td valign="top"><code>/</code> </td><td valign="top">scalar
+<a name="index-_002f_0040r_007b_002c-division-operator_007d-226"></a></td><td valign="top">scalar    </td><td valign="top">Scalar division. 
+<br></td></tr><tr align="left"><td valign="top">vector    </td><td valign="top"><code>/</code> </td><td valign="top">scalar
+</td><td valign="top">vector    </td><td valign="top">Vector component-wise division by scalar. 
+<br></td></tr><tr align="left"><td valign="top">point     </td><td valign="top"><code>'</code> </td><td valign="top"><code>x</code>, <code>y</code>, or <code>z</code>
+<a name="index-tick-operator-_0028_0040code_007b_0027_007d_0029-227"></a><a name="index-_0027x_0040r_007b_002c_007d-_0027y_0040r_007b_002c-and-_007d_0027z-228"></a></td><td valign="top">scalar    </td><td valign="top">Point component extraction. 
+<br></td></tr><tr align="left"><td valign="top">vector    </td><td valign="top"><code>'</code> </td><td valign="top"><code>x</code>, <code>y</code>, or <code>z</code>
+</td><td valign="top">scalar    </td><td valign="top">Vector component extraction.
+   <br></td></tr></table>
+   <pre class="sp">
+
+</pre>
+Operator precedence
+<a name="index-precedence_002c-operator-229"></a><a name="index-operator-precedence-230"></a>is shown in this table.
+   <p><table summary=""><tr align="left"><th valign="top">Op        </th><th valign="top">Precedence
+<br></th></tr><tr align="left"><td valign="top"><code>'</code>      </td><td valign="top">highest (most tightly binding)
+<br></td></tr><tr align="left"><td valign="top"><code>^</code>      </td><td valign="top">
+<br></td></tr><tr align="left"><td valign="top"><code>-</code>      </td><td valign="top">(unary negation)
+<br></td></tr><tr align="left"><td valign="top"><code>*</code>
+      <code>.</code>
+      <code>/</code>      </td><td valign="top">
+<br></td></tr><tr align="left"><td valign="top"><code>+</code>
+      <code>-</code>      </td><td valign="top">
+<br></td></tr><tr align="left"><td valign="top"><code>then</code>   </td><td valign="top">lowest (least tightly binding)
+   <br></td></tr></table>
+   <pre class="sp">
+
+</pre>
+All operations are left-associative
+<a name="index-operator-associativity-231"></a><a name="index-associativity_002c-operator-232"></a>except for <span class="samp">^</span>. 
+Parentheses <span class="samp">( )</span>
+<a name="index-parentheses-233"></a><a name="index-_0028-_0029_0040r_007b_002c-grouping_007d-234"></a>are used for grouping to override precedence in the usual way.
+
+   <p>As you can see, the dot operator <span class="samp">.</span>
+<a name="index-_002e_0040r_007b_002c-dot-operator_007d-235"></a>is usually a synonym for run-of-the-mill multiplication, <span class="samp">*</span>. 
+The meanings differ only for vector operands.  The <code>then</code>
+operator
+<a name="index-then-236"></a>merely reverses the operand
+order with respect to normal multiplication <span class="samp">*</span>.  The intent
+here is to make compositions read more naturally. The code
+<pre class="example">     (1,2,3) then scale(2) then rotate(30) then translate([1,3,0])
+</pre>
+   <p class="noindent">expresses a series of successive modifications to the point,
+whereas the equivalent form
+<a name="index-_002a_0040r_007b_002c-multiplication-operator_007d-237"></a>
+<pre class="example">     translate([1,3,0]) * rotate(30) * scale(2) * (1,2,3)
+</pre>
+   <p class="noindent">will be intuitive only to mathematicians (and perhaps Arabic
+language readers).
+
+   </body></html>
+

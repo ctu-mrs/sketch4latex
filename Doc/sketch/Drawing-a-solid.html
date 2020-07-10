@@ -1,0 +1,138 @@
+<html lang="en">
+<head>
+<title>Drawing a solid - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction-by-example.html#Introduction-by-example" title="Introduction by example">
+<link rel="prev" href="Drawing-options.html#Drawing-options" title="Drawing options">
+<link rel="next" href="Special-objects.html#Special-objects" title="Special objects">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Drawing-a-solid"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Special-objects.html#Special-objects">Special objects</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Drawing-options.html#Drawing-options">Drawing options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction-by-example.html#Introduction-by-example">Introduction by example</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">2.3 Drawing a solid</h3>
+
+<p>Let's try something more exciting.  <code>Sketch</code> has no notion of a
+solid,
+<a name="index-solid-28"></a>but polygonal <dfn>faces</dfn>
+<a name="index-faces-29"></a>can be used to represent the
+boundary of a solid.  To the previous example, let's add three more
+triangular polygons to make the faces of an irregular tetrahedron. 
+<a name="index-tetrahedron-30"></a><a name="index-def-31"></a><a name="index-polygon-32"></a>
+<pre class="verbatim">
+  % vertices of the tetrahedron
+  def p1 (0,0,1) def p2 (1,0,0)
+  def p3 (0,1,0) def p4 (-.3,-.5,-.8)
+
+  % faces of the tetrahedron.
+  polygon(p1)(p2)(p3) % original front polygon
+  polygon(p1)(p4)(p2) % bottom
+  polygon(p1)(p3)(p4) % left
+  polygon(p3)(p2)(p4) % rear
+
+  % line to pierce the tetrahedron
+  line[linecolor=red](-1,-1,-1)(2,2,2)
+</pre>
+This example uses <dfn>definitions</dfn>,
+<a name="index-definition-33"></a>which begin with
+<code>def</code>. 
+<a name="index-def-34"></a>These <dfn>define</dfn> or give names to points,
+<a name="index-definition_002c-point-35"></a><a name="index-point-definition-36"></a>which are then available
+as <dfn>references</dfn>
+<a name="index-reference_002c-point-37"></a>by enclosing the names in parentheses,
+e.g. <tt>(foo)</tt>. 
+<a name="index-_0028foo_0029_0040r_007b_002c-point-reference_007d-38"></a>The parentheses denote that the names refer to points; they are
+required.  There can be no
+<a name="index-white-space-39"></a>white space between them and the name.
+
+   <p>As you can see, comments
+<a name="index-comments-40"></a>start with <tt>%</tt> as in TeX and extend
+to the end of the line (though <tt>#</tt> will work as well).  White
+space,
+<a name="index-white-space-41"></a>including spaces, tabs and blank lines, has no effect in the <code>sketch</code>
+language.
+
+<div align="center"><img src="ex040.png" alt="ex040.png"></div>
+
+<p class="noindent">If we look inside the TeX file produced by <code>sketch</code>, there
+will be only three polygons.  The fourth has been
+<a name="index-culling-42"></a>culled because it is
+a &ldquo;back face&rdquo;
+<a name="index-back-face-43"></a>of the tetrahedron, invisible to our view.  It is
+unnecessary, and so it is removed.
+
+   <p>In some drawings, polygons act as zero-thickness solid surfaces with
+both sides visible rather than as the faces of solid objects, where
+back faces can be culled.  For zero-thickness solids, culling
+<a name="index-culling-44"></a>is a
+problem.  One solution is to use a pair of <code>sketch</code> polygons for
+each zero-thickness face, identical except with opposite vertex
+orders.  This is unwieldy and expensive.  A better way is to
+set the <code>sketch</code> internal option <code>cull</code> to <code>false</code> in
+the usual <code>PSTricks</code> manner. 
+<a name="index-cull-45"></a>
+<pre class="verbatim">
+  polygon[cull=false](p1)(p2)(p3)
+</pre>
+The following shows the same helix
+<a name="index-helix-46"></a>shape drawn first with
+<tt>cull=true</tt> (the default) and then <tt>cull=false</tt>.
+
+<div align="center"><img src="ex045.png" alt="ex045.png"> <a name="Helix-with-cull-set-false-then-true"></a></div>
+
+<p class="noindent">We'll soon see how to produce these helixes with a few lines
+of <code>sketch</code> language code.
+
+   <p>It may be tempting to turn culling off gratuitously so that vertex order
+can be ignored.  This is not a good idea because output file size and
+TeX and Postscript processing time both depend on the number of
+output polygons.  Culling usually improves performance by a factor of
+two.  On the other hand, globally setting <code>cull=false</code> is
+reasonable while debugging.  See <a href="Global-options.html#Global-options">Global options</a> and
+<a href="Limits-on-error-detection.html#Limits-on-error-detection">Limits on error detection</a>.
+
+   </body></html>
+

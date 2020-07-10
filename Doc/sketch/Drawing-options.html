@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+<title>Drawing options - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction-by-example.html#Introduction-by-example" title="Introduction by example">
+<link rel="prev" href="Hello-world.html#Hello-world" title="Hello world">
+<link rel="next" href="Drawing-a-solid.html#Drawing-a-solid" title="Drawing a solid">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Drawing-options"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Drawing-a-solid.html#Drawing-a-solid">Drawing a solid</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Hello-world.html#Hello-world">Hello world</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction-by-example.html#Introduction-by-example">Introduction by example</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">2.2 Options</h3>
+
+<p>Many <code>PSTricks</code> and <code>TikZ/PGF</code> options
+<a name="index-option-24"></a>work just fine in <code>sketch</code>. If generating <code>PSTricks</code>, the code
+<a name="index-line-25"></a>
+<pre class="verbatim">
+  polygon[fillcolor=lightgray,linewidth=3pt](0,0,1)(1,0,0)(0,1,0)
+  line[linestyle=dotted](-1,-1,-1)(2,2,2)
+</pre>
+produces
+
+<div align="center"><img src="ex030.png" alt="ex030.png"></div>
+
+   <p>To produce <code>TikZ/PGF</code>, the corresponding code is
+<pre class="verbatim">
+  polygon[fill=lightgray,line width=3pt](0,0,1)(1,0,0)(0,1,0)
+  line[style=dotted](-1,-1,-1)(2,2,2)
+  global { language tikz }
+</pre>
+The final <code>global</code>
+<a name="index-options_002c-global-26"></a><a name="index-global-options-27"></a>instructs <code>sketch</code> to produce <code>TikZ/PGF</code> code as output
+rather than the default, <code>PSTricks</code>.  Note that <code>polygon</code>
+fill color and <code>line</code> style options both conform to <code>TikZ</code>
+syntax rules.  The resulting <code>TikZ/PGF</code> output is
+<pre class="verbatim">
+  \begin{tikzpicture}[join=round]
+  \draw[dotted](-1,-1)--(.333,.333);
+  \filldraw[fill=lightgray,line width=3pt](0,0)--(1,0)--(0,1)--cycle;
+  \draw[dotted](.333,.333)--(2,2);
+  \end{tikzpicture}
+</pre>
+The remaining examples of this manual are in PSTricks style.
+
+   </body></html>
+

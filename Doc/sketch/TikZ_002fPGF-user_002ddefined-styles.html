@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+<title>TikZ/PGF user-defined styles - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Options.html#Options" title="Options">
+<link rel="prev" href="Dots-in-TikZ_002fPGF.html#Dots-in-TikZ_002fPGF" title="Dots in TikZ/PGF">
+<link rel="next" href="Transparency.html#Transparency" title="Transparency">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="TikZ_002fPGF-user_002ddefined-styles"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Transparency.html#Transparency">Transparency</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Dots-in-TikZ_002fPGF.html#Dots-in-TikZ_002fPGF">Dots in TikZ/PGF</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Options.html#Options">Options</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h5 class="subsubsection">3.1.5.4 <code>TikZ/PGF</code> user-defined styles</h5>
+
+<p><code>TikZ/PGF</code> allows named styles defined by the user, for
+example
+<pre class="verbatim">
+  \tikzstyle{mypolygonstyle} = [fill=blue!20,fill opacity=0.8]  
+  \tikzstyle{mylinestyle} = [red!20,dashed]
+</pre>
+Since <code>sketch</code> has no information on the contents of such styles,
+it omits them entirely from lines, polygons, and their edges during
+option splitting.  For example,
+<pre class="verbatim">
+  polygon[style=mypolygonstyle,style=thick](0,0,1)(1,0,0)(0,1,0)
+  line[style=mylinestyle](-1,-1,-1)(2,2,2)
+</pre>
+produces the <code>TikZ</code> output
+<pre class="verbatim">
+  \draw(-1,-1)--(.333,.333);
+  \filldraw[thick,fill=white](0,0)--(1,0)--(0,1)--cycle;
+  \draw(.333,.333)--(2,2);
+</pre>
+Note that the user-defined styles are not present.  Sketch also issues
+warnings:
+<pre class="verbatim">
+  warning, unknown polygon option style=mypolygonstyle will be ignored
+  warning, unknown line option style=mylinestyle will be ignored
+</pre>
+
+   <p>The remedy is to state explicitly whether a user-defined style should
+be attched to polygons or lines in the <code>TikZ</code> output using
+<em>pseudo-options</em> <code>fill style</code> and <code>line style</code>,
+<a name="index-pseudo_002doptions-251"></a><a name="index-fill-style-252"></a><a name="index-line-style-253"></a>
+<pre class="verbatim">
+  polygon[fill style=mypolygonstyle,style=thick](0,0,1)(1,0,0)(0,1,0)
+  line[line style=mylinestyle](-1,-1,-1)(2,2,2)
+</pre>
+Now, the output is
+<pre class="verbatim">
+  \draw[mylinestyle](-1,-1)--(.333,.333);
+  \filldraw[mypolygonstyle,thick](0,0)--(1,0)--(0,1)--cycle;
+  \draw[mylinestyle](.333,.333)--(2,2);
+</pre>
+
+   <p>A useful technique is to include user-defined style definitions in
+<code>sketch</code> code as <code>special</code>s with option <code>[lay=under]</code>
+to ensure that the styles are emitted first in the output, before
+any uses of the style names. 
+<a name="index-lay-254"></a><a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>  For
+example,
+<pre class="verbatim">
+  special|\tikzstyle{mypolygonstyle} = [fill=blue!20,fill opacity=0.8]|[lay=under]
+  special|\tikzstyle{mylinestyle} = [red!20,dashed]|[lay=under]
+</pre>
+The author is responsible for using the key, <code>line style</code>
+or <code>fill style</code>, that matches the content of the style
+definition.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> This clever trick is due to Kjell Magne Fauske.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

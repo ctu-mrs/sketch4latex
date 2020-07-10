@@ -1,0 +1,107 @@
+<html lang="en">
+<head>
+<title>Specials - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Drawables.html#Drawables" title="Drawables">
+<link rel="prev" href="Polygons.html#Polygons" title="Polygons">
+<link rel="next" href="Sweeps.html#Sweeps" title="Sweeps">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Specials"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Sweeps.html#Sweeps">Sweeps</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Polygons.html#Polygons">Polygons</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Drawables.html#Drawables">Drawables</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h4 class="subsection">3.2.5 Specials</h4>
+
+<p><a name="index-special-276"></a><strong>Syntax:</strong>
+<pre class="example">     special $<var>raw_text</var>$[<var>options</var>] <var>arg_list</var>
+</pre>
+   <p class="noindent">Here <code>$</code>
+<a name="index-quoting_002c-special-277"></a>can be any character and is used to delimit the start
+and end of <var>raw_text</var>.  The command embeds <var>raw_text</var> in the
+<code>sketch</code> output after performing substitutions as follows. 
+<a name="index-special-argument-substitution-278"></a><a name="index-argument_002c-special-279"></a>
+     <ul>
+<li><code>#</code><var>i</var> where <var>i</var> is a positive integer is replaced by the
+<var>i</var>'th value in <var>arg_list</var>.  Point and vector arguments become
+two-dimensional points, which are the transformed 3d arguments
+projected onto the <var>x</var>-<var>y</var> plane. This allows
+two-dimentional output elements such as labels to be easily positioned
+with respect to three-dimensional features in the drawing. Scalar
+arguments are subsituted directly. No transformation is applied. 
+<li><code>#{</code><var>i</var><code>}</code> is also replaced as above. 
+<li><code>#</code><var>i</var><code>'2</code> is replaced as above for points or vectors.  It is
+an error for the <var>i</var>'th argument to be a scalar. 
+<li><code>#</code><var>i</var><code>'x</code>, <code>#</code><var>i</var><code>'y</code>, or <code>#</code><var>i</var><code>'z</code> is
+replaced, respectively, by the scalar <var>x</var>, <var>y</var>, or
+<var>z</var>-coordinate of the argument point or vector. It is an error for
+the <var>i</var>'th argument to be a scalar. 
+<li><code>#</code><var>i</var><code>'3</code> is replaced by the three-dimensional
+transformed argument. Note that if a perspective transformation has
+been applied, the <var>z</var>-coordinate has little geometric
+significance, though it accurately indicates relative depth. 
+<li><code>#</code><var>i</var><code>-</code><var>j</var> where <var>i</var> and <var>j</var> are positive
+integers is replaced by a string <code>{</code><var>angle</var><code>}</code> where
+<var>angle</var> is the polar angle of a vector from the <var>i</var>'th point
+in <var>point_list</var> to the <var>j</var>'th point projected into the
+x-y plane.  It is an error for the <var>i</var>'th or
+<var>j</var>'th argument to be a scalar or a vector. 
+<li><code>#{</code><var>i</var><code>-</code><var>j</var><code>}</code> is also replaced as above. 
+<li><code>##</code> is replaced with <code>#</code>. 
+</ul>
+   The forms with braces <span class="samp">{ }</span> are useful when the argument is
+immediately followed by a digit or a tick character that is part of
+the TeX code.
+
+   <p>The only useful option of <code>special</code> is <code>lay</code>, which
+determines if the substitued raw text is emitted before, after,
+or using the first point in <var>point_list</var> as an indicator
+of depth.  These occur, respectively, with <code>lay=under</code>,
+<code>lay=over</code>, and <code>lay=in</code>.  See <a href="Special-objects.html#Special-objects">Special objects</a>
+and <a href="TikZ_002fPGF-user_002ddefined-styles.html#TikZ_002fPGF-user_002ddefined-styles">TikZ/PGF user-defined styles</a> for examples. 
+<a name="index-lay-280"></a>See <a href="Internal-options.html#Internal-options">Internal options</a>.
+
+   </body></html>
+

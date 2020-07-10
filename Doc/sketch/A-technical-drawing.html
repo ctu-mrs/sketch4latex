@@ -1,0 +1,187 @@
+<html lang="en">
+<head>
+<title>A technical drawing - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Building-a-drawing.html#Building-a-drawing" title="Building a drawing">
+<link rel="prev" href="Overview.html#Overview" title="Overview">
+<link rel="next" href="A-hierarchical-model.html#A-hierarchical-model" title="A hierarchical model">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="A-technical-drawing"></a>Next:&nbsp;<a rel="next" accesskey="n" href="A-hierarchical-model.html#A-hierarchical-model">A hierarchical model</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Overview.html#Overview">Overview</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Building-a-drawing.html#Building-a-drawing">Building a drawing</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">4.2 A technical drawing</h3>
+
+<p>Let's look at a drawing that represents the kind of problem
+<code>sketch</code> was meant to solve&mdash;a pair of textbook figures
+regarding a polygonal approximation of a truncated cone.  Here are the
+pictures we will produce.
+
+<div align="center"><img src="ex250.png" alt="ex250.png">     <img src="ex260.png" alt="ex260.png"></div>
+
+   <p>The cone shape is just a swept line with no closure tag and culling
+turned off.  Begin by setting up some useful constants. 
+<a name="index-def-442"></a><a name="index-rotate-443"></a>
+<pre class="verbatim">
+  def O (0,0,0) def I [1,0,0] def J [0,1,0] def K [0,0,1]
+  def p0 (1,2) def p1 (1.5,0) def N 8
+  def seg_rot rotate(360 / N, [J])
+</pre>
+The points <code>p0</code> and <code>p1</code> are the end points of the line to
+be swept.  The definition <code>seg_rot</code> is the sweep transformation. 
+With these, the cone itself is simple. 
+<a name="index-sweep-444"></a><a name="index-cull-445"></a><a name="index-line-446"></a><a name="index-swept-line-447"></a><a name="index-line-sweep-448"></a>
+<pre class="verbatim">
+  sweep[cull=false] { N, [[seg_rot]] } line(p0)(p1)
+</pre>
+
+   <p>The axes are next and include an interesing trick that shows the
+hidden parts as dotted lines.  The secret is draw the axes
+twice&mdash;solid lines with the normal
+<a name="index-hidden-surface-algorithm-449"></a>hidden surface algorithm in effect, and then dotted with the
+option
+<a name="index-lay-450"></a><code>lay=over</code> so that no polygons can hide them. 
+<a name="index-def-451"></a><a name="index-line-452"></a><a name="index-arrows-453"></a><a name="index-linewidth-454"></a><a name="index-lay-455"></a><a name="index-linestyle-456"></a><a name="index-special-457"></a>
+<pre class="verbatim">
+  def ax (dx,0,0) % tips of the axes
+  def ay (0,dy,0)
+  def az (0,0,dz)
+  line[arrows=&lt;->,linewidth=.4pt](ax)(O)(ay)
+  line[arrows=->,linewidth=.4pt](O)(az)
+  % repeat dotted as an overlay to hint at the hidden lines
+  line[lay=over,linestyle=dotted,linewidth=.4pt](ax)(O)(ay)
+  line[lay=over,linestyle=dotted,linewidth=.4pt](O)(az)
+  special|\footnotesize
+          \uput[d]#1{$x$}\uput[u]#2{$y$}\uput[l]#3{$z$}|
+    (ax)(ay)(az)
+</pre>
+The labels are applied with <code>PSTricks</code> special objects
+<a name="index-special-objects-458"></a>as usual.
+
+   <p>For the height dimension mark, the power of affine
+<a name="index-affine-arithmetic-459"></a>arithetic is very helpful. 
+<a name="index-def-460"></a><a name="index-unit-461"></a><a name="index-scale-462"></a><a name="index-line-463"></a><a name="index-special-464"></a>
+<pre class="verbatim">
+  def hdim_ref unit((p1) - (O)) then [[seg_rot]]^2
+  def c0 (p0) then scale([J])
+  def h00 (c0) + 1.1 * [hdim_ref]
+  def h01 (c0) + 1.9 * [hdim_ref]
+  def h02 (c0) + 1.8 * [hdim_ref]
+  line(h00)(h01)
+  def h10 (O) + 1.6 * [hdim_ref]
+  def h11 (O) + 1.9 * [hdim_ref]
+  def h12 (O) + 1.8 * [hdim_ref]
+  line(h10)(h11)
+  line[arrows=&lt;->](h02)(h12)
+  def hm2 ((h02) - (O) + (h12) - (O)) / 2 + (O)
+  special|\footnotesize\rput*#1{$h$}|(hm2)
+</pre>
+The general idea employed here is to compute a unit &ldquo;reference
+vector&rdquo; parallel to the xz-plane in the desired direction of
+the dimension from the origin.  The transformation
+<code>[[seg_rot]]^2</code> rotates two segments about the y-axis. 
+When applied to <code>(p1) - (O)</code>, the resulting vector points to the
+right as shown.  In this manner, we can pick any vertex as the
+location of the height dimension lines by varying the exponent of
+<code>[[seg_rot]]</code>.  This is only one of many possible strategies.
+
+   <p>The computation of <code>hm2</code> is a useful idiom for finding the
+<a name="index-centroid-465"></a>centroid of a set of points.
+
+   <p>The two radius marks are done similarly, so we present the code
+without comment. 
+<a name="index-def-466"></a><a name="index-line-467"></a><a name="index-special-468"></a><a name="index-scale-469"></a><a name="index-arrows-470"></a>
+<pre class="verbatim">
+  % radius measurement marks
+  def gap [0,.2,0]  % used to create small vertical gaps
+
+  % first r1
+  def up1 [0,3.1,0] % tick rises above dimension a little
+  def r1 ((p1) then [[seg_rot]]^-2) + [up1]
+  def r1c (r1) then scale([J])
+  def r1t (r1) + [gap]
+  def r1b ((r1t) then scale([1,0,1])) + [gap]
+  line[arrows=&lt;->](r1c)(r1)  % dimension line
+  line(r1b)(r1t)             % tick
+  def r1m ((r1) - (O) + (r1c) - (O)) / 2 + (O) % label position
+  special |\footnotesize\rput*#1{$r_1$}|(r1m)  % label
+
+  % same drill for r0, but must project down first
+  def up0 [0,2.7,0]
+  def r0 ((p0) then scale([1,0,1]) then [[seg_rot]]^-2) + [up0]
+  def r0c (r0) then scale([J])
+  def r0t (r0) + [gap]
+  def r0b ((p0) then [[seg_rot]]^-2) + [gap]
+  line[arrows=&lt;->](r0c)(r0)
+  line(r0b)(r0t)
+  def r0m ((r0) - (O) + (r0c) - (O)) / 2 + (O)
+  special |\footnotesize\rput*#1{$r_0$}|(r0m)
+</pre>
+
+   <p>The second drawing uses the same techniques.  Only the method for
+drawing the elliptical arc is new.  Here is the code. 
+<a name="index-def-471"></a><a name="index-special-472"></a><a name="index-lay-473"></a>
+<pre class="verbatim">
+  def mid ((p00)-(O)+(p10)-(O)+(p11)-(O)+(p01)-(O))/4+(O)
+  special|\rput#1{\pscustom{
+    \scale{1 1.3}
+    \psarc[arrowlength=.5]{->}{.25}{-60}{240}}}|
+    [lay=over](mid)
+</pre>
+We could have swept a point to make the arc with <code>sketch</code>, but
+using a <code>PSTricks</code> custom graphic was simpler.  Again we computed
+the
+<a name="index-centroid-474"></a>centroid of the quadrilateral by averaging points.  Note that scaling
+in Postscript distorts the arrowhead, but in this case the distortion
+actually looks better in the projection of the slanted face.  A
+<code>sketch</code> arrowhead would not have been distorted.
+
+   <p>The complete code for this example, which draws either figure
+depending on the definition of the tag <code>&lt;labeled&gt;</code>, is included
+in the <code>sketch</code> distribution in the file <span class="file">truncatedcone.sk</span>.
+
+   </body></html>
+

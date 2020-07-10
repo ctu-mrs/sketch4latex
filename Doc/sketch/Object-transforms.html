@@ -1,0 +1,124 @@
+<html lang="en">
+<head>
+<title>Object transforms - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction-by-example.html#Introduction-by-example" title="Introduction by example">
+<link rel="prev" href="Special-objects.html#Special-objects" title="Special objects">
+<link rel="next" href="Repeated-objects.html#Repeated-objects" title="Repeated objects">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Object-transforms"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Repeated-objects.html#Repeated-objects">Repeated objects</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Special-objects.html#Special-objects">Special objects</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction-by-example.html#Introduction-by-example">Introduction by example</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">2.5 Transforms</h3>
+
+<p><a name="index-transform-58"></a>Now let's add a second copy of the pierced tetrahedron.  We'll rotate
+the copy 90 degrees about the x-axis with the origin as
+<dfn>center of rotation</dfn>
+<a name="index-center-of-rotation-59"></a><a name="index-rotation_002c-center-of-60"></a>so we can see the back,
+then translate it to the right&mdash;in the positive
+x-direction&mdash;so it doesn't collide with the original. To help
+us see what's going on, make the back side gray. 
+<a name="index-def-61"></a><a name="index-put-62"></a><a name="index-line-63"></a><a name="index-polygon-64"></a><a name="index-linecolor-65"></a><a name="index-fillcolor-66"></a><a name="index-rotate-67"></a><a name="index-translate-68"></a><a name="index-then-69"></a>
+<pre class="verbatim">
+  def pierced_tetrahedron {
+    def p1 (0,0,1) def p2 (1,0,0)
+    def p3 (0,1,0) def p4 (-.3,-.5,-.8)
+    polygon(p1)(p2)(p3)                      % original
+    polygon(p1)(p4)(p2)                      % bottom
+    polygon(p1)(p3)(p4)                      % left
+    polygon[fillcolor=lightgray](p3)(p2)(p4) % rear
+    line[linecolor=red](-1,-1,-1)(2,2,2)
+  }
+  {pierced_tetrahedron}  % tetrahedron in original position
+  put { rotate(90, (0,0,0), [1,0,0]) % copy in new position
+        then translate([2.5,0,0]) } {pierced_tetrahedron}
+</pre>
+Here the entire code of the previous example has been wrapped in a
+definition by forming a <dfn>block</dfn>
+<a name="index-block-70"></a><a name="index-_0040_007b-_0040_007d_0040r_007b_002c-block-drawable_007d-71"></a>with braces (a single item would not need them).  The point
+definitions nested inside the braces are <dfn>lexically scoped</dfn>. 
+<a name="index-lexical-scope-72"></a><a name="index-scope_002c-identifier-73"></a>Their meaning extends only to the end of the block.  The outer
+<tt>def</tt> is called a <dfn>drawable</dfn>
+<a name="index-drawable-74"></a>definition
+<a name="index-definition_002c-drawable-75"></a><a name="index-drawable-definition-76"></a>because it describes something that can be drawn.
+
+   <p>A drawable definition by itself causes nothing to happen until its
+name is referenced.  Drawable references must be enclosed in curly
+braces, e.g. <tt>{foo}</tt>, with no intervening
+<a name="index-white-space-77"></a>white space.  In the code
+above, the first reference
+<a name="index-reference_002c-drawable-78"></a><tt>{pierced_tetrahedron}</tt>
+<a name="index-_0040_007bfoo_0040_007d_0040r_007b_002c-drawable-reference_007d-79"></a>is a plain
+one. Its effect is merely to duplicate the earlier drawing.  Almost
+any series of <code>sketch</code> commands <tt>stuff</tt> may be replaced
+with <tt>def foo { stuff } {foo}</tt> without changing its meaning.
+
+   <p>The <tt>put</tt> command supplies a second reference, this time with
+a <dfn>transform</dfn> applied first.  The <tt>rotate</tt>
+<a name="index-rotate-80"></a><a name="index-rotation-81"></a>transform turns the tetrahedron 90 degrees about the origin.  The
+axis of rotation
+<a name="index-axis_002c-rotation-82"></a>is the vector [1,0,0].  By the <dfn>right
+hand rule</dfn>,
+<a name="index-right-hand-rule-83"></a>this causes the top of the tetrahedron to rotate toward
+the viewer and the bottom away.  The rule receives its name from the
+following definition:
+<blockquote>
+<a name="Right-hand-rule"></a>
+<strong>Right hand rule.</strong>  If the right hand is wrapped around any
+axis with the thumb pointing in the axis direction, then the fingers
+curl in the direction of positive rotation about that axis. 
+</blockquote>
+   The <tt>translate</tt>
+<a name="index-translate-84"></a><a name="index-translation-transform-85"></a><a name="index-transform_002c-translation-86"></a>transform moves the pyramid laterally to
+the right by adding the vector
+<a name="index-vector-87"></a>[2.5,0,0] to each vertex
+coordinate.  The result is shown here.
+
+<div align="center"><img src="ex050.png" alt="ex050.png"></div>
+
+   </body></html>
+

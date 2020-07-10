@@ -1,0 +1,256 @@
+def O (0,0,0)
+def I [1,0,0]
+def J [0,1,0]
+def K [0,0,1]
+def cornerRad 0.1
+def tireRad 0.5
+def wheelWidth .4
+def nArcSegs 3
+def nTireSegs 20
+def nAxleSegs 6
+def axleRad .05
+def robotWidth 1.5
+def robotLength 2.5
+def bodyWidth .5
+def bodyHeight .4
+def steeringGamma .2
+def leftSteeringAngle  atan2(2 * robotLength * steeringGamma, 2 - robotWidth * steeringGamma)
+def rightSteeringAngle atan2(2 * robotLength * steeringGamma, 2 + robotWidth * steeringGamma)
+
+def wheelRad tireRad - cornerRad
+def wheelXofs wheelWidth/2 - cornerRad
+
+def rightArc put { 
+  translate([ wheelXofs, wheelRad, 0]) 
+} sweep { nArcSegs, rotate(90 / nArcSegs) } (cornerRad,0)
+
+def leftArc put { 
+  translate([-wheelXofs, wheelRad, 0]) 
+} sweep { nArcSegs, rotate(90 / nArcSegs) } (0,cornerRad)
+
+def tread line(wheelXofs, tireRad)(-wheelXofs, tireRad)
+
+def hubPlate sweep[fillcolor=lightgray] { nTireSegs<>, rotate(-360 / nTireSegs, (O), [I]) } (0,wheelRad)
+
+def tire sweep[fillcolor=lightgray]{ nTireSegs, rotate(360 / nTireSegs, (O), -[I]) } { 
+  {leftArc} 
+  {rightArc} 
+  {tread}
+}
+
+def wheel { 
+  def leftHubPlate  put { translate( [-wheelWidth/2, 0, 0] ) } {hubPlate}
+  def rightHubPlate put { rotate(180, (O), [K]) }          {leftHubPlate}
+  {rightHubPlate}
+  {leftHubPlate}
+  {tire}
+}
+
+def axle sweep[fillcolor=darkgray]{ nAxleSegs, rotate(360 / nAxleSegs, (O), -[I]) } 
+  line (robotWidth/2, axleRad)(-robotWidth/2, axleRad)
+
+def leftSteerableWheel put { 
+  rotate(leftSteeringAngle, (O), [J]) then
+  translate( [-robotWidth/2, 0, 0] )
+} {wheel}
+
+def rightSteerableWheel put { 
+  rotate(rightSteeringAngle, (O), [J]) then
+  translate( [robotWidth/2, 0, 0] )
+} {wheel}
+
+def steerableAxleAssembly {
+  {leftSteerableWheel}
+  {rightSteerableWheel}
+  {axle}
+}
+
+def fixedAxleAssembly {
+  put { translate( [-robotWidth/2, 0, 0] ) } {wheel}
+  put { translate( [ robotWidth/2, 0, 0] ) } {wheel}
+  {axle}
+}
+
+def bodyopts [fillcolor=white]
+
+def bodyCorner # first octant "rounded corner"
+   sweep [bodyopts]{ nArcSegs, rotate(90 / nArcSegs, (O), [I]) } 
+   sweep           { nArcSegs, rotate(90 / nArcSegs, (O),-[K]) } (0,cornerRad)
+
+def zBodyEdge
+  sweep [bodyopts] { 1, translate([K]) }
+  sweep            { nArcSegs, rotate(90 / nArcSegs, (O), -[K]) } (0,cornerRad,0)
+
+def xBodyEdge # positive y-z quadrant about x axis quarter-pipe of unit length
+  sweep [bodyopts] { 1, translate([I]) } 
+  sweep            { nArcSegs, rotate(90 / nArcSegs, (O), -[I]) } (0,0,cornerRad)
+
+def body {
+  def xOfs bodyWidth/2 - cornerRad
+  def yOfs bodyHeight/2 - cornerRad
+  def zOfs robotLength/2 + cornerRad
+  def posZend {
+    # 4 corners
+    put { translate([ xOfs,  yOfs, zOfs]) } {bodyCorner}
+    put { rotate(90, (O), [K]) then
+          translate([-xOfs,  yOfs, zOfs]) } {bodyCorner}
+    put { rotate(180, (O), [K]) then
+          translate([-xOfs, -yOfs, zOfs]) } {bodyCorner}
+    put { rotate(270, (O), [K]) then
+          translate([ xOfs, -yOfs, zOfs]) } {bodyCorner}
+    # 4 edges
+    put { scale([2*xOfs, 1, 1]) then 
+          translate([-xOfs, yOfs, zOfs]) } {xBodyEdge}
+    put { scale([2*yOfs, 1, 1]) then 
+          rotate(90, (O), [K]) then
+          translate([-xOfs,-yOfs, zOfs]) } {xBodyEdge}
+    put { scale([2*xOfs, 1, 1]) then 
+          rotate(180, (O), [K]) then
+          translate([ xOfs,-yOfs, zOfs]) } {xBodyEdge}
+    put { scale([2*yOfs, 1, 1]) then 
+          rotate(270, (O), [K]) then
+          translate([ xOfs, yOfs, zOfs]) } {xBodyEdge}
+    def z zOfs + cornerRad
+    polygon[bodyopts](xOfs,yOfs,z)(-xOfs,yOfs,z)(-xOfs,-yOfs,z)(xOfs,-yOfs,z)
+  }
+  def top {
+    put { scale([1,1,2*zOfs]) then
+          translate([xOfs, yOfs, -zOfs]) } {zBodyEdge}
+    put { scale([1,1,2*zOfs]) then
+          rotate(90) then
+          translate([-xOfs, yOfs, -zOfs]) } {zBodyEdge}
+    def y bodyHeight/2
+    polygon[bodyopts](xOfs,y,zOfs)(xOfs,y,-zOfs)(-xOfs,y,-zOfs)(-xOfs,y,zOfs)
+  }
+  def posXside {
+    def x bodyWidth/2
+    polygon[bodyopts](x,yOfs,zOfs)(x,-yOfs,zOfs)(x,-yOfs,-zOfs)(x,yOfs,-zOfs)
+  }
+
+  # ends of the body
+  {posZend}
+  put { rotate(180, (O), [I]) } {posZend}
+
+  {top}
+  {posXside}
+
+  # bottom and negative X side
+  put { rotate(180) } { 
+    {top} 
+    {posXside}
+  }
+}
+
+def robot {
+  {fixedAxleAssembly}
+  put { translate([0, 0, -robotLength]) } {steerableAxleAssembly}
+  put { translate([0, 0, -robotLength/2])   } {body}
+}
+
+def centerXform
+       translate(robotLength/2 * [K])
+  then rotate(90, (O), [J])
+
+def winWidth
+  <zoomed_in> 0.6
+  <zoomed_out> 1.5
+  <> 1 
+
+def foreshorteningFactor 
+  <fish_eye> .3
+  <parallel> 30
+  <> 1 # base
+
+def pai 8
+def panAngle 
+  <vai>   -pai
+  <vaii>  -pai
+  <vaiii> -pai
+  <vaiv>   pai
+  <vav>    0
+  <vavi>  -pai
+  <vavii>  pai
+  <vaviii> pai
+  <vaix>  pai
+  <>       0
+
+def panAxis
+  <vai>    [-1,-1,0]
+  <vaii>   [-1,0,0]
+  <vaiii>  [-1,1,0]
+  <vaiv>   [0,1,0]
+  <vav>    [0,1,0]
+  <vavi>   [0,1,0]
+  <vavii>  [-1,1,0]
+  <vaviii> [-1,0,0]
+  <vaix>  [-1,-1,0]
+  <>       [0,1,0]
+
+def eyeAxis [10,7,10]
+def eyeI (O) + .5 * foreshorteningFactor * [eyeAxis]
+def dvI (O) - (eyeI)
+
+def upRot 
+  <tilt_left>  -20
+  <tilt_right> 20
+  <> 0
+
+def up [0,1,0] then rotate(upRot, (O), -[eyeAxis])
+
+def viewXformI
+  <parallel> 
+     view ((eyeI), [dvI], [up]) 
+     then rotate(-panAngle, (O), [panAxis])
+     then perspective(|[dvI]|)
+     then scale(1.5/winWidth)
+     then scale([1,1,1000])
+  <> view ((eyeI), [dvI], [up]) 
+     then rotate(-panAngle, (O), [panAxis])
+     then perspective(|[dvI]|)
+     then scale(1.5/winWidth)
+
+def dashframe {
+  line[linestyle=dashed](-1,-1, 1)( 1,-1, 1)(1,1, 1)(-1,1, 1)(-1,-1, 1)
+  line[linestyle=dashed](-1,-1,-1)( 1,-1,-1)(1,1,-1)(-1,1,-1)(-1,-1,-1)
+  line[linestyle=dashed](-1,-1, 1)(-1,-1,-1)
+  line[linestyle=dashed]( 1,-1, 1)( 1,-1,-1)
+  line[linestyle=dashed]( 1, 1, 1)( 1, 1,-1)
+  line[linestyle=dashed](-1, 1, 1)(-1, 1,-1)
+}
+
+def floor_grid {
+  def opts [linewidth=.2pt]
+  def nX 7
+  def nZ 5
+  def dx (robotLength+tireRad*2) + 2
+  def dz (robotWidth+wheelWidth) + 2
+  def y -tireRad-.001
+
+  repeat { nX+1, translate([dx/nX,0,0]) } line[opts](-dx/2,y,-dz/2)(-dx/2,y,dz/2)
+  repeat { nZ+1, translate([0,0,dz/nZ]) } line[opts](-dx/2,y,-dz/2)(dx/2,y,-dz/2)
+}
+
+put { [[viewXformI]] } {
+  put { [[centerXform]] } {robot}
+  {floor_grid}
+# put { scale([(robotLength+tireRad*2)/2, tireRad, (robotWidth+wheelWidth)/2]) } {dashframe}
+}
+
+#def frameOfs 2
+#put { [[viewXformI]] then translate(-frameOfs * [I]) } {robot}
+#put { [[viewXformI]] then translate(frameOfs * [I]) } {robot}
+#put { [[simpleViewXform]] then translate(2*frameOfs * [I]) } {robot}
+
+
+global {
+  set [linewidth=.3pt]
+
+  % set up a bounding box
+  def w 3
+  def ar 3/2.2
+  def cbp1 (-w,-w/ar,0)
+  def cbp2 (w,w/ar,0)
+
+  picturebox [.5] (cbp1)(cbp2)
+  frame
+}

@@ -1,0 +1,94 @@
+<html lang="en">
+<head>
+<title>Language basics - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Input-language.html#Input-language" title="Input language">
+<link rel="prev" href="Input-language.html#Input-language" title="Input language">
+<link rel="next" href="Drawables.html#Drawables" title="Drawables">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Language-basics"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Drawables.html#Drawables">Drawables</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Input-language.html#Input-language">Input language</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Input-language.html#Input-language">Input language</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">3.1 Basics</h3>
+
+<p><code>Sketch</code> input is plain ASCII text, usually stored in an input
+file. 
+<a name="index-input-file-159"></a><a name="index-file_002c-input-160"></a>It describes a <dfn>scene</dfn>,
+so the sketch language is a <dfn>scene description
+language</dfn>. 
+<a name="index-scene-description-language-161"></a><a name="index-language_002c-scene-description-162"></a><code>Sketch</code> input is also <dfn>declarative</dfn>. 
+<a name="index-declarative-language-163"></a><a name="index-language_002c-declarative-164"></a>It merely
+declares what the scene ought to look like when drawing is complete
+and says very little about how <code>sketch</code> should do its work. 
+<code>Sketch</code> commands are not executed sequentially as in the usual
+programming language.  They merely contribute to that declaration.
+
+   <p>A few syntactic details are important.  Case is significant in the
+<code>sketch</code> language.  With a few exceptions, white space is not. 
+This includes line breaks. 
+<a name="index-white-space-165"></a>Comments begin with <code>%</code> or <code>#</code> and extend to the end of the
+line.  You can disable a chunk of syntactically correct <code>sketch</code>
+code by enclosing it in a <code>def</code>. 
+<a name="index-comments-166"></a>There is a simple &ldquo;include file&rdquo; mechanism. 
+<a name="index-include-file-167"></a><a name="index-file_002c-include-168"></a>The command
+<a name="index-input-169"></a>
+<pre class="verbatim">
+  input{otherfile.sk}
+</pre>
+causes the contents of <span class="file">otherfile.sk</span> to be inserted as though
+they were part of the current file.
+
+<ul class="menu">
+<li><a accesskey="1" href="Identifiers.html#Identifiers">Identifiers</a>:                  Names for things. 
+<li><a accesskey="2" href="Key-and-reserved-words.html#Key-and-reserved-words">Key and reserved words</a>:       Names you shouldn't use. 
+<li><a accesskey="3" href="Literals.html#Literals">Literals</a>:                     Constants and constructors. 
+<li><a accesskey="4" href="Arithmetic.html#Arithmetic">Arithmetic</a>:                   Rules for expressions. 
+<li><a accesskey="5" href="Options.html#Options">Options</a>:                      Modifying object appearance. 
+</ul>
+
+   </body></html>
+

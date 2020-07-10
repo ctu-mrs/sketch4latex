@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+<title>Bugs and anomalies - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Hidden-surface-removal.html#Hidden-surface-removal" title="Hidden surface removal">
+<link rel="prev" href="Statistics.html#Statistics" title="Statistics">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Bugs-and-anomalies"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="Statistics.html#Statistics">Statistics</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Hidden-surface-removal.html#Hidden-surface-removal">Hidden surface removal</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h5 class="subsubsection">4.4.3.2 Bugs and anomalies</h5>
+
+<p>Polygon and line splitting can both cause anomalies in the output. 
+<code>PSTricks</code> dash patterns, specified with <code>linestyle=dashed</code>,
+<a name="index-linestyle-507"></a>can be disrupted by splitting.  This occurs when the depth sort
+<a name="index-depth-sort-508"></a>gives up too early and splits a line where it is not really
+necessary. 
+A workaround is to use gray or finely dotted
+lines instead.  If your drawing is small, you can also edit the
+<code>sketch</code> output by hand to merge the pieces of the offending
+line.
+
+   <p>Another anomaly is tiny (or in degenerate cases not-so-tiny) notches
+in the lines that border split polygons.  These derive from the way
+each polygon is painted: first, all pixels within the boundary are
+<dfn>filled</dfn> with color (perhaps white), then the same boundary is
+<dfn>stroked</dfn> (a Postscript term) with a line.  The result is that
+half the line lies inside the boundary and half outside, while the
+Painter's algorithm assumes the polygon lies entirely within its
+boundary.  The notches are due to one polygon fill operation
+overwriting the already-drawn inside of the border of another
+polygon.<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>  One workaround is to make
+border lines very thin.  In fact <code>linewidth=0pt</code> is guaranteed to
+eliminate this problem, though this results in the thinnest line your
+output device can draw, which is usually too thin.  You might get
+lucky by merely reordering things in the input file, which is likely
+to move the splits to different places.  The only sure-fire solution
+is pretty terrible: custom fit <code>special</code> overlay lines (with
+<code>\psline</code>) to cover the notches.
+
+   <p>Polygon splitting also breaks <code>PSTricks</code> hatch patterns.  The
+only known workaround is to substitute a solid fill for the hatch.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> I know how to fix this problem, but I don't like my
+solution, and I'm interested in yours.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

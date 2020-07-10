@@ -1,0 +1,84 @@
+# origin
+def O (0,0,0)
+
+def cube {
+  polygon[linecolor=blue,fillcolor=red]( 1,-1,-1)( 1, 1,-1)( 1, 1, 1)( 1,-1, 1)
+  polygon[linecolor=blue,fillcolor=green](-1,-1, 1)(-1, 1, 1)(-1, 1,-1)(-1,-1,-1)
+
+  polygon[linecolor=blue,fillcolor=blue](-1,-1,-1)( 1,-1,-1)( 1,-1, 1)(-1,-1, 1)
+  polygon[linecolor=blue,fillcolor=yellow](-1, 1, 1)( 1, 1, 1)( 1, 1,-1)(-1, 1,-1)
+
+  polygon[linecolor=blue,fillcolor=cyan](-1,-1, 1)( 1,-1, 1)( 1, 1, 1)(-1, 1, 1)
+  polygon[linecolor=blue,fillcolor=magenta](-1, 1,-1)( 1, 1,-1)( 1,-1,-1)(-1,-1,-1)
+}
+
+def rawcubes {
+  {cube}
+  put { translate([2.5,0,0]) } {cube}
+  put { translate([0,0,-2.5]) } {cube}
+  put { translate([0,0,2.5]) } {cube}
+  put { translate([-2.5,0,0]) } {cube}
+}
+
+def ofs -1.5
+#def ofs -2.1
+
+def cubeviews {
+  put { rotate(0, (O), [0,1,0]) then translate([0,0*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(5, (O), [0,1,0]) then translate([0,1*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(10, (O), [0,1,0]) then translate([0,2*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(15, (O), [0,1,0]) then translate([0,3*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(20, (O), [0,1,0]) then translate([0,4*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(25, (O), [0,1,0]) then translate([0,5*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(30, (O), [0,1,0]) then translate([0,6*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(35, (O), [0,1,0]) then translate([0,7*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(40, (O), [0,1,0]) then translate([0,8*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(45, (O), [0,1,0]) then translate([0,9*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(50, (O), [0,1,0]) then translate([0,10*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(55, (O), [0,1,0]) then translate([0,11*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(60, (O), [0,1,0]) then translate([0,12*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(65, (O), [0,1,0]) then translate([0,13*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(70, (O), [0,1,0]) then translate([0,14*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(75, (O), [0,1,0]) then translate([0,15*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(80, (O), [0,1,0]) then translate([0,16*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(85, (O), [0,1,0]) then translate([0,17*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+  put { rotate(90, (O), [0,1,0]) then translate([0,18*ofs,0]) then view((3, 5, 10), [-3, -5, -10]) then perspective(10) } {rawcubes}
+}
+
+def dstest {
+  def ts polygon (-1,-1,1)(1,-1,-1)(1,1,-1)(-1,1,1)
+  {ts}
+  def ofsv [.2,0,-.1]
+  put { translate( [ofsv] ) } {ts}
+  put { translate( 2*[ofsv] ) } {ts}
+  put { translate( 3*[ofsv] ) } {ts}
+  put { translate( 4*[ofsv] ) } {ts}
+  put { translate( 5*[ofsv] ) } {ts}
+}
+
+#put { view((10,2,10), [-1,-2,-5]) } {dstest}
+put { scale(1) } {cubeviews}
+
+def cross {
+  polygon[fillcolor=red] (-10,-1,-10)(10,-1,10)(10,1,10)(-10,1,-10)
+  polygon[fillcolor=blue] (-10,-1,10)(10,-1,-10)(10,1,-10)(-10,1,10)
+}
+
+# put { view( (0,5,10) ) then scale(.1) } {cross}
+
+def edgeon {
+  polygon[fillcolor=red] (0,0,1)(10,0,1)(10,0,-1)(0,0,-1)
+  polygon[fillcolor=blue](9,-1,-1.1)(11,-1,-1.1)(11,1,-1.1)(9,1,-1.1)
+}
+# put { view( (4,.1,10) ) then scale(.3) } {edgeon}
+
+def linepolyintersect {
+  polygon[fillcolor=red]( 1,-1,-1)( 1, 1,-1)( 1, 1, 1)( 1,-1, 1)
+  line[linewidth=1pt](0,0)(2,1,.5)
+  line[linewidth=1pt](0,0)(2,1,0)
+  line[linewidth=1pt](0,0)(2,-1,0)
+  line[linewidth=1pt](0,0)(3,2.99,0)
+}
+# put { view( (1, 1, 10) ) then scale(3) } {linepolyintersect}
+
+global { set [linewidth=0pt] }

@@ -1,0 +1,91 @@
+<html lang="en">
+<head>
+<title>Nested sweeps - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Swept-objects.html#Swept-objects" title="Swept objects">
+<link rel="prev" href="Polyline-sweeps.html#Polyline-sweeps" title="Polyline sweeps">
+<link rel="next" href="Polygon-sweeps.html#Polygon-sweeps" title="Polygon sweeps">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Nested-sweeps"></a>Next:&nbsp;<a rel="next" accesskey="n" href="Polygon-sweeps.html#Polygon-sweeps">Polygon sweeps</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Polyline-sweeps.html#Polyline-sweeps">Polyline sweeps</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Swept-objects.html#Swept-objects">Swept objects</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h4 class="subsection">2.7.3 Nested sweeps</h4>
+
+<p>When the center point of rotation is omitted,
+<a name="index-center-of-rotation-121"></a><a name="index-rotation_002c-center-of-122"></a>the origin is assumed. 
+When a point has only two coordinates, they are taken as
+x&nbsp;<!-- /@w -->and y,&nbsp;<!-- /@w -->with z=0 assumed.  A toroid
+<a name="index-toroid-123"></a>is therefore obtained with this code. 
+<a name="index-def-124"></a><a name="index-sweep-125"></a><a name="index-rotate-126"></a>
+<pre class="verbatim">
+  def n_toroid_segs 20   def n_circle_segs 16
+  def r_minor 1          def r_major 1.5
+  sweep { n_toroid_segs, rotate(360 / n_toroid_segs, [0,1,0]) }
+    sweep { n_circle_segs, rotate(360 / n_circle_segs, (r_major,0,0)) } 
+      (r_major + r_minor, 0)
+</pre>
+
+   For intuition, the idea of the code is to sketch a circle to the right
+of the origin in the xy-plane, then rotate that circle &ldquo;out of
+the plane&rdquo; about the y-axis to make the final figure.  This
+produces the following.  (A view rotation and some axes have been
+added.)
+
+<div align="center"><img src="ex090.png" alt="ex090.png"></div>
+
+   <p>This example also shows that the swept object may itself be another
+<code>sweep</code>. 
+<a name="index-sweep-127"></a><a name="index-nesting_002c-swept-object-128"></a>In fact, it may be <em>any</em> <code>sketch</code> expression that results in
+a list of one or more points or, alternately, a list of one or more
+polylines and polygons.  The latter kind of list can be created with a
+<tt>{ }</tt>-enclosed block, perhaps following a
+<a name="index-put-129"></a><tt>put</tt> or
+<a name="index-repeat-130"></a><tt>repeat</tt>. 
+<a name="index-_0040_007b-_0040_007d_0040r_007b_002c-block-drawable_007d-131"></a>
+
+   </body></html>
+

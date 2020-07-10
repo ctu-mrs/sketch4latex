@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+<title>Internal options - Sketch</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Sketch">
+<meta name="generator" content="makeinfo 4.7">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Options.html#Options" title="Options">
+<link rel="prev" href="Transparency.html#Transparency" title="Transparency">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 2005 to 2012 Eugene K. Ressler.
+
+This manual is for `sketch', version 0.3 (build 7),
+Friday, February 24, 2012, a program that converts descriptions of simple
+three-dimensional scenes into line drawings. This version generates
+`PSTricks' or `PGF/TikZ' code suitable for use with the
+TeX document processing system.
+
+`Sketch' is free software. You can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3, or (at your option)
+any later version.
+
+Sketch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with `sketch'; see the file COPYING.txt.  If not, see
+http://www.gnu.org/copyleft.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc { font-variant:small-caps }
+  span.roman { font-family: serif; font-weight: normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Internal-options"></a>Previous:&nbsp;<a rel="previous" accesskey="p" href="Transparency.html#Transparency">Transparency</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Options.html#Options">Options</a>
+<hr><br>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h5 class="subsubsection">3.1.5.6 Internal options</h5>
+
+<p>There are also <em>internal</em> options
+<a name="index-options_002c-internal-260"></a><a name="index-internal-options-261"></a>used only by <code>sketch</code> and not
+passed on to <code>PSTricks</code>.  These are summarized in the following
+table. 
+<a name="index-cull-262"></a><a name="index-lay-263"></a><a name="index-split-264"></a>
+   <p><table summary=""><tr align="left"><th valign="top">Key </th><th valign="top">Possible values </th><th valign="top">Description
+<br></th></tr><tr align="left"><td valign="top"><code>cull</code>
+</td><td valign="top"><code>true</code>, <code>false</code>
+</td><td valign="top">Turn culling of backfaces on and off respectively for this object. 
+The default value is <code>true</code>. 
+<br></td></tr><tr align="left"><td valign="top"><code>lay</code>
+</td><td valign="top"><code>over</code>, <code>in</code>, <code>under</code>
+</td><td valign="top">Force this object to be <code>under</code> or
+<code>over</code> all other objects in the depth sort
+<a name="index-depth-sort-265"></a>order created by the hidden surface algorithm.  The default value
+<code>over</code> guarantees that output due to the <code>special</code> will be
+visible. 
+<br></td></tr><tr align="left"><td valign="top"><code>split</code>
+</td><td valign="top"><code>true</code>, <code>false</code>
+</td><td valign="top">Turn splitting of sweep-generated body polygons
+<a name="index-body-polygon-266"></a><a name="index-polygon_002c-body-267"></a>on and off respectively. See <a href="Sweeps.html#Sweeps">Sweeps</a>.  The default value <code>true</code>
+causes &ldquo;warped&rdquo; polygons to be split into triangles, which avoids
+mistakes by the hidden surface algorithm.
+   <br></td></tr></table>
+
+<h4 class="subsection">3.1.6 Point lists</h4>
+
+<p><a name="index-point-list-268"></a><strong>Syntax:</strong>
+<pre class="example">     (<var>x1</var>,<var>y1</var>,<var>z1</var>)(<var>x2</var>,<var>y2</var>,<var>z2</var>)...
+</pre>
+   <p class="noindent">A sequence of one or more points makes a point list, a feature
+common to all drawables.  Each of the point components is a scalar
+arithmetic expression.  Any point may have the z-component
+omitted; it will default to z=0.
+
+<ul class="menu">
+<li><a accesskey="1" href="Drawables.html#Drawables">Drawables</a>:                    Things that are drawn. 
+<li><a accesskey="2" href="Definitions.html#Definitions">Definitions</a>:                  Things with names. 
+</ul>
+
+   </body></html>
+

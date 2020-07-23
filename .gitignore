@@ -2,3 +2,7 @@
 *.swp
 *.o
 sketch
+array_tests/*.pdf
+array_tests/*.log
+array_tests/*.tex
+array_tests/*.txt

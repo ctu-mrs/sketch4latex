@@ -1,0 +1,517 @@
+def vrtule {
+
+def n_segs 64
+sweep { n_segs<>, rotate(360 / n_segs, (0,0,0), [0,0,1]) } line[linecolor=gray](-0.3,0,0)(0,0,0)
+sweep { n_segs<>, rotate(360 / n_segs, (0,0,0), [0,0,1]) } line[linecolor=black](-0.03,0,0.01)(0,0,0.01)
+}
+
+def vrtuleBack {
+
+def n_segs 64
+sweep { n_segs<>, rotate(360 / n_segs, (0,0,0), [0,0,1]) } line[linecolor=red!50!gray](-0.3,0,0)(0,0,0)
+sweep { n_segs<>, rotate(360 / n_segs, (0,0,0), [0,0,1]) } line[linecolor=black](-0.03,0,0.01)(0,0,0.01)
+}
+
+def sipka_rotace {
+
+	def n_segs 64
+%	sweep { n_segs, rotate(180 / n_segs, (0,0,0), [0,1,0]) } (-0.5,0,0)
+	% line[arrows=->] (0.5,0,0)(0.5,0,0.2)
+	%line[arrows=->] (-0.5,0,0)(-0.5,0,0.2)
+
+	special |\footnotesize
+		\uput{2pt}[u]#1{$\phi$}
+		\uput[d]#2{$$}
+		\uput[d]#3{$$}|
+		(0.3,0.2,0)(0.5,0,0)(-0.5,0,0)
+}
+
+
+def sphere {
+  def faces 10
+  sweep[fillcolor=red,linestyle=none,opacity=0.1,cull=true] {faces*2, rotate(360/faces,(0,0,0),[0,0,1])}
+      sweep { faces, rotate(180/faces,(0,0,0),[1,0,0])}
+      (0,0,-1)
+}
+
+def cov_ellipse {
+  def sz 0.35
+  def sz2 sz+0.07
+  def sz3 sz-0.07
+  def sz4 sz+0.14
+  def sz5 sz-0.14
+  % def sz6 sz+0.3
+  % def sz7 sz-0.3
+  put {scale([sz,sz,6*sz])}{sphere}
+  put {scale([sz2,sz2,6*sz2])}{sphere}
+  put {scale([sz3,sz3,6*sz3])}{sphere}
+  put {scale([sz4,sz4,6*sz4])}{sphere}
+  put {scale([sz5,sz5,6*sz5])}{sphere}
+  % put {scale([sz6,sz6,4*sz6])}{sphere}
+  % put {scale([sz7,sz7,4*sz7])}{sphere}
+}
+
+
+def hodler {
+  def sz 0.25
+  def hsx sz+0.05
+  def hsy sz/2
+  def hsz sz/4
+  def C (0,0,0)
+  
+  def p1 (C)+[hsx,hsy,hsz]
+  def p2 (C)+[hsx,-hsy,hsz]
+  def p3 (C)+[hsx,-hsy,-hsz]
+  def p4 (C)+[hsx,hsy,-hsz]
+  def p5 (C)+[-hsx,hsy,hsz]
+  def p6 (C)+[-hsx,-hsy,hsz]
+  def p7 (C)+[-hsx,-hsy,-hsz]
+  def p8 (C)+[-hsx,hsy,-hsz]
+  def right polygon (p1)(p2)(p3)(p4)
+  def left polygon (p6)(p5)(p8)(p7)
+  def front polygon (p2)(p1)(p5)(p6)
+  def back polygon (p7)(p8)(p4)(p3)
+  def top polygon (p3)(p2)(p6)(p7)
+  def bottom polygon (p1)(p4)(p8)(p5)
+
+  {left}
+  {right} 
+  {top}
+  {bottom}
+  {front}
+  {back}
+
+  def bhsx sz/3
+  def bhsy sz/3
+  def bhsz sz/2
+  def B (0,-hsy*1.7,-0.075)
+
+  def bp1 (B)+[bhsx,bhsy,bhsz]
+  def bp2 (B)+[bhsx,-bhsy,bhsz]
+  def bp3 (B)+[bhsx,-bhsy,-bhsz]
+  def bp4 (B)+[bhsx,bhsy,-bhsz]
+  def bp5 (B)+[-bhsx,bhsy,bhsz]
+  def bp6 (B)+[-bhsx,-bhsy,bhsz]
+  def bp7 (B)+[-bhsx,-bhsy,-bhsz]
+  def bp8 (B)+[-bhsx,bhsy,-bhsz]
+  def bright polygon (bp1)(bp3)(bp4)
+  def bleft polygon (bp5)(bp8)(bp7)
+  def btop polygon (bp2)(bp1)(bp5)(bp6)
+  def bfront polygon (bp7)(bp8)(bp4)(bp3)
+  def bback polygon (bp3)(bp1)(bp5)(bp7)
+  def bbottom polygon (bp1)(bp4)(bp8)(bp5)
+
+  {left}
+  {right} 
+  {top}
+  {bottom}
+  {front}
+  {back}
+
+  {bleft}
+  {bright} 
+  % {btop}
+  {bbottom}
+  {bfront}
+  {bback}
+}
+
+def cam {
+  def sz 0.2
+  def hs sz/2
+  def C (0,0,0)
+  
+  def p1 (C)+[hs,hs,hs]
+  def p2 (C)+[hs,-hs,hs]
+  def p3 (C)+[hs,-hs,-hs]
+  def p4 (C)+[hs,hs,-hs]
+  def p5 (C)+[-hs,hs,hs]
+  def p6 (C)+[-hs,-hs,hs]
+  def p7 (C)+[-hs,-hs,-hs]
+  def p8 (C)+[-hs,hs,-hs]
+
+  def t1 (p1)+[0,0,sz]
+  def t2 (p2)+[0,0,sz]
+  def t3 (p5)+[0,0,sz]
+  def t4 (p6)+[0,0,sz]
+
+  def right polygon[fillcolor=red] (p1)(p2)(p3)(p4)
+  def left polygon[fillcolor=red] (p6)(p5)(p8)(p7)
+  def front polygon[fillcolor=blue] (p2)(p1)(p5)(p6)
+  def back polygon[fillcolor=blue] (p7)(p8)(p4)(p3)
+  def top polygon[fillcolor=green] (p3)(p2)(p6)(p7)
+  def bottom polygon[fillcolor=green] (p1)(p4)(p8)(p5)
+
+  def ltop polygon[cull=false, fillcolor=red] (C)(t2)(t4)
+  def lbottom polygon[cull=false, fillcolor=red] (C)(t1)(t3)
+  def lleft polygon[cull=false, fillcolor=blue] (C)(t3)(t4)
+  def lright polygon[cull=false, fillcolor=blue] (C)(t1)(t2)
+  def lfront polygon[fillcolor=green] (t2)(t1)(t3)(t4)
+
+  
+
+  put {rotate(90, (0,0,0), [-1,0,0])} {
+    {left}
+    {right} 
+    {top}
+    {bottom}
+    {front}
+    {back}
+    {ltop}
+    {lbottom}
+    {lleft}
+    {lright}
+    put {project(-(hs+0.05)) then translate([0,0,-0.05])}{lfront}
+  }
+}
+
+def uvcam {
+  def sz 0.2
+  def hs sz/2
+  def C (0,0,0)
+  
+  def p1 (C)+[hs,hs,hs]
+  def p2 (C)+[hs,-hs,hs]
+  def p3 (C)+[hs,-hs,-hs]
+  def p4 (C)+[hs,hs,-hs]
+  def p5 (C)+[-hs,hs,hs]
+  def p6 (C)+[-hs,-hs,hs]
+  def p7 (C)+[-hs,-hs,-hs]
+  def p8 (C)+[-hs,hs,-hs]
+
+  def t1 (p1)+[0,0,sz]
+  def t2 (p2)+[0,0,sz]
+  def t3 (p5)+[0,0,sz]
+  def t4 (p6)+[0,0,sz]
+
+  def right polygon[fillcolor=violet] (p1)(p2)(p3)(p4)
+  def left polygon[fillcolor=violet] (p6)(p5)(p8)(p7)
+  def front polygon[fillcolor=violet] (p2)(p1)(p5)(p6)
+  def back polygon[fillcolor=violet] (p7)(p8)(p4)(p3)
+  def top polygon[fillcolor=violet] (p3)(p2)(p6)(p7)
+  def bottom polygon[fillcolor=violet] (p1)(p4)(p8)(p5)
+
+  def ltop polygon[cull=false, fillcolor=violet] (C)(t2)(t4)
+  def lbottom polygon[cull=false, fillcolor=violet] (C)(t1)(t3)
+  def lleft polygon[cull=false, fillcolor=violet] (C)(t3)(t4)
+  def lright polygon[cull=false, fillcolor=violet] (C)(t1)(t2)
+  def lfront polygon[fillcolor=violet] (t2)(t1)(t3)(t4)
+
+  
+
+  put {rotate(90, (0,0,0), [-1,0,0])} {
+    {left}
+    {right} 
+    {top}
+    {bottom}
+    {front}
+    {back}
+    {ltop}
+    {lbottom}
+    {lleft}
+    {lright}
+    put {project(-(hs+0.05)) then translate([0,0,-0.05])}{lfront}
+  }
+}
+
+def hexarotor {
+
+	def stred (0,0,0)
+	def stredUp (0,0,0.03)
+	def p1 (0,-1,0)
+	def p2 (0,1,0)
+	def p3 (0.87,0.5,0)
+	def p4 (-0.87,-0.5,0)
+	def p5 (-0.87,0.5,0)
+	def p6 (0.87,-0.5,0)
+
+	def arrow_len 2
+
+	line[linecolor=black](p1)(p2)
+	line[linecolor=black](p3)(p4)
+	line[linecolor=black](p5)(p6)
+	%line[linecolor=red](stred)(p4)
+	%line[linecolor=red](p5)(stred)
+
+	put { translate([0,-1,0.01]) } {vrtule} 
+	put { translate([0,1,0.01]) } {vrtule} 
+	put { translate([0.87,0.5,0.01]) } {vrtule} 
+	put { translate([-0.87,-0.5,0.01]) } {vrtuleBack} 
+	put { translate([0.87,-0.5,0.01]) } {vrtule} 
+	put { translate([-0.87,0.5,0.01]) } {vrtuleBack} 
+
+	def p44 (arrow_len,0,0.03)
+	def p11 (0,arrow_len*0.75,0.03)
+%	line[arrows=->,linecolor=green!60!black] (stredUp)(p11)
+%	line[arrows=->,linecolor=red] (stredUp)(p44)
+
+%	special |\scriptsize
+%		\uput{2pt}[u]#1{$y$}
+%		\uput[u]#2{$x$}|
+%		(0, arrow_len*.75, 0)(arrow_len, 0, 0)
+		
+
+	%line[arrows=->] (0,0,0)(0, 1,0)
+
+	%special |\scriptsize
+		%\uput{2pt}[ul]#1{$\mathbf{b}_3$}|
+		%(0.5, 1.1, 0)
+}
+
+def quadrotor {
+
+	def stred (0,0,0)
+	def stredUp (0,0,0.03)
+	def p3 (0.4,0.4,0)
+	def p4 (-0.4,-0.4,0)
+	def p5 (-0.4,0.4,0)
+	def p6 (0.4,-0.4,0)
+
+	def arrow_len 2
+
+	line[linecolor=black](p3)(p4)
+	line[linecolor=black](p5)(p6)
+	%line[linecolor=red](stred)(p4)
+	%line[linecolor=red](p5)(stred)
+
+	put { translate([0.4,0.4,0.01]) } {vrtule} 
+	put { translate([-0.4,-0.4,0.01]) } {vrtuleBack} 
+	put { translate([0.4,-0.4,0.01]) } {vrtule} 
+	put { translate([-0.4,0.4,0.01]) } {vrtuleBack} 
+
+	def p44 (arrow_len,0,0.03)
+	def p11 (0,arrow_len*0.75,0.03)
+%	line[arrows=->,linecolor=green!60!black] (stredUp)(p11)
+%	line[arrows=->,linecolor=red] (stredUp)(p44)
+
+%	special |\scriptsize
+%		\uput{2pt}[u]#1{$y$}
+%		\uput[u]#2{$x$}|
+%		(0, arrow_len*.75, 0)(arrow_len, 0, 0)
+		
+
+	%line[arrows=->] (0,0,0)(0, 1,0)
+
+	%special |\scriptsize
+		%\uput{2pt}[ul]#1{$\mathbf{b}_3$}|
+		%(0.5, 1.1, 0)
+}
+
+def worldCoordinates {
+
+	def delka 1
+
+	%line[arrows=->] (0, 0, 0)(-delka, 0, 0)
+	
+	special |\scriptsize
+		\uput{2pt}[ul]#1{$\mathbf{e}_2$}|
+		(-delka-0.5, -0.1, 0)
+	
+	%line[arrows=->] (0, 0, 0)(0, 0, -delka)
+	
+	special |\scriptsize
+		\uput{2pt}[ul]#1{$\mathbf{e}_1$}|
+		(0.9, 0.1, -delka-1.8)
+	
+	%line[arrows=->] (0, 0, 0)(0, delka, 0)
+	
+	special |\scriptsize
+		\uput{2pt}[ul]#1{$\mathbf{e}_3$}|
+		(0, delka, 0)
+}
+
+def imuCoordinates {
+
+	def delka 1
+	def delkaX 2
+
+	%line[arrows=->,linecolor=red] (delkaX-0.7, 0, 0)(delkaX, 0, 0)
+	
+	special |\scriptsize
+		\uput{0.5pt}[ul]#1{$\mathbf{i}_1$}|
+		(delkaX+1, 0.25, 1)
+	
+	%line[arrows=->,linecolor=red] (0, 0, -delkaX+0.7)(0, 0, -delkaX)
+	
+	special |\scriptsize
+		\uput{0.5pt}[ul]#1{$\mathbf{i}_2$}|
+		(0.2, 0.1, -delkaX)
+	
+	%line[arrows=->,linecolor=red] (0, 0, 0)(0, delka, 0)
+	
+	special |\scriptsize
+		\uput{0.5pt}[ul]#1{$\mathbf{i}_3$}|
+		(-0.05, delka, 0)
+}
+
+def relposCamX 0
+def relrotUVCamX 70
+def relposUVCamX_L -1*0.15
+def relposUVCamX_R 1*0.15
+def relposCamY .4
+def relposUVCamY 0.2
+def relposCamZ .4
+def relposUVCamZ relposCamZ
+def quadrotor_equipped{
+	put {rotate(0, (0,0,0), [0,0,1]) } {
+
+      put {translate([0,0.2,relposCamZ-.20])}{hodler}
+      put {translate([relposCamX,relposCamY,relposCamZ])}{cam}
+      put {translate([relposUVCamX_L,relposUVCamY,relposUVCamZ]) * rotate( relrotUVCamX, (0,0,0), [0,0,1])}{uvcam}
+      put {translate([relposUVCamX_R,relposUVCamY,relposUVCamZ]) * rotate(-relrotUVCamX, (0,0,0), [0,0,1])}{uvcam}
+      put {rotate(90,(0,0,0),[0,0,1])}{quadrotor}
+
+  }
+}
+
+def towerHeight 8
+def rod {
+  def rodHalfWidth 0.05
+  def rodHalfTriWidth 0.0288
+  def C (0,0,0)
+  def Ct (0,0,towerHeight)
+  def p1 (C)+[rodHalfTriWidth,0,0]
+  def p2 (C)+[-rodHalfWidth,-rodHalfWidth,0]
+  def p3 (C)+[-rodHalfWidth,rodHalfWidth,0]
+  def base polygon[cull=false, fillcolor=white] (p1)(p2)(p3)
+
+  sweep{1,translate([0,0,towerHeight])}{base}
+}
+def crossbarsLen 0.6
+def crossbars {
+  sweep[cull=false]{1,translate([0,crossbarsLen,crossbarsLen])}{
+    line(0,0,0)(0.03,0,0)
+  }
+  sweep[cull=false]{1,translate([0,-crossbarsLen,crossbarsLen])}{
+    line(0,crossbarsLen,0)(0.03,crossbarsLen,0)
+  }
+}
+def tower {
+  repeat{3,rotate(120,[0,0,1])}{
+    put{translate([0.4,0,0])}{rod}
+    }
+    repeat{3,rotate(120,[0,0,1])}{
+      put{translate([-0.18,-(crossbarsLen/2),0])}{
+        repeat{towerHeight/crossbarsLen,translate([0,0,crossbarsLen])}{
+          put{translate([0.0,0,0])}{crossbars}
+        }
+      }
+    }
+}
+
+
+def torso{
+  def torsoHalfWidth 0.20
+  def torsoHalfBreadth 0.15
+  def torsoHeight 0.6
+  def C (0,0,0)
+  def p1 (C)+[torsoHalfWidth,torsoHalfBreadth,0]
+  def p2 (C)+[-torsoHalfWidth,torsoHalfBreadth,0]
+  def p3 (C)+[-torsoHalfWidth,-torsoHalfBreadth,0]
+  def p4 (C)+[torsoHalfWidth,-torsoHalfBreadth,0]
+  def base polygon[cull=false, fillcolor=orange] (p1)(p2)(p3)(p4)
+
+  sweep[fillcolor=orange,cull=false]{1,translate([0,0,torsoHeight])}{base}
+}
+def arm{
+  def armHalfWidth 0.08
+  def armHalfBreadth 0.08
+  def armSegLength 0.5
+  def C (0,0,0)
+  def p1 (C)+[armHalfWidth,armHalfBreadth,0]
+  def p2 (C)+[-armHalfWidth,armHalfBreadth,0]
+  def p3 (C)+[-armHalfWidth,-armHalfBreadth,0]
+  def p4 (C)+[armHalfWidth,-armHalfBreadth,0]
+  def base polygon[cull=false, fillcolor=white] (p1)(p2)(p3)(p4)
+
+  repeat{2,rotate(80,[1,0,0]) then translate([0,0.45,-0.15])}{
+      sweep[fillcolor=white,cull=false]{1,translate([0,0,armSegLength])}{base}
+      }
+}
+def leg{
+  def legHalfWidth 0.09
+  def legHalfBreadth 0.09
+  def legSegLength 0.6
+  def C (0,0,0)
+  def p1 (C)+[legHalfWidth,legHalfBreadth,0]
+  def p2 (C)+[-legHalfWidth,legHalfBreadth,0]
+  def p3 (C)+[-legHalfWidth,-legHalfBreadth,0]
+  def p4 (C)+[legHalfWidth,-legHalfBreadth,0]
+  def base polygon[cull=false, fillcolor=white] (p1)(p2)(p3)(p4)
+
+  repeat{2,rotate(120,[1,0,0]) then translate([0,0.0,-0.10])}{
+      sweep[fillcolor=white,cull=false]{1,translate([0,0,legSegLength])}{base}
+      }
+}
+
+
+def peak{
+  def peakHalfWidth 0.17
+  def peakHalfBreadth 0.15
+  def peakSegLength 0.05
+  def C (0,0,0)
+  def p1 (C)+[peakHalfWidth,peakHalfBreadth,0]
+  def p2 (C)+[-peakHalfWidth,peakHalfBreadth,0]
+  def p3 (C)+[-peakHalfWidth,-peakHalfBreadth,0]
+  def p4 (C)+[peakHalfWidth,-peakHalfBreadth,0]
+  def base polygon[cull=false, fillcolor=yellow] (p1)(p2)(p3)(p4)
+  
+  put {rotate(00,[1,0,0])}{
+    sweep[fillcolor=yellow,cull=false]{1,translate([0,0,peakSegLength]) then scale(0.8)}{base}
+  }
+}
+def hat{
+  def hatHalfWidth 0.17
+  def hatHalfBreadth 0.17
+  def hatSegLength 0.25
+  def C (0,0,0)
+  def p1 (C)+[hatHalfWidth,hatHalfBreadth,0]
+  def p2 (C)+[-hatHalfWidth,hatHalfBreadth,0]
+  def p3 (C)+[-hatHalfWidth,-hatHalfBreadth,0]
+  def p4 (C)+[hatHalfWidth,-hatHalfBreadth,0]
+  def base polygon[cull=false, fillcolor=yellow] (p1)(p2)(p3)(p4)
+  
+  sweep[fillcolor=yellow,cull=false]{1,translate([0,0,hatSegLength]) then scale(0.8)}{base}
+  put{translate([0,0.2,0])}{peak}
+}
+def head{
+  def headHalfWidth 0.15
+  def headHalfBreadth 0.15
+  def headSegLength 0.40
+  def C (0,0,0)
+  def p1 (C)+[headHalfWidth,headHalfBreadth,0]
+  def p2 (C)+[-headHalfWidth,headHalfBreadth,0]
+  def p3 (C)+[-headHalfWidth,-headHalfBreadth,0]
+  def p4 (C)+[headHalfWidth,-headHalfBreadth,0]
+  def base polygon[cull=false, fillcolor=white] (p1)(p2)(p3)(p4)
+  
+  sweep[fillcolor=white,cull=false]{1,translate([0,0,headSegLength])}{base}
+  put{translate([0,0,headSegLength])}{hat}
+}
+
+def worker {
+  {torso}
+  put{rotate(45,[1,0,0]) then translate([-0.25,0.3,0.20])}{arm}
+  put{rotate(45,[1,0,0]) then translate([0.25,0.3,0.20])}{arm}
+  put{rotate(45,[1,0,0]) then rotate(10,[0,1,0]) then  translate([-0.18,0.4,-0.40])}{leg}
+  put{rotate(45,[1,0,0]) then rotate(-10,[0,1,0]) then translate([0.18,0.4,-0.40])}{leg}
+  put{rotate(10,[1,0,0]) then translate([0.0,0.0,0.70])}{head}
+}
+
+
+def vse {
+  %this is the proposed syntax for explicitly defined array
+  %currently only for numbers, but I plan to allow for arrays of arbitrary other type, e.g. transforms, vectors...
+  def arr < 1, 2, 3, 4>
+
+  %this is the proposed syntax for iteration throught an array
+  %if I can do calculations of local variables within the cycle using "n", I should be able to do arbitrary non-linear repeats
+  for(n : arr){
+    put{translate([0.0,0.0,n])}{quadrotor}
+  }
+
+
+  }
+
+put { rotate(0, (0,0,0), [1,0,0]) }{ put { rotate(0, (0,0,0), [0,0,1])} {vse}}
+  

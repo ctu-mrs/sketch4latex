@@ -134,7 +134,7 @@ void coerce_to_transform(EXPR_VAL * r, TRANSFORM val, SRC_LINE line)
 }
 
 void copy_expr_to_array_element(INNER_VAL * r, EXPR_VAL val){
-  printf("[Array expression]: Sanitize this - array should not be of multiple types.");
+  fprintf(stderr,"[Array expression]: Sanitize this - array should not be of multiple types.\n");
   if (!r) { 
     perror("[Array expression]: Array element is not allocated");
     abort();
@@ -146,6 +146,12 @@ void copy_expr_to_array_element(INNER_VAL * r, EXPR_VAL val){
 
 void copy_array(ARRAY * r, ARRAY * val)
 {
+  fprintf(stderr,"[Array expression]: Copying array.\n");
+  r = safe_malloc(sizeof(ARRAY));
+  if (!(r)) { 
+    perror("[Array expression]: Error allocating array");
+    abort();
+  }
   r->length = val->length;
   r->data = safe_malloc(sizeof(EXPR_VAL) * val->length);
   if (!r->data) { 
@@ -158,15 +164,17 @@ void copy_array(ARRAY * r, ARRAY * val)
 
 }
 
-void link_array(ARRAY * r, ARRAY * val)
+void link_array(ARRAY ** r, ARRAY * val)
 {
-  if (r){
-    free(r);
-  }
-  r = val;
+  fprintf(stderr,"[Array expression]: Linking array.\n");
+  /* if (r){ */
+  /*   free(r); */
+  /* } */
+  *r = val;
 }
 
 ARRAY* new_array_from_element(EXPR_VAL val){
+  fprintf(stderr,"[Array expression]: Initiating with element: %f\n", val.val.inn.flt);
   ARRAY *arr = safe_malloc(sizeof(ARRAY));
   arr->data = safe_malloc(sizeof(EXPR_VAL));
   arr->length = 1;
@@ -174,6 +182,7 @@ ARRAY* new_array_from_element(EXPR_VAL val){
 }
 
 ARRAY* append_array_element(ARRAY * prev_array, EXPR_VAL new_element){
+  fprintf(stderr,"[Array expression]: Appending element: %f\n", new_element.val.inn.flt);
   prev_array->data = safe_realloc (prev_array->data, prev_array->length+1);
   copy_expr_to_array_element(&(prev_array->data[prev_array->length]), new_element);
   prev_array->length++;
@@ -181,7 +190,7 @@ ARRAY* append_array_element(ARRAY * prev_array, EXPR_VAL new_element){
 }
 
 ARRAY* new_array_ranged(FLOAT ini, FLOAT incr, FLOAT fini){
-  printf("[Array expression]: Ranged array declaration not yet implemented. Sorry");
+  fprintf(stderr,"[Array expression]: Ranged array declaration not yet implemented. Sorry\n");
   return (ARRAY*)NULL;
 }
 

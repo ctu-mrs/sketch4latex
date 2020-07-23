@@ -79,7 +79,7 @@ void coerce_to_transform(EXPR_VAL * r, TRANSFORM val, SRC_LINE line);
 
 void copy_expr(EXPR_VAL * r, EXPR_VAL val);
 void copy_array(ARRAY * r, ARRAY * val);
-void link_array(ARRAY * r, ARRAY * val);
+void link_array(ARRAY ** r, ARRAY * val);
 ARRAY* new_array_from_element(EXPR_VAL val);
 ARRAY* append_array_element(ARRAY * prev_array, EXPR_VAL new_element);
 ARRAY* new_array_ranged(FLOAT ini, FLOAT incr, FLOAT fini);

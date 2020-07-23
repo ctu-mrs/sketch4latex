@@ -432,7 +432,7 @@ array_elements        : array_element ',' array_elements { $$ = append_array_ele
                       | array_element                { $$ = new_array_from_element($1); }
                       ;
 
-array_explicit        : '<' array_elements '>' { link_array($$,$2); }
+array_explicit        : '<' array_elements '>' { link_array(&$$,$2); }
                       ;
 
 array_ranged          : '<' scalar ':' scalar ':' scalar '>' { new_array_ranged($2,$4,$6); }

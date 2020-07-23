@@ -1,6 +1,8 @@
 /* expr.h
    Copyright (C) 2005,2006,2007,2008 Eugene K. Ressler, Jr.
 
+   Edited by Viktor Walter
+
 This file is part of Sketch, a small, simple system for making 
 3d drawings with LaTeX and the PSTricks or TikZ package.
 
@@ -33,6 +35,7 @@ typedef enum expr_typa_t {
     E_TRANSFORM,
 } EXPR_TYPE;
 
+
 extern char *expr_val_type_str[];
 
 typedef struct expr_val_t {
@@ -44,6 +47,11 @@ typedef struct expr_val_t {
 	TRANSFORM xf;
     } val;
 } EXPR_VAL;
+
+typedef struct array_t {
+  unsigned int length;
+  EXPR_VAL data[];
+} ARRAY ;
 
 #define EXPR_TYPE_IS(E, T)  ((E)->tag == (T))
 

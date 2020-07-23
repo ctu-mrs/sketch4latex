@@ -60,6 +60,7 @@ static OBJECT *objects;
   POINT_3D pt;
   VECTOR_3D vec;
   TRANSFORM xf;
+  ARRAY arr;
   EXPR_VAL exv;
   SYMBOL_NAME name;
   OBJECT *obj;
@@ -86,10 +87,12 @@ static OBJECT *objects;
 %type <pt>    point point_expr
 %type <vec>   vector_literal vector_id vector vector_expr
 %type <xf>    transform transform_expr
-%type <exv>   expr
+%type <arr>   array_literal array_explicit array_ranged array_id array
+%type <exv>   expr array_element
 %type <obj>   defs_and_decls rev_defs_and_decls decl def_or_decl defable
 %type <obj>   points rev_points transforms rev_transforms special_arg
 %type <obj>   special_args rev_special_args
+%type <obj>   array_elements
 %type <bool>  opt_star
 %type <index> output_language comma_macro_package graphics_language macro_package
 
@@ -272,6 +275,7 @@ expr                  : scalar                      { set_float(&$$, $1); }
                       | point                       { set_point(&$$, $1); }
                       | vector                      { set_vector(&$$, $1); }
                       | transform                   { set_transform(&$$, $1); }
+                      | array                       { set_array(&$$, $1); }
                       | expr '+' expr               { do_add(&$$, &$1, &$3, line); }
                       | expr '-' expr               { do_sub(&$$, &$1, &$3, line); }
                       | expr '*' expr               { do_mul(&$$, &$1, &$3, line); }
@@ -418,6 +422,34 @@ transform             : '['
 
 transform_expr        : expr  { coerce_to_transform(&$1, $$, line); }
                       ;
+
+array_element         : scalar                      { set_float(&$$, $1); }
+                      | point                       { set_point(&$$, $1); }
+                      | vector                      { set_vector(&$$, $1); }
+                      | transform                   { set_transform(&$$, $1); }
+                      ;
+
+array_elements        : array_element ',' array_elements { $$ = cat_objects(new_array_element($1), $3); }
+                      | array_element                { $$ = new_array_element($1); }
+                      ;
+
+array_explicit        : '<' array_elements '>' { new_array($2); }
+                      ;
+
+array_ranged          : '<' scalar ':' scalar ':' scalar '>' { new_array_ranged($2,$4,$6); }
+                      ;
+
+array_literal         : array_explicit
+                      | array_ranged
+                      ;
+
+array_id              : ANGLE_ID { look_up_array(sym_tab, $$, line, $1); }
+                      ;
+
+array                 : array_literal { copy_array($$, $1); }
+                      | array_id { copy_array($$, $1); }
+                      ;
+
 
 %%
 

@@ -286,6 +286,14 @@ void look_up_vector_or_opts(SYMBOL_TABLE * sym_tab, OBJECT ** r,
     }
 }
 
+void look_up_array(SYMBOL_TABLE * sym_tab, ARRAY* r, SRC_LINE line, char *name){
+	err(line,
+      "[Array expression]: Referencing existing arrays not yet implemented. Sorry",
+      name);
+  return (ARRAY*)NULL;
+}
+
+
 OBJECT *remove_from_inner_scope(SYMBOL_TABLE * sym_tab, char *name,
 				unsigned index)
 {

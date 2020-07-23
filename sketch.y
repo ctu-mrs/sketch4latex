@@ -60,7 +60,7 @@ static OBJECT *objects;
   POINT_3D pt;
   VECTOR_3D vec;
   TRANSFORM xf;
-  ARRAY arr;
+  ARRAY* arr_p;
   EXPR_VAL exv;
   SYMBOL_NAME name;
   OBJECT *obj;
@@ -87,12 +87,11 @@ static OBJECT *objects;
 %type <pt>    point point_expr
 %type <vec>   vector_literal vector_id vector vector_expr
 %type <xf>    transform transform_expr
-%type <arr>   array_literal array_explicit array_ranged array_id array
+%type <arr_p>   array_elements array_literal array_explicit array_ranged array_id array
 %type <exv>   expr array_element
 %type <obj>   defs_and_decls rev_defs_and_decls decl def_or_decl defable
 %type <obj>   points rev_points transforms rev_transforms special_arg
 %type <obj>   special_args rev_special_args
-%type <obj>   array_elements
 %type <bool>  opt_star
 %type <index> output_language comma_macro_package graphics_language macro_package
 
@@ -275,7 +274,7 @@ expr                  : scalar                      { set_float(&$$, $1); }
                       | point                       { set_point(&$$, $1); }
                       | vector                      { set_vector(&$$, $1); }
                       | transform                   { set_transform(&$$, $1); }
-                      | array                       { set_array(&$$, $1); }
+                      | array                       { set_array(&$$, *$1); }
                       | expr '+' expr               { do_add(&$$, &$1, &$3, line); }
                       | expr '-' expr               { do_sub(&$$, &$1, &$3, line); }
                       | expr '*' expr               { do_mul(&$$, &$1, &$3, line); }
@@ -356,9 +355,9 @@ transform             : '['
                       | ROTATE scalar_expr ',' expr ')'
                           {
                             if (EXPR_TYPE_IS(&$4, E_POINT))
-                              set_angle_axis_rot_about_point($$, $2 * (PI/180), $4.val.pt, 0);
+                              set_angle_axis_rot_about_point($$, $2 * (PI/180), $4.val.inn.pt, 0);
                             else if (EXPR_TYPE_IS(&$4, E_VECTOR))
-                              set_angle_axis_rot_about_point($$, $2 * (PI/180), 0, $4.val.vec);
+                              set_angle_axis_rot_about_point($$, $2 * (PI/180), 0, $4.val.inn.vec);
                             else
                               err(line, "expected point or vector rotation parameter, and it's a %s",
                                 expr_val_type_str[$4.tag]);
@@ -374,11 +373,11 @@ transform             : '['
                       | SCALE expr ')'
                           {
                             if ($2.tag == E_FLOAT) {
-                              FLOAT s = $2.val.flt;
+                              FLOAT s = $2.val.inn.flt;
                               set_scale($$, s, s, s);
                             }
                             else if ($2.tag == E_VECTOR) {
-                              VECTOR v = $2.val.vec;
+                              VECTOR v = $2.val.inn.vec;
                               set_scale($$, v[X], v[Y], v[Z]);
                             }
                             else {
@@ -394,9 +393,9 @@ transform             : '['
                       | VIEW point_expr ',' expr ',' vector_expr ')'
                           {
                             if ($4.tag == E_VECTOR)
-                              set_view_transform($$, $2, $4.val.vec, $6);
+                              set_view_transform($$, $2, $4.val.inn.vec, $6);
                             else if ($4.tag == E_POINT)
-                              set_view_transform_with_look_at($$, $2, $4.val.pt, $6);
+                              set_view_transform_with_look_at($$, $2, $4.val.inn.pt, $6);
                             else
                               err(line, "expected point or vector view parameter, and it's a %s",
                                 expr_val_type_str[$4.tag]);
@@ -404,9 +403,9 @@ transform             : '['
                       | VIEW point_expr ',' expr ')'
                           {
                             if ($4.tag == E_VECTOR)
-                              set_view_transform($$, $2, $4.val.vec, NULL);
+                              set_view_transform($$, $2, $4.val.inn.vec, NULL);
                             else if ($4.tag == E_POINT)
-                              set_view_transform_with_look_at($$, $2, $4.val.pt, NULL);
+                              set_view_transform_with_look_at($$, $2, $4.val.inn.pt, NULL);
                             else
                               err(line, "expected point or vector view parameter, and it's a %s",
                                 expr_val_type_str[$4.tag]);
@@ -429,11 +428,11 @@ array_element         : scalar                      { set_float(&$$, $1); }
                       | transform                   { set_transform(&$$, $1); }
                       ;
 
-array_elements        : array_element ',' array_elements { $$ = cat_objects(new_array_element($1), $3); }
-                      | array_element                { $$ = new_array_element($1); }
+array_elements        : array_element ',' array_elements { $$ = append_array_element($3,$1); }
+                      | array_element                { $$ = new_array_from_element($1); }
                       ;
 
-array_explicit        : '<' array_elements '>' { new_array($2); }
+array_explicit        : '<' array_elements '>' { link_array($$,$2); }
                       ;
 
 array_ranged          : '<' scalar ':' scalar ':' scalar '>' { new_array_ranged($2,$4,$6); }

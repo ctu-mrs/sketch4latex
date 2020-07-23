@@ -2,6 +2,10 @@
 *.swp
 *.o
 sketch
+y.tab.h
+y.tab.c
+y.output
+lex.yy.c
 array_tests/*.pdf
 array_tests/*.log
 array_tests/*.tex

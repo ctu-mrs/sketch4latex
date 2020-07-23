@@ -71,6 +71,7 @@ void look_up_drawable(SYMBOL_TABLE * sym_tab, OBJECT ** r, SRC_LINE line,
 		      char *name);
 void look_up_vector_or_opts(SYMBOL_TABLE * sym_tab, OBJECT ** r,
 			    SRC_LINE line, char *name);
+void look_up_array(SYMBOL_TABLE * sym_tab, ARRAY* r, SRC_LINE line, char *name);
 
 // predicated for tag existence; raises error if not
 int tag_exists_p(SYMBOL_TABLE * sym_tab, char *name);

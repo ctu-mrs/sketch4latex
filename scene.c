@@ -487,13 +487,13 @@ OBJECT *object_from_expr(EXPR_VAL * val)
 {
     switch (val->tag) {
     case E_FLOAT:
-	return new_scalar_def(val->val.flt);
+	return new_scalar_def(val->val.inn.flt);
     case E_POINT:
-	return new_point_def(val->val.pt);
+	return new_point_def(val->val.inn.pt);
     case E_VECTOR:
-	return new_vector_def(val->val.vec);
+	return new_vector_def(val->val.inn.vec);
     case E_TRANSFORM:
-	return new_transform_def(val->val.xf);
+	return new_transform_def(val->val.inn.xf);
     default:
 	die(no_line, "object_from_expr: unknown value tag %d", val->tag);
     }

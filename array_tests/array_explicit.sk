@@ -502,7 +502,7 @@ def worker {
 def vse {
   %this is the proposed syntax for explicitly defined array
   %currently only for numbers, but I plan to allow for arrays of arbitrary other type, e.g. transforms, vectors...
-  def arr < 1, 2, 3, 4>
+  def arr <1,2,3,4>
 
   %this is the proposed syntax for iteration throught an array
   %if I can do calculations of local variables within the cycle using "n", I should be able to do arbitrary non-linear repeats

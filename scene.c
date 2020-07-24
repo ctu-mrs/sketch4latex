@@ -128,6 +128,15 @@ OBJECT *new_transform_def(TRANSFORM xf)
     return (OBJECT *) r;
 }
 
+OBJECT *new_array_def(ARRAY arr)
+{
+    ARRAY_DEF *r = safe_malloc(sizeof *r);
+    r->tag = O_ARRAY_DEF;
+    r->sibling = NULL;
+    copy_array(&(r->arr), arr);
+    return (OBJECT *) r;
+}
+
 void translate_points(POINT_LIST_3D * dst, OBJECT * src_obj)
 {
     POINT_DEF *sibling, *src = (POINT_DEF *) src_obj;
@@ -435,6 +444,7 @@ static COPY_FUNC copy_tbl[] = {
     NULL,			// O_POINT_DEF
     NULL,			// O_VECTOR_DEF
     NULL,			// O_TRANSFORM_DEF
+    NULL,
     copy_dots,
     copy_line,
     copy_curve,
@@ -494,6 +504,8 @@ OBJECT *object_from_expr(EXPR_VAL * val)
 	return new_vector_def(val->val.vec);
     case E_TRANSFORM:
 	return new_transform_def(val->val.xf);
+    case E_ARRAY:
+	return new_array_def(val->val.arr);
     default:
 	die(no_line, "object_from_expr: unknown value tag %d", val->tag);
     }

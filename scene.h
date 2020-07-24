@@ -51,6 +51,7 @@ typedef enum object_type_t {
     O_POINT_DEF,
     O_VECTOR_DEF,
     O_TRANSFORM_DEF,
+    O_ARRAY_DEF,
     O_DOTS,
     O_LINE,
     O_CURVE,
@@ -111,6 +112,13 @@ typedef struct transform_def_t {
 } TRANSFORM_DEF;
 
 OBJECT *new_transform_def(TRANSFORM xf);
+
+typedef struct array_def_t {
+    BASE_OBJECT_FIELDS;
+    ARRAY arr;
+} ARRAY_DEF;
+
+OBJECT *new_array_def(ARRAY arr);
 
 typedef struct dots_t {
     BASE_OBJECT_FIELDS;

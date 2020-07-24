@@ -444,7 +444,7 @@ static COPY_FUNC copy_tbl[] = {
     NULL,			// O_POINT_DEF
     NULL,			// O_VECTOR_DEF
     NULL,			// O_TRANSFORM_DEF
-    NULL,
+    NULL,     // O_ARRAY_DEF
     copy_dots,
     copy_line,
     copy_curve,
@@ -967,6 +967,7 @@ static FLATTEN_FUNC flatten_tbl[] = {
     NULL,			// O_POINT_DEF
     NULL,			// O_VECTOR_DEF
     NULL,			// O_TRANSFORM_DEF
+    NULL,     // O_ARRAY_DEF
     flat_dots,
     flat_line,
     flat_curve,
@@ -1052,6 +1053,7 @@ static LAY_VAL_FUNC lay_val_tbl[] = {
     NULL,			// O_POINT_DEF
     NULL,			// O_VECTOR_DEF
     NULL,			// O_TRANSFORM_DEF
+    NULL,     // O_ARRAY_DEF
     dots_lay_val,
     line_lay_val,
     curve_lay_val,
@@ -1124,6 +1126,7 @@ static BSP_INSERT_FUNC insert_in_bsp_pass_1_tbl[] = {
     NULL,			// O_POINT_DEF
     NULL,			// O_VECTOR_DEF
     NULL,			// O_TRANSFORM_DEF
+    NULL,     // O_ARRAY_DEF
     add_dots_object_to_bsp_pass_1,
     add_line_object_to_bsp_pass_1,
     add_curve_object_to_bsp_pass_1,
@@ -1207,6 +1210,7 @@ static BSP_INSERT_FUNC insert_in_bsp_pass_2_tbl[] = {
     NULL,			// O_POINT_DEF
     NULL,			// O_VECTOR_DEF
     NULL,			// O_TRANSFORM_DEF
+    NULL,     // O_ARRAY_DEF
     add_dots_object_to_bsp_pass_2,
     add_line_object_to_bsp_pass_2,
     add_curve_object_to_bsp_pass_2,
@@ -1296,6 +1300,7 @@ static GET_OBJ_FROM_POLYLINE_FUNC get_obj_from_polyline_tbl[] = {
     NULL,			// O_POINT_DEF
     NULL,			// O_VECTOR_DEF
     NULL,			// O_TRANSFORM_DEF
+    NULL,     // O_ARRAY_DEF
     get_dots_from_polyline,
     get_line_from_polyline,
     get_curve_from_polyline,
@@ -1529,6 +1534,7 @@ static ADD_TO_DS_FUNC add_to_sort_tbl[] = {
     NULL,			// O_POINT_DEF
     NULL,			// O_VECTOR_DEF
     NULL,			// O_TRANSFORM_DEF
+    NULL,     // O_ARRAY_DEF
     add_dots_object_to_sort,
     add_line_object_to_sort,
     add_curve_object_to_sort,
@@ -1633,6 +1639,7 @@ static EXTENT_FUNC extent_tbl[] = {
     NULL,			// O_POINT_DEF
     NULL,			// O_VECTOR_DEF
     NULL,			// O_TRANSFORM_DEF
+    NULL,     // O_ARRAY_DEF
     get_extent_of_dots,
     get_extent_of_line,
     get_extent_of_curve,

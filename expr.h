@@ -39,22 +39,20 @@ typedef enum expr_typa_t {
 
 extern char *expr_val_type_str[];
 
-typedef union inner_val_t {
-  FLOAT flt;
-  POINT_3D pt;
-  VECTOR_3D vec;
-  TRANSFORM xf;
-} INNER_VAL;
+typedef struct expr_val_t EXPR_VAL;
 
 typedef struct array_t {
   unsigned int length;
-  INNER_VAL *data;
+  EXPR_VAL *data;
 } ARRAY ;
 
 typedef struct expr_val_t {
     EXPR_TYPE tag;
     union {
-      INNER_VAL inn;
+      FLOAT flt;
+      POINT_3D pt;
+      VECTOR_3D vec;
+      TRANSFORM xf;
       ARRAY arr;
     }
     val;
@@ -78,7 +76,7 @@ void coerce_to_vector(EXPR_VAL * r, VECTOR_3D val, SRC_LINE line);
 void coerce_to_transform(EXPR_VAL * r, TRANSFORM val, SRC_LINE line);
 
 void copy_expr(EXPR_VAL * r, EXPR_VAL val);
-void copy_array(ARRAY * r, ARRAY * val);
+void copy_array(ARRAY * r, ARRAY val);
 void link_array(ARRAY ** r, ARRAY * val);
 ARRAY* new_array_from_element(EXPR_VAL val);
 ARRAY* append_array_element(ARRAY * prev_array, EXPR_VAL new_element);

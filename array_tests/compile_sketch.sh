@@ -6,7 +6,7 @@ cd "$APP_PATH"
 
 NAME=${1%.sk}
 
-sketch -T "$1" > "$NAME.tex"
+../sketch -T "$1" > "$NAME.tex"
 
 ls
 

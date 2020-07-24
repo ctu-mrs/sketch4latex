@@ -7,7 +7,7 @@ cd "$APP_PATH"
 NAME=${1%.sk}
 
 # sketch -T "$1" > "$NAME.tex"
-gdb --args sketch -T "$1"
+gdb --args ../sketch -T "$1"
 
 return
 

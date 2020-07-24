@@ -290,7 +290,7 @@ void look_up_array(SYMBOL_TABLE * sym_tab, ARRAY* r, SRC_LINE line, char *name){
 	err(line,
       "[Array expression]: Referencing existing arrays not yet implemented. Sorry",
       name);
-  return (ARRAY*)NULL;
+  return;
 }
 
 

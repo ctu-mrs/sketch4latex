@@ -42,7 +42,7 @@ extern char *expr_val_type_str[];
 typedef struct expr_val_t EXPR_VAL;
 
 typedef struct array_t {
-  unsigned int length;
+  unsigned int count;
   EXPR_VAL *data;
 } ARRAY ;
 

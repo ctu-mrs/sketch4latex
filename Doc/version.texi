@@ -2,5 +2,5 @@
 @set VER_MAJOR 0
 @set VER_MINOR 3
 @set VER_BUILD 7
-@set UPDATED Pátek, července 24, 2020
+@set UPDATED Středa, srpna 12, 2020
 @set VERSION @value{VER_MAJOR}.@value{VER_MINOR} (build @value{VER_BUILD})

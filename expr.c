@@ -152,13 +152,13 @@ void copy_array(ARRAY * r, ARRAY val)
   /*   perror("[Array expression]: Error allocating array"); */
   /*   abort(); */
   /* } */
-  r->length = val.length;
-  r->data = (EXPR_VAL*)safe_malloc(sizeof(r->data) * val.length);
+  r->count = val.count;
+  r->data = safe_malloc(sizeof(*(r->data)) * val.count);
   if ((!r->data)) { 
     perror("[Array expression]: Error allocating memory");
     abort();
   }
-  for (int i=0; i<val.length; i++){
+  for (int i=0; i<val.count; i++){
     r->data[i] = val.data[i];
   }
 
@@ -177,15 +177,15 @@ ARRAY* new_array_from_element(EXPR_VAL val){
   fprintf(stderr,"[Array expression]: Initiating with element: %f\n", val.val.flt);
   ARRAY *arr = safe_malloc(sizeof(ARRAY));
   arr->data = safe_malloc(sizeof(EXPR_VAL));
-  arr->length = 1;
+  arr->count = 1;
   return arr;
 }
 
 ARRAY* append_array_element(ARRAY * prev_array, EXPR_VAL new_element){
   fprintf(stderr,"[Array expression]: Appending element: %f\n", new_element.val.flt);
-  prev_array->data = safe_realloc (prev_array->data, prev_array->length+1);
-  copy_expr(&(prev_array->data[prev_array->length]), new_element);
-  prev_array->length++;
+  prev_array->data = safe_realloc (prev_array->data, sizeof(*(prev_array->data))*(prev_array->count+1));
+  copy_expr(prev_array->data+prev_array->count, new_element);
+  prev_array->count++;
   return prev_array;
 }
 

@@ -5,7 +5,7 @@
 #
 # makefile v0.03
 #
-CC = gcc -O1 -g -Wall
+CC = gcc -O0 -g -Wall
 #CC = gcc -g -Wall
 YACC = bison --defines --debug --report=all --yacc
 LEX = flex

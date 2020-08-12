@@ -130,7 +130,22 @@ OBJECT *new_transform_def(TRANSFORM xf)
 
 OBJECT *new_array_def(ARRAY arr)
 {
-    ARRAY_DEF *r = safe_malloc(sizeof *r);
+
+    ARRAY_DEF *r;
+    fprintf(stderr,"[Array expression]: sizeof(*r) is %ld.\n",sizeof(*r));
+    fprintf(stderr,"[Array expression]: sizeof(r) is %ld.\n",sizeof(r));
+    fprintf(stderr,"[Array expression]: sizeof(ARRAY_DEF) is %ld.\n",sizeof(ARRAY_DEF));
+    /* fprintf(stderr,"[Array expression]: sizeof(struct ARRAY_DEF) is %ld.\n",sizeof(struct ARRAY_DEF)); */
+    fprintf(stderr,"[Array expression]: sizeof(ARRAY) is %ld.\n",sizeof(ARRAY));
+    fprintf(stderr,"[Array expression]: sizeof(uint + EXPR_VAL*) is %ld.\n",sizeof(unsigned int)+sizeof(EXPR_VAL*));
+    /* void* v = (void*)safe_malloc(sizeof(void*)); */
+    /* void* v = (void*)malloc(100); */
+
+    r = safe_malloc(sizeof *r);
+    /* r = safe_malloc(89); */
+    /* r = safe_malloc(88); */
+    /* r = malloc(sizeof(r)); */
+    /* r = malloc(89); */
     r->tag = O_ARRAY_DEF;
     r->sibling = NULL;
     copy_array(&(r->arr), arr);
@@ -1639,7 +1654,7 @@ static EXTENT_FUNC extent_tbl[] = {
     NULL,			// O_POINT_DEF
     NULL,			// O_VECTOR_DEF
     NULL,			// O_TRANSFORM_DEF
-    NULL,     // O_ARRAY_DEF
+    NULL,			// O_ARRAY_DEF
     get_extent_of_dots,
     get_extent_of_line,
     get_extent_of_curve,

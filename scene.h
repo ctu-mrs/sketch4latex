@@ -60,6 +60,7 @@ typedef enum object_type_t {
     O_SWEEP,
     O_REPEAT,
     O_COMPOUND,
+    O_ITERATOR_DEF,
 } OBJECT_TYPE;
 
 #define is_drawable(P)  ((P)->tag >= O_DOTS)
@@ -119,6 +120,14 @@ typedef struct array_def_t {
 } ARRAY_DEF;
 
 OBJECT *new_array_def(ARRAY arr);
+
+typedef struct itarator_def_t {
+    BASE_OBJECT_FIELDS;
+    ARRAY *arr;
+    int index;
+} ITERATOR_DEF;
+
+OBJECT *new_iterator_def(ARRAY *arr);
 
 typedef struct dots_t {
     BASE_OBJECT_FIELDS;
@@ -204,6 +213,8 @@ typedef struct repeat_t {
 } REPEAT_OBJECT;
 
 OBJECT *new_repeat(int n, OBJECT * xfs, OBJECT * repeated);
+
+OBJECT *new_for_cycle(char* n, OBJECT * repeated);
 
 typedef struct compound_t {
     BASE_OBJECT_FIELDS;

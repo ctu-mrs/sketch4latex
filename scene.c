@@ -131,25 +131,20 @@ OBJECT *new_transform_def(TRANSFORM xf)
 OBJECT *new_array_def(ARRAY arr)
 {
 
-    ARRAY_DEF *r;
-    fprintf(stderr,"[Array expression]: sizeof(*r) is %ld.\n",sizeof(*r));
-    fprintf(stderr,"[Array expression]: sizeof(r) is %ld.\n",sizeof(r));
-    fprintf(stderr,"[Array expression]: sizeof(ARRAY_DEF) is %ld.\n",sizeof(ARRAY_DEF));
-    /* fprintf(stderr,"[Array expression]: sizeof(struct ARRAY_DEF) is %ld.\n",sizeof(struct ARRAY_DEF)); */
-    fprintf(stderr,"[Array expression]: sizeof(ARRAY) is %ld.\n",sizeof(ARRAY));
-    fprintf(stderr,"[Array expression]: sizeof(uint + EXPR_VAL*) is %ld.\n",sizeof(unsigned int)+sizeof(EXPR_VAL*));
-    /* void* v = (void*)safe_malloc(sizeof(void*)); */
-    /* void* v = (void*)malloc(100); */
-
-    r = safe_malloc(sizeof *r);
-    /* r = safe_malloc(89); */
-    /* r = safe_malloc(88); */
-    /* r = malloc(sizeof(r)); */
-    /* r = malloc(89); */
+    ARRAY_DEF *r = safe_malloc(sizeof *r);
     r->tag = O_ARRAY_DEF;
     r->sibling = NULL;
     copy_array(&(r->arr), arr);
     return (OBJECT *) r;
+}
+
+OBJECT *new_iterator_def(ARRAY *arr){
+  ITERATOR_DEF *r = safe_malloc(sizeof *r);
+  r->tag = O_ITERATOR_DEF;
+  r->sibling = NULL;
+  r->arr = arr;
+  r->index = 0;
+  return (OBJECT *) r;
 }
 
 void translate_points(POINT_LIST_3D * dst, OBJECT * src_obj)
@@ -419,6 +414,16 @@ OBJECT *new_repeat(int n, OBJECT * xfs, OBJECT * repeated)
     REPEAT_OBJECT *r = raw_repeat();
     r->n = n;
     translate_transforms(r->xforms, xfs);
+    r->repeated = repeated;
+    return (OBJECT *) r;
+}
+
+OBJECT *new_for_cycle(char* n, OBJECT * repeated)
+{
+    REPEAT_OBJECT *r = raw_repeat();
+    /* r->n = n; */
+    r->n = 0;
+    /* translate_transforms(r->xforms, xfs); */
     r->repeated = repeated;
     return (OBJECT *) r;
 }
@@ -1077,6 +1082,7 @@ static LAY_VAL_FUNC lay_val_tbl[] = {
     NULL,			// O_SWEEP (flattened)
     NULL,			// O_REPEAT (flattened)
     NULL,			// O_COMPOUND (flattened)
+    NULL,     // O_ITERATOR
 };
 
 int object_lay_val(OBJECT * obj)
@@ -1150,6 +1156,7 @@ static BSP_INSERT_FUNC insert_in_bsp_pass_1_tbl[] = {
     NULL,			// O_SWEEP (flattened)
     NULL,			// O_REPEAT (flattened)
     NULL,			// O_COMPOUND (flattened)
+    NULL,     // O_ITERATOR
 };
 
 static void add_dots_object_to_bsp_pass_2(OBJECT * obj, BSP_TREE * bsp)
@@ -1234,6 +1241,7 @@ static BSP_INSERT_FUNC insert_in_bsp_pass_2_tbl[] = {
     NULL,			// O_SWEEP (flattened)
     NULL,			// O_REPEAT (flattened)
     NULL,			// O_COMPOUND (flattened)
+    NULL,     // O_ITERATOR
 };
 
 // table functions are called in 
@@ -1324,6 +1332,7 @@ static GET_OBJ_FROM_POLYLINE_FUNC get_obj_from_polyline_tbl[] = {
     NULL,			// O_SWEEP (flattened)
     NULL,			// O_REPEAT (flattened)
     NULL,			// O_COMPOUND (flattened)
+    NULL,     // O_ITERATOR
 };
 
 void get_objects_from_bsp_node(BSP_NODE * bsp, void *env)
@@ -1558,6 +1567,7 @@ static ADD_TO_DS_FUNC add_to_sort_tbl[] = {
     NULL,			// O_SWEEP (flattened)
     NULL,			// O_REPEAT (flattened)
     NULL,			// O_COMPOUND (flattened)
+    NULL,     // O_ITERATOR
 };
 
 OBJECT *hsr_scene_with_depth_sort(OBJECT * scene)
@@ -1663,6 +1673,7 @@ static EXTENT_FUNC extent_tbl[] = {
     NULL,			// O_SWEEP (flattened)
     NULL,			// O_REPEAT (flattened)
     NULL,			// O_COMPOUND (flattened)
+    NULL,     // O_ITERATOR
 };
 
 void get_extent(OBJECT * obj, BOX_3D * e, int *n_obj)

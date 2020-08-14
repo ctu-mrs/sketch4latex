@@ -153,6 +153,11 @@ WS [ \t\r\n]
   return REPEAT;
 }
 
+"for" {
+  return FOR;
+}
+
+
 "set" {
   return SET;
 }
@@ -282,6 +287,11 @@ WS [ \t\r\n]
   return ANGLE_ID; 
 }
 
+"@"{Identifier}"@" { 
+  str_slice(yylval.name, sizeof yylval.name, yytext, 1, -1);
+  return AT_ID; 
+}
+
 "<>" {
   return EMPTY_ANGLE;
 }
@@ -362,7 +372,7 @@ WS [ \t\r\n]
   return '<';
 }
 
-[-+*/^|.()\[\]{}=,<>]	{ 
+[-+*/^|.()\[\]{}=,<>:@]	{ 
   return yytext[0];	
 }
 

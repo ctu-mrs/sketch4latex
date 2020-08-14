@@ -286,11 +286,78 @@ void look_up_vector_or_opts(SYMBOL_TABLE * sym_tab, OBJECT ** r,
     }
 }
 
-void look_up_array(SYMBOL_TABLE * sym_tab, ARRAY* r, SRC_LINE line, char *name){
-	err(line,
-      "[Array expression]: Referencing existing arrays not yet implemented. Sorry",
-      name);
-  return;
+void look_up_array(SYMBOL_TABLE * sym_tab, ARRAY** r, SRC_LINE line, char *name){
+    ARRAY_DEF *def =
+	(ARRAY_DEF *) lookup_with_type_check(sym_tab, O_ARRAY_DEF,
+						 line, name);
+    if (def){
+      *r = safe_malloc(sizeof(*r));
+      copy_array(*r, (def->arr));
+    }
+    else
+      err(line, "referenced array %s is not declared",
+          name);
+    return;
+}
+
+
+EXPR_VAL* get_array_element(const ARRAY *arr, int index, SRC_LINE line, char *name){
+  if (index < arr->count){
+    EXPR_VAL* elm = (EXPR_VAL*)arr->data+index;
+    return elm;
+    /* switch (elm->tag) { */
+    /*   case E_FLOAT:{ */
+    /*     return (OBJECT*)new_scalar_def(elm->val.flt); */
+    /* } */
+    /* break; */
+    /*   case E_POINT:{ */
+    /*     return (OBJECT*)new_point_def(elm->val.pt); */
+    /* } */
+    /* break; */
+    /*   case E_VECTOR:{ */
+    /*     return (OBJECT*)new_vector_def(elm->val.vec); */
+    /* } */
+    /* break; */
+    /*   case E_TRANSFORM:{ */
+    /*     return (OBJECT*)new_transform_def(elm->val.xf); */
+    /* } */
+    /* break; */
+    /*   case E_ARRAY:{ */
+    /*     return (OBJECT*)new_array_def(elm->val.arr); */
+    /* } */
+    /*   default:{ */
+		    /* err(line, */
+    /*         "array element %s has unexpected type", */
+		        /* name); */
+    /*     return NULL; */
+    /* } */
+    /* } */
+  }
+  else
+  {
+    err(line,
+        "accessing unallocated index of array %s",
+        name);
+  }
+  
+  return NULL;
+}
+
+void look_up_array_element(SYMBOL_TABLE * sym_tab, EXPR_VAL *r, SRC_LINE line, char *name){
+    SYMBOL *sym = lookup(sym_tab, name);
+    if (sym) {
+      if (sym->obj) {
+        if (sym->obj->tag == O_ITERATOR_DEF) {
+          ARRAY *arr  = ((ITERATOR_DEF *)sym->obj)->arr;
+          int index   = ((ITERATOR_DEF *)sym->obj)->index;
+          r = (get_array_element(arr, index, line, name));
+        }
+      } else {
+        err(line,
+            "found undefined identifier %s while looking for iterator",
+            name);
+      }
+    }
 }
 
 
@@ -392,4 +459,13 @@ SYMBOL *new_symbol(SYMBOL_TABLE * sym_tab, char *name, char *tag,
     sym_tab->head[index] = sym;
 
     return sym;
+}
+
+SYMBOL *new_iterator(SYMBOL_TABLE * sym_tab, char *name, ARRAY* arr, char *tag,
+		   SRC_LINE def_line){
+
+    /* fprintf(stderr,"[Array expression]: creating iterator %s",name); */
+  OBJECT* obj = new_iterator_def(arr);
+  return new_symbol(sym_tab, name, tag, obj, def_line);
+
 }

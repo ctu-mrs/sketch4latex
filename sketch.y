@@ -70,12 +70,12 @@ static OBJECT *objects;
 }
 
 %token <name>ID <name>PAREN_ID <name>BRACKET_ID 
-%token <name>DBL_BRACKET_ID <name>CURLY_ID <name>ANGLE_ID
+%token <name>DBL_BRACKET_ID <name>CURLY_ID <name>ANGLE_ID <name>AT_ID
 %token <flt>NUM 
 %token <str>OPTS_STR <str>SPECIAL 
 %token <index>TICK
 %token THEN DEF EMPTY_ANGLE
-%token DOTS LINE CURVE POLYGON REPEAT SWEEP PUT
+%token DOTS LINE CURVE POLYGON REPEAT FOR SWEEP PUT
 %token TRANSLATE ROTATE SCALE PROJECT PERSPECTIVE VIEW
 %token SQRT SIN ASIN COS ACOS ATAN2 UNIT INVERSE
 %token GLOBAL SET PICTUREBOX FRAME CAMERA
@@ -88,7 +88,7 @@ static OBJECT *objects;
 %type <vec>   vector_literal vector_id vector vector_expr
 %type <xf>    transform transform_expr
 %type <arr_p>   array_elements array_literal array_explicit array_ranged array_id array
-%type <exv>   expr array_element
+%type <exv>   expr array_element array_element_iterator array_element_explicit
 %type <obj>   defs_and_decls rev_defs_and_decls decl def_or_decl defable
 %type <obj>   points rev_points transforms rev_transforms special_arg
 %type <obj>   special_args rev_special_args
@@ -196,17 +196,26 @@ decl                  : DOTS options points		  { $$ = new_dots($2, $3); }
                       | LINE options points     { $$ = new_line($2, $3); }
                       | CURVE options points    { $$ = new_curve($2, $3); }
                       | POLYGON options points  { $$ = new_polygon($2, $3); }
-		      | SWEEP options '{' scalar_expr opt_star ',' transforms '}' point 
-		          { 
+		                  | SWEEP options '{' scalar_expr opt_star ',' transforms '}' point 
+		                      { 
                               $$ = new_sweep($2, $4, $5, $7, new_point_def($9));
                           }
                       | SWEEP options '{' scalar_expr opt_star ',' transforms '}' decl
-			  {
+			                    {
                               $$ = new_sweep($2, $4, $5, $7, $9);
                           }
                       | REPEAT '{' scalar_expr ',' transforms '}' decl
                           {
                               $$ = new_repeat($3, $5, $7);
+                          }
+                      | FOR '(' ID ':' array ')' { new_iterator(sym_tab, $3, $5, 0, line); }
+                          '{'             { sym_tab = new_scope(sym_tab); }
+                            defs_and_decls  { sym_tab = old_scope(sym_tab); }
+                          '}'
+                          {
+                            if ($10 == NULL)
+                              err(line, "no drawables in compound declaration");
+                            $$ = new_for_cycle($3, $10);
                           }
                       | PUT '{' transform_expr '}' decl { $$ = new_compound($3, $5); }
                       | SPECIAL special_args { $$ = new_special($1, $2, line); }
@@ -275,6 +284,7 @@ expr                  : scalar                      { set_float(&$$, $1); }
                       | vector                      { set_vector(&$$, $1); }
                       | transform                   { set_transform(&$$, $1); }
                       | array                       { set_array(&$$, *$1); }
+                      | array_element               //{ copy_expr(&$$, $1); }
                       | expr '+' expr               { do_add(&$$, &$1, &$3, line); }
                       | expr '-' expr               { do_sub(&$$, &$1, &$3, line); }
                       | expr '*' expr               { do_mul(&$$, &$1, &$3, line); }
@@ -422,13 +432,18 @@ transform             : '['
 transform_expr        : expr  { coerce_to_transform(&$1, $$, line); }
                       ;
 
-array_element         : scalar                      { set_float(&$$, $1); }
-                      | point                       { set_point(&$$, $1); }
-                      | vector                      { set_vector(&$$, $1); }
-                      | transform                   { set_transform(&$$, $1); }
+array_element_explicit  : scalar                      { set_float(&$$, $1); }
+                        | point                       { set_point(&$$, $1); }
+                        | vector                      { set_vector(&$$, $1); }
+                        | transform                   { set_transform(&$$, $1); }
+                        ;
+array_element_iterator   : AT_ID { look_up_array_element(sym_tab, &$$, line, $1); }
+                    ;
+array_element         : array_element_explicit
+                      | array_element_iterator
                       ;
 
-array_elements        : array_element ',' array_elements { $$ = append_array_element($3,$1); }
+array_elements        : array_elements ',' array_element { $$ = append_array_element($1,$3); }
                       | array_element                { $$ = new_array_from_element($1); }
                       ;
 
@@ -442,7 +457,7 @@ array_literal         : array_explicit
                       | array_ranged
                       ;
 
-array_id              : ANGLE_ID { look_up_array(sym_tab, $$, line, $1); }
+array_id              : ANGLE_ID { look_up_array(sym_tab, &$$, line, $1); }
                       ;
 
 array                 : array_literal { link_array(&$$, $1); }

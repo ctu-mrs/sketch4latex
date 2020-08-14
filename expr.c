@@ -1,5 +1,5 @@
 /* expr.c
-   Copyright (C) 2005,2006,2007,2008 Eugene K. Ressler, Jr.
+   Copyrightr (C) 2005,2006,2007,2008 Eugene K. Ressler, Jr.
 
 This file is part of Sketch, a small, simple system for making 
 3d drawings with LaTeX and the PSTricks or TikZ package.
@@ -96,6 +96,9 @@ void coerce_to_float(EXPR_VAL * r, FLOAT * val, SRC_LINE line)
 {
     if (r->tag == E_FLOAT) {
 	*val = r->val.flt;
+    } else if (r->tag == E_ARRAY) {
+	*val = r->val.flt;
+    
     } else {
 	*val = 0;
 	err(line, "expected float, found %s", expr_val_type_str[r->tag]);
@@ -146,7 +149,7 @@ void copy_expr(EXPR_VAL * r, EXPR_VAL val){
 void copy_array(ARRAY * r, ARRAY val)
 {
   fprintf(stderr,"[Array expression]: Copying array.\n");
-  /* r = safe_malloc(sizeof(ARRAY)); */
+  /* r = safe_malloc(sizeof *r); */
   /* r->data = NULL; */
   /* if (!(r)) { */ 
   /*   perror("[Array expression]: Error allocating array"); */
@@ -177,6 +180,7 @@ ARRAY* new_array_from_element(EXPR_VAL val){
   fprintf(stderr,"[Array expression]: Initiating with element: %f\n", val.val.flt);
   ARRAY *arr = safe_malloc(sizeof(ARRAY));
   arr->data = safe_malloc(sizeof(EXPR_VAL));
+  arr->data[0] = val;
   arr->count = 1;
   return arr;
 }
@@ -199,6 +203,25 @@ void set_array(EXPR_VAL * r, ARRAY val)
     r->tag = E_ARRAY;
     copy_array(&(r->val.arr), val);
 }
+
+/* void set_array_element(EXPR_VAL * r, EXPR_VAL val){ */
+/*   r->tag = val.tag; */
+/*   switch (val.tag){ */
+/*     case E_FLOAT: */
+/*       r->flt = val.flt; */
+/*       break */
+/*     case E_POINT: */
+/*       r->pt = val.pt; */
+/*       break */
+/*     case E_FLOAT: */
+/*       r->flt = val.flt; */
+/*       break */
+/*     E_POINT, */
+/*     E_VECTOR, */
+/*     E_TRANSFORM, */
+/*     E_ARRAY, */
+/*   } */
+/* } */
 
 typedef void (*PRINT_FUNC) (FILE *, EXPR_VAL *);
 
@@ -439,7 +462,8 @@ void do_transform_power(TRANSFORM r, TRANSFORM a, int n, SRC_LINE line)
 
 int to_integer(FLOAT x, int *n)
 {
-    double frac_part, int_part;
+    double frac_part;
+    double int_part;
 
     frac_part = modf(x, &int_part);
     if (-1e9 <= int_part && int_part <= 1e9) {

@@ -71,7 +71,9 @@ void look_up_drawable(SYMBOL_TABLE * sym_tab, OBJECT ** r, SRC_LINE line,
 		      char *name);
 void look_up_vector_or_opts(SYMBOL_TABLE * sym_tab, OBJECT ** r,
 			    SRC_LINE line, char *name);
-void look_up_array(SYMBOL_TABLE * sym_tab, ARRAY* r, SRC_LINE line, char *name);
+void look_up_array(SYMBOL_TABLE * sym_tab, ARRAY** r, SRC_LINE line, char *name);
+
+void look_up_array_element(SYMBOL_TABLE * sym_tab, EXPR_VAL *r, SRC_LINE line, char *name);
 
 // predicated for tag existence; raises error if not
 int tag_exists_p(SYMBOL_TABLE * sym_tab, char *name);
@@ -79,7 +81,11 @@ int tag_exists_p(SYMBOL_TABLE * sym_tab, char *name);
 // insert a given name in the symbol table
 SYMBOL *new_symbol(SYMBOL_TABLE * sym_tab, char *name, char *tag,
 		   OBJECT * obj, SRC_LINE def_line);
+
 OBJECT *remove_symbol(SYMBOL_TABLE * sym_tab, char *name, SRC_LINE line);
+
+SYMBOL *new_iterator(SYMBOL_TABLE * sym_tab, char *name, ARRAY* arr, char *tag,
+		   SRC_LINE def_line);
 
 // look up the name, which must be an option
 // if the lookup succeeds, append the option to options at *r (creating a new raw option

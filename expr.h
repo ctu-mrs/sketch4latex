@@ -67,6 +67,7 @@ void set_point(EXPR_VAL * r, POINT_3D val);
 void set_vector(EXPR_VAL * r, VECTOR_3D val);
 void set_transform(EXPR_VAL * r, TRANSFORM val);
 void set_array(EXPR_VAL * r, ARRAY val);
+/* void set_array_element(EXPR_VAL * r, EXPR_VAL val); */
 
 // coerce an expression value to given type 
 // generate error message if it can't be done

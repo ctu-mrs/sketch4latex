@@ -56,6 +56,8 @@ typedef struct expr_val_t {
       ARRAY arr;
     }
     val;
+    bool iterable;
+    ITERATOR_DEF* it;
 } EXPR_VAL;
 
 

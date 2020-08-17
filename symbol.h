@@ -73,7 +73,7 @@ void look_up_vector_or_opts(SYMBOL_TABLE * sym_tab, OBJECT ** r,
 			    SRC_LINE line, char *name);
 void look_up_array(SYMBOL_TABLE * sym_tab, ARRAY** r, SRC_LINE line, char *name);
 
-void look_up_array_element(SYMBOL_TABLE * sym_tab, EXPR_VAL *r, SRC_LINE line, char *name);
+EXPR_VAL *look_up_array_element(SYMBOL_TABLE * sym_tab, SRC_LINE line, char *name);
 
 // predicated for tag existence; raises error if not
 int tag_exists_p(SYMBOL_TABLE * sym_tab, char *name);
@@ -86,6 +86,8 @@ OBJECT *remove_symbol(SYMBOL_TABLE * sym_tab, char *name, SRC_LINE line);
 
 SYMBOL *new_iterator(SYMBOL_TABLE * sym_tab, char *name, ARRAY* arr, char *tag,
 		   SRC_LINE def_line);
+
+OBJECT *for_cycle(SYMBOL_TABLE * sym_tab, char* it, OBJECT * body);
 
 // look up the name, which must be an option
 // if the lookup succeeds, append the option to options at *r (creating a new raw option

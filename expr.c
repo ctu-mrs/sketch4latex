@@ -96,9 +96,6 @@ void coerce_to_float(EXPR_VAL * r, FLOAT * val, SRC_LINE line)
 {
     if (r->tag == E_FLOAT) {
 	*val = r->val.flt;
-    } else if (r->tag == E_ARRAY) {
-	*val = r->val.flt;
-    
     } else {
 	*val = 0;
 	err(line, "expected float, found %s", expr_val_type_str[r->tag]);

@@ -210,12 +210,13 @@ decl                  : DOTS options points		  { $$ = new_dots($2, $3); }
                           }
                       | FOR '(' ID ':' array ')' { new_iterator(sym_tab, $3, $5, 0, line); }
                           '{'             { sym_tab = new_scope(sym_tab); }
-                            defs_and_decls  { sym_tab = old_scope(sym_tab); }
+                            defs_and_decls  {$10 = for_cycle(sym_tab,$3,$10); sym_tab = old_scope(sym_tab);}
                           '}'
                           {
                             if ($10 == NULL)
                               err(line, "no drawables in compound declaration");
-                            $$ = new_for_cycle($3, $10);
+                            /* $$ = new_for_cycle($3, $10); */
+                            $$ = $10;
                           }
                       | PUT '{' transform_expr '}' decl { $$ = new_compound($3, $5); }
                       | SPECIAL special_args { $$ = new_special($1, $2, line); }
@@ -437,10 +438,10 @@ array_element_explicit  : scalar                      { set_float(&$$, $1); }
                         | vector                      { set_vector(&$$, $1); }
                         | transform                   { set_transform(&$$, $1); }
                         ;
-array_element_iterator   : AT_ID { look_up_array_element(sym_tab, &$$, line, $1); }
+array_element_iterator   : AT_ID { $$ = *look_up_array_element(sym_tab, line, $1); }
                     ;
 array_element         : array_element_explicit
-                      | array_element_iterator
+                      | array_element_iterator //{ copy_expr(&$$, $1); }
                       ;
 
 array_elements        : array_elements ',' array_element { $$ = append_array_element($1,$3); }

@@ -143,7 +143,7 @@ OBJECT *new_iterator_def(ARRAY *arr){
   r->tag = O_ITERATOR_DEF;
   r->sibling = NULL;
   r->arr = arr;
-  r->index = 0;
+  r->index = arr->count-1;
   return (OBJECT *) r;
 }
 
@@ -427,6 +427,7 @@ OBJECT *new_for_cycle(char* n, OBJECT * repeated)
     r->repeated = repeated;
     return (OBJECT *) r;
 }
+
 
 OBJECT *copy_repeat(OBJECT * obj)
 {

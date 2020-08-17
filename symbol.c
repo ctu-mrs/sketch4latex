@@ -343,14 +343,16 @@ EXPR_VAL* get_array_element(const ARRAY *arr, int index, SRC_LINE line, char *na
   return NULL;
 }
 
-void look_up_array_element(SYMBOL_TABLE * sym_tab, EXPR_VAL *r, SRC_LINE line, char *name){
+EXPR_VAL *look_up_array_element(SYMBOL_TABLE * sym_tab, SRC_LINE line, char *name)
+{
+/* void look_up_array_element(SYMBOL_TABLE * sym_tab, EXPR_VAL *r, SRC_LINE line, char *name){ */
     SYMBOL *sym = lookup(sym_tab, name);
     if (sym) {
       if (sym->obj) {
         if (sym->obj->tag == O_ITERATOR_DEF) {
           ARRAY *arr  = ((ITERATOR_DEF *)sym->obj)->arr;
           int index   = ((ITERATOR_DEF *)sym->obj)->index;
-          r = (get_array_element(arr, index, line, name));
+          return (get_array_element(arr, index, line, name));
         }
       } else {
         err(line,
@@ -358,6 +360,20 @@ void look_up_array_element(SYMBOL_TABLE * sym_tab, EXPR_VAL *r, SRC_LINE line, c
             name);
       }
     }
+    return NULL;
+}
+
+ITERATOR_DEF *look_up_iterator(SYMBOL_TABLE * sym_tab, char *name)
+{
+    SYMBOL *sym = lookup(sym_tab, name);
+    if (sym) {
+      if (sym->obj) {
+        if (sym->obj->tag == O_ITERATOR_DEF) {
+          return ((ITERATOR_DEF *)sym->obj);
+        }
+      }
+    }
+    return NULL;
 }
 
 
@@ -468,4 +484,17 @@ SYMBOL *new_iterator(SYMBOL_TABLE * sym_tab, char *name, ARRAY* arr, char *tag,
   OBJECT* obj = new_iterator_def(arr);
   return new_symbol(sym_tab, name, tag, obj, def_line);
 
+}
+
+OBJECT *for_cycle(SYMBOL_TABLE * sym_tab, char* it, OBJECT * body)
+{
+  
+  OBJECT *output;
+  ITERATOR_DEF *iter = look_up_iterator(sym_tab, it);
+    for (int i=0; i<(iter->arr->count); i++){
+    output = cat_objects(sibling_reverse(body), output);
+    /* output = cat_objects(body, output); */
+    (iter->index)--;
+  }
+  return output;
 }

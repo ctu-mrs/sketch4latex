@@ -500,7 +500,7 @@ void do_asin(EXPR_VAL * r, EXPR_VAL * a, SRC_LINE line)
 {
     switch (a->tag) {
     case E_FLOAT:
-	if (-1 < a->val.flt || a->val.flt > 1)
+	if (a->val.flt < -1 || a->val.flt > 1)
 	    err(line, "asin operand is out of range [-1..1]");
 	set_float(r, (180 / PI) * asin(a->val.flt));
 	break;
@@ -515,8 +515,8 @@ void do_acos(EXPR_VAL * r, EXPR_VAL * a, SRC_LINE line)
 {
     switch (a->tag) {
     case E_FLOAT:
-	if (-1 < a->val.flt || a->val.flt > 1)
-	    err(line, "asin operand is out of range [-1..1]");
+	if (a->val.flt < -1 || a->val.flt > 1)
+	    err(line, "acos operand is out of range [-1..1]");
 	set_float(r, (180 / PI) * acos(a->val.flt));
 	break;
     default:
